@@ -23,13 +23,16 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.tiago.finalyearproject.gcm.ClientMessage;
+import com.tiago.finalyearproject.model.Core;
+import com.tiago.finalyearproject.view.LoginActivity;
 
 import org.w3c.dom.Text;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class LoginFragment extends Fragment {
 
 
     private TextView mTextDetails;
@@ -42,8 +45,10 @@ public class MainActivityFragment extends Fragment {
         @Override
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
-            Profile profile = Profile.getCurrentProfile();
-            displayWelcomeMessage(profile);
+
+            ((LoginActivity)getActivity()).createUser();
+
+//            displayWelcomeMessage(profile);
 
         }
 
@@ -64,13 +69,12 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
-    public MainActivityFragment() {
+    public LoginFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         mCallBackManager = CallbackManager.Factory.create();
 
 

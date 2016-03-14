@@ -6,8 +6,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivityFragment"
-    tools:showIn="@layout/activity_main">
+    tools:context=".LoginFragment"
+    tools:showIn="@layout/login_activity">
 
     <TextView
         android:id="@+id/mTextDetails"
@@ -18,20 +18,18 @@
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="false"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="100dp" />
-    <Button
-        android:id="@+id/btnGetRegId"
-        android:layout_below = "@id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get RegId"/>
+        android:layout_centerInParent="true" />
+    <!--<Button-->
+        <!--android:id="@+id/btnGetRegId"-->
+        <!--android:layout_below = "@id/login_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Get RegId"/>-->
 
-    <EditText
-        android:id="@+id/etRegId"
-        android:layout_below = "@id/btnGetRegId"
-        android:layout_width="match_parent"
-        android:layout_height="100dp" />
+    <!--<EditText-->
+        <!--android:id="@+id/etRegId"-->
+        <!--android:layout_below = "@id/btnGetRegId"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="100dp" />-->
 
 </RelativeLayout>

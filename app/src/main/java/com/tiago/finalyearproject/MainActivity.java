@@ -1,6 +1,7 @@
 package com.tiago.finalyearproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,19 +16,23 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.Core;
 import com.tiago.finalyearproject.view.AppAbstractFragmentActivity;
+import com.tiago.finalyearproject.view.EventsActivity;
+import com.tiago.finalyearproject.view.LoginActivity;
 
 import java.io.IOException;
 
 public class MainActivity extends AppAbstractFragmentActivity implements View.OnClickListener {
 
 
-    private Button btnRegId;
-    private EditText etRegId;
+    private ProfileTracker mProfileTracker;
 
 
     @Override
@@ -35,22 +40,27 @@ public class MainActivity extends AppAbstractFragmentActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnRegId = (Button) findViewById(R.id.btnGetRegId);
-        etRegId = (EditText) findViewById(R.id.etRegId);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
-        btnRegId.setOnClickListener(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+//        btnRegId = (Button) findViewById(R.id.btnGetRegId);
+//        etRegId = (EditText) findViewById(R.id.etRegId);
+//
+//        btnRegId.setOnClickListener(this);
+
+
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
     }
 
     @Override
@@ -91,5 +101,35 @@ public class MainActivity extends AppAbstractFragmentActivity implements View.On
 
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(Profile.getCurrentProfile() == null) {
+            mProfileTracker = new ProfileTracker() {
+                @Override
+                protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+                    // profile2 is the new profile
+                    Log.v("facebook - profile", profile2.getFirstName());
+                    mProfileTracker.stopTracking();
+                }
+            };
+            mProfileTracker.startTracking();
+        }
+        Profile profile = Profile.getCurrentProfile();
 
+        if(profile == null){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+
+        }else{
+            Intent intent = new Intent(MainActivity.this, EventsActivity.class);
+            startActivity(intent);
+        }
+
+    }
 }
