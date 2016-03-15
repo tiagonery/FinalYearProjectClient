@@ -3,6 +3,8 @@
  */
 package com.tiago.finalyearproject.model;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.sql.Blob;
 
@@ -22,8 +24,9 @@ public class User implements Serializable{
 	private String facebookId;
 	private UserStatus userStatus;
 	private int age;
-	private Blob profilePicture;
-	
+	private Bitmap profilePicture;
+
+
 
 	public enum UserStatus{
 		ON(StringConstants.ON),
@@ -46,6 +49,9 @@ public class User implements Serializable{
 		this.id = id;
 	}
 
+	public User() {
+	}
+
 	/**
 	 * @param id
 	 * @param facebookId
@@ -59,6 +65,9 @@ public class User implements Serializable{
 		setSurname(surname);
 	}
 
+	public String getFullName() {
+		return getName()+" "+getSurname();
+	}
 	public String getUserName() {
 		return username;
 	}
@@ -70,7 +79,11 @@ public class User implements Serializable{
 
 
 	public String getName() {
-		return name;
+		if(name!=null) {
+			return name;
+		}else{
+			return "";
+		}
 	}
 
 
@@ -106,11 +119,11 @@ public class User implements Serializable{
 		this.age = age;
 	}
 
-	public Blob getProfilePicture() {
+	public Bitmap getProfilePicture() {
 		return profilePicture;
 	}
 
-	public void setProfilePicture(Blob profilePicture) {
+	public void setProfilePicture(Bitmap profilePicture) {
 		this.profilePicture = profilePicture;
 	}
 
@@ -123,7 +136,11 @@ public class User implements Serializable{
 	}
 
 	public String getSurname() {
-		return surname;
+		if(surname!=null) {
+			return surname;
+		}else{
+			return "";
+		}
 	}
 
 	public void setSurname(String surname) {

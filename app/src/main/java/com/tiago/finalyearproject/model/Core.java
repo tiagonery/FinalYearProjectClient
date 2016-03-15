@@ -3,15 +3,33 @@
  */
 package com.tiago.finalyearproject.model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.GCMManager;
 import com.tiago.finalyearproject.gcm.GcmMessageHandler;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.view.AppAbstractFragmentActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -54,6 +72,8 @@ public class Core {
 
 	public void notifyInvitationReceived(ServerMessage serverMessage) {
 	}
+
+
 
 
 	/**

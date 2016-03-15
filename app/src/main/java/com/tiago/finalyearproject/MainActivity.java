@@ -23,6 +23,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.Core;
+import com.tiago.finalyearproject.view.AddFriendsFromFBActivity;
 import com.tiago.finalyearproject.view.AppAbstractFragmentActivity;
 import com.tiago.finalyearproject.view.EventsActivity;
 import com.tiago.finalyearproject.view.LoginActivity;
@@ -127,7 +128,7 @@ public class MainActivity extends AppAbstractFragmentActivity implements View.On
             startActivity(intent);
 
         }else{
-            Intent intent = new Intent(MainActivity.this, EventsActivity.class);
+            Intent intent = new Intent(MainActivity.this, AddFriendsFromFBActivity.class);
             startActivity(intent);
         }
 
