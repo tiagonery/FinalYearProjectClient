@@ -19,7 +19,8 @@ public abstract class AbstractMessage {
     /**
      * Payload data. A String in Json format.
      */
-    private Map<String, Object> content = new HashMap<String, Object>();
+
+    protected Map<String, Object> content = new HashMap<String, Object>();
     
 
 	/**

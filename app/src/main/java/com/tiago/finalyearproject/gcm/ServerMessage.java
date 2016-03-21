@@ -30,6 +30,9 @@ public class ServerMessage extends AbstractMessage {
 
     }
 
+
+
+
     public enum ServerMessageType {
 
         REPLY_SUCCES,
@@ -41,6 +44,8 @@ public class ServerMessage extends AbstractMessage {
 
     public enum ServerContentTypeKey {
 
+        MESSAGE_TYPE,
+        MESSAGE_REPLIED_ID,
         ERROR_MESSAGE,
         FRIENDSHIP_REQUEST_FROM,
         FRIENDSHIP_REQUEST_ACCEPTED_FROM;
@@ -54,12 +59,6 @@ public class ServerMessage extends AbstractMessage {
     private String to;
 
     /**
-     * MessageRelied-ID.
-     */
-    private String messageRepliedId;
-
-
-    /**
      * Sender app's package.
      */
     private ServerMessageType serverMessageType;
@@ -67,7 +66,7 @@ public class ServerMessage extends AbstractMessage {
     public ServerMessage(String to, ServerMessageType serverMessageType, String messageId, Map<String, Object> content) {
         super(messageId, content);
         this.to = to;
-        this.serverMessageType = serverMessageType;
+        setServerMessageType(serverMessageType);
     }
 
     /**
@@ -76,7 +75,7 @@ public class ServerMessage extends AbstractMessage {
      */
     public ServerMessage(String to2, ServerMessageType notifyFriendshipRequestReceived) {
         this.to = to;
-        this.serverMessageType = serverMessageType;
+        setServerMessageType(serverMessageType);
 
     }
 
@@ -86,6 +85,15 @@ public class ServerMessage extends AbstractMessage {
     public ServerMessage(String to) {
 
         this.to = to;
+    }
+
+    /**
+     * @param messageType
+     * @param content
+     */
+    public ServerMessage(ServerMessageType messageType, Map <String, Object> content) {
+        this.content = content;
+        serverMessageType = messageType;
     }
 
     /**
@@ -111,16 +119,18 @@ public class ServerMessage extends AbstractMessage {
 
     public String getMessageRepliedId() {
 
-        return messageRepliedId;
+        return (String) getContent().get(ServerContentTypeKey.MESSAGE_REPLIED_ID.name());
     }
 
-    public void setMessageRepliedId(String messageRepliedId) {
 
-        this.messageRepliedId = messageRepliedId;
+    public String getMessageError() {
+        return (String) getContent().get(ServerContentTypeKey.ERROR_MESSAGE.name());
     }
+
 
     public void setServerMessageType(ServerMessageType serverMessageType) {
         this.serverMessageType = serverMessageType;
+        getContent().put(ServerContentTypeKey.MESSAGE_TYPE.name(),serverMessageType);
     }
 
     /**
@@ -132,19 +142,20 @@ public class ServerMessage extends AbstractMessage {
     }
 
     /**
-     * @param from
+     * @param requesterFbId
      */
-    public void setFriendshipRequester(User from) {
-        getContent().put(ServerContentTypeKey.FRIENDSHIP_REQUEST_FROM.name(), from);
+    public void setFriendshipRequester(String requesterFbId) {
+        getContent().put(ServerContentTypeKey.FRIENDSHIP_REQUEST_FROM.name(), requesterFbId);
 
     }
 
     /**
-     * @param from
+     * @param userFbId
      */
-    public void setFriendshipRequestAcceptedFrom(User from) {
-        getContent().put(ServerContentTypeKey.FRIENDSHIP_REQUEST_ACCEPTED_FROM.name(), from);
+    public void setFriendshipRequestAcceptedFrom(String userFbId) {
+        getContent().put(ServerContentTypeKey.FRIENDSHIP_REQUEST_ACCEPTED_FROM.name(), userFbId);
     }
+
 
 
 }

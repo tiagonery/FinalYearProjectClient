@@ -3,21 +3,12 @@ package com.tiago.finalyearproject.view;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.TextView;
 
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.tiago.finalyearproject.Constants;
 import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ServerMessage;
-import com.tiago.finalyearproject.model.Core;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by Tiago on 14/03/2016.

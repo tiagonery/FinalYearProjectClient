@@ -1,34 +1,22 @@
 package com.tiago.finalyearproject;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.View;
 
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
+import com.tiago.finalyearproject.model.Address;
 import com.tiago.finalyearproject.model.Core;
 import com.tiago.finalyearproject.view.AddFriendsFromFBActivity;
 import com.tiago.finalyearproject.view.AppAbstractFragmentActivity;
-import com.tiago.finalyearproject.view.EventsActivity;
 import com.tiago.finalyearproject.view.LoginActivity;
-
-import java.io.IOException;
 
 public class MainActivity extends AppAbstractFragmentActivity implements View.OnClickListener {
 
@@ -89,7 +77,7 @@ public class MainActivity extends AppAbstractFragmentActivity implements View.On
     @Override
     public void onClick(View v) {
         ClientMessage clientRequestMessage = new ClientMessage();
-        clientRequestMessage.setCategory(ClientMessage.ClientMessageType.CREATE_USER);
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.CREATE_USER);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
         setPendingClientMessage(clientRequestMessage);

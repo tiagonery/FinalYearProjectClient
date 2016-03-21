@@ -1,6 +1,5 @@
 package com.tiago.finalyearproject.view;
 
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 
 import com.tiago.finalyearproject.gcm.ClientMessage;
@@ -25,7 +24,7 @@ public abstract class AppAbstractFragmentActivity extends AppCompatActivity {
     }
 
     public void handlePendingMessage(ServerMessage message){
-        if (message.getMessageRepliedId() == pendingClientMessage.getMessageId()){
+        if (message.getMessageRepliedId().equals(pendingClientMessage.getMessageId())){
             treatValidMessage(message);
         }
     }

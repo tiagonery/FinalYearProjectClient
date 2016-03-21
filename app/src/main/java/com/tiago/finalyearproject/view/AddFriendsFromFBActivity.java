@@ -1,5 +1,6 @@
 package com.tiago.finalyearproject.view;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,11 +8,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -19,8 +19,8 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.Profile;
-import com.tiago.finalyearproject.Constants;
 import com.tiago.finalyearproject.R;
+import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.Core;
 import com.tiago.finalyearproject.model.User;
@@ -41,11 +41,29 @@ import java.util.List;
 public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
 
 
+    private AddFriendsAdapter theAdapter;
+    private ListView theListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_friends_from_fb_activity);
 
+
+
+        final Button button = (Button) findViewById(R.id.add_friends_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                CheckBox[] checkBoxArray = getTheAdapter().getCheckBoxArray();
+                List<String> listOfUsersIdsToAdd = new ArrayList<String>();
+                for (CheckBox checkBox: checkBoxArray) {
+                    if (checkBox.isChecked()){
+                        listOfUsersIdsToAdd.add((String) checkBox.getTag());
+                    }
+                }
+                addFriends(listOfUsersIdsToAdd);
+            }
+        });
 
         getFriendsFromFacebook();
 
@@ -81,8 +99,18 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
 //        request.executeAsync();
 
     }
-    @Override
-    protected void treatValidMessage(ServerMessage serverMessage) {
+
+    private void addFriends(List<String> listOfUsersIdsToAdd) {
+
+        Profile profile = Profile.getCurrentProfile();
+
+        ClientMessage clientRequestMessage = new ClientMessage();
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.REQUEST_FRIENDSHIP_FB);
+//            User user= new User(null,profile.getId(),profile.getFirstName(),profile.getLastName());
+        clientRequestMessage.setFacebookIdsList(listOfUsersIdsToAdd);
+        String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
+        clientRequestMessage.setMessageId(msgId);
+        setPendingClientMessage(clientRequestMessage);
 
     }
 
@@ -123,9 +151,10 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
     }
 
     private void createListView(List<User> usersList) {
-        ListAdapter theAdapter = new MyAdapter(this, usersList);
+        theAdapter = new AddFriendsAdapter(this, usersList);
 
-        ListView theListView = (ListView) findViewById(R.id.listView1);
+        theListView = (ListView) findViewById(R.id.listView1);
+
 
         // Tells the ListView what data to use
         theListView.setAdapter(theAdapter);
@@ -155,5 +184,45 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
             }
         }.execute(null, null, null);
 
+    }
+
+    public void sendFriendsRequests() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+            ClientMessage clientRequestMessage = new ClientMessage();
+            clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.REQUEST_FRIENDSHIP_FB);
+            clientRequestMessage.setFacebookIdsList(getIdsFromSelectedFriends());
+            String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
+            clientRequestMessage.setMessageId(msgId);
+            setPendingClientMessage(clientRequestMessage);
+
+
+//        createRegId();
+    }
+
+    private List<String> getIdsFromSelectedFriends() {
+        List<String> result = new ArrayList<String>();
+        CheckBox checkBox;
+        for (int i = 0; i < theListView.getCount(); i++) {
+            checkBox = (CheckBox) theListView.getChildAt(i).findViewById(R.id.checkbox_add_friends);
+            if(checkBox.isChecked()) {
+                result.add(((User)theAdapter.getItem(i)).getFacebookId());
+            }
+        }return result;
+    }
+
+    @Override
+    protected void treatValidMessage(ServerMessage serverMessage) {
+
+        if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
+            Intent intent = new Intent(AddFriendsFromFBActivity.this, EventsActivity.class);
+            startActivity(intent);
+        }else if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_ERROR){
+            System.out.println("Reply ERROR from adding friends: "+serverMessage.getMessageError());
+        }
+    }
+
+    public AddFriendsAdapter getTheAdapter() {
+        return theAdapter;
     }
 }

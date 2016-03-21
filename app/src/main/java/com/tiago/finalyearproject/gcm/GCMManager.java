@@ -9,10 +9,11 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.tiago.finalyearproject.Constants;
 
+import org.json.simple.JSONValue;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.json.simple.JSONValue;
 
 /**
  * Sample Smack implementation of a client for GCM Cloudpublic GCMManager() {

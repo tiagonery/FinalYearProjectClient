@@ -5,12 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,11 +21,16 @@ import java.util.List;
  */
 
 // We can create custom adapters
-class MyAdapter extends ArrayAdapter<User> {
+class AddFriendsAdapter extends ArrayAdapter<User> {
 
-    public MyAdapter(Context context, List<User> users){
+
+    CheckBox[] checkBoxArray;
+
+    public AddFriendsAdapter(Context context, List<User> users){
 
         super(context, R.layout.row_layout, users);
+        checkBoxArray = new CheckBox[users.size()];
+
 
     }
 
@@ -44,8 +52,29 @@ class MyAdapter extends ArrayAdapter<User> {
         // loaded into and true or false if we are loading into a parent view.
         View theView = theInflater.inflate(R.layout.row_layout, parent, false);
 
+
+
         // We retrieve the text from the array
         User user = getItem(position);
+
+
+        CheckBox cBox = (CheckBox) theView.findViewById(R.id.checkbox_add_friends);
+        cBox.setTag(user.getFacebookId()); // set the tag so we can identify the correct row in the listener
+        cBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        cBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+
+        }); // set the listener
+
+        checkBoxArray[position]=cBox;
 
         // Get the TextView we want to edit
         TextView theTextView = (TextView) theView.findViewById(R.id.friendNameTextView);
@@ -60,6 +89,12 @@ class MyAdapter extends ArrayAdapter<User> {
         theImageView.setImageBitmap(user.getProfilePicture());
 
         return theView;
+    }
+
+    public CheckBox[] getCheckBoxArray() {
+        return checkBoxArray;
+    }
+
+
 
     }
-}

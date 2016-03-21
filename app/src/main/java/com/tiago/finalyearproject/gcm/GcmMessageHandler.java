@@ -1,10 +1,5 @@
 package com.tiago.finalyearproject.gcm;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -18,25 +13,35 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.analytics.j;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.internal.js;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tiago.finalyearproject.Constants;
 import com.tiago.finalyearproject.Constants.EventbusMessageType;
 import com.tiago.finalyearproject.Constants.State;
 import com.tiago.finalyearproject.MainActivity;
-import com.tiago.finalyearproject.R;
+import com.tiago.finalyearproject.gcm.ServerMessage.ServerContentTypeKey;
+import com.tiago.finalyearproject.gcm.ServerMessage.ServerMessageType;
 import com.tiago.finalyearproject.model.Core;
 import com.tiago.finalyearproject.model.User;
 
-import de.greenrobot.event.EventBus;
-
-import android.widget.Toast;
-
+import org.json.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 
-import com.tiago.finalyearproject.gcm.ServerMessage.*;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import bolts.Task;
+import de.greenrobot.event.EventBus;
+
 
 /**
  * Created by Tiago on 18/02/2016.
@@ -64,6 +69,7 @@ public class GcmMessageHandler extends IntentService {
         if (serverMessage.getServerMessageType() != null) {
 
             Core core = Core.getInstance();
+            core.notifyReplySuccesfull(serverMessage);
 
                 switch (serverMessage.getServerMessageType()) {
                     case REPLY_SUCCES:
@@ -94,18 +100,20 @@ public class GcmMessageHandler extends IntentService {
      *
      */
     private ServerMessage getMessage(Map<String, Object> jsonObject) {
-        String from = jsonObject.get("from").toString();
+//        String from = jsonObject.get("from").toString();
 
         // PackageName of the application that sent this message.
-        ServerMessageType category = (ServerMessageType) jsonObject.get("message_type");
+//        ServerMessageType category = (ServerMessageType) jsonObject.get("message_type");
 
         // unique id of this message
-        String messageId = (String) jsonObject.get("message_id");
+//        String messageId = (String) jsonObject.get("message_id");
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> payload = (Map<String, Object>) jsonObject.get("data");
+//        @SuppressWarnings("unchecked")
+//        Map<String, Object> payload = (Map<String, Object>) jsonObject.get("data");
 
-        ServerMessage msg = new ServerMessage(from, category, messageId, payload);
+        ServerMessageType serverMessageType = ServerMessageType.valueOf((String) jsonObject.get(ServerContentTypeKey.MESSAGE_TYPE.name()));
+
+        ServerMessage msg = new ServerMessage(serverMessageType, jsonObject);
 
         return msg;
     }
@@ -151,7 +159,7 @@ public class GcmMessageHandler extends IntentService {
                     // If it's a regular GCM message, do some work.
                 } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                     // Post notification of received message.
-                    String msg = extras.getString("Message");
+                    String msg = extras.getString("data");
                     if (TextUtils.isEmpty(msg)) {
                         msg = "empty message";
                     }else{
@@ -225,12 +233,12 @@ public class GcmMessageHandler extends IntentService {
                 try {
                     String regid = gcm.register(Constants.PROJECT_ID);
                     Log.v("gcmandroidtiago", "device registered: " + regid);
-                    msg.setId(regid);
+//                    msg.setId(regid);
                     // Persist the regID - no need to register again.
                     storeRegistrationId(regid);
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constants.KEY_EVENT_TYPE, EventbusMessageType.REGISTRATION_SUCCEEDED.ordinal());
-//                    bundle.putString(Constants.KEY_REG_ID, regid);
+                    bundle.putString(Constants.KEY_REG_ID, regid);
                     EventBus.getDefault().post(bundle);
                     send(gcm, msg, msgId);
                 } catch (IOException ex) {
@@ -271,29 +279,62 @@ public class GcmMessageHandler extends IntentService {
     }
 
 
-    public String sendMessageToServer(ClientMessage msg) throws IOException {
-        String msgId = String.valueOf(System.currentTimeMillis());
-        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getContext());
-        if (msg.getCategory() == ClientMessage.ClientMessageType.CREATE_USER) {
+    public String sendMessageToServer(final ClientMessage msg) throws IOException {
+        final String msgId = String.valueOf(System.currentTimeMillis());
+        final GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getContext());
+        if (msg.getMessageType() == ClientMessage.ClientMessageType.CREATE_USER) {
             register(gcm, msg, msgId);
 //            GCMManager gcmManager = new GCMManager(getContext());
 //            gcmManager.createRegId();
         }else{
-            send(gcm, msg, msgId);
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... params) {
+                    try {
+                        send(gcm, msg, msgId);
+                    } catch (IOException ex) {
+                        Log.e("gcmandroidtiago", "Send failed", ex);
+                    }
+                    return "";
+                }
+                @Override
+                protected void onPostExecute(String msg) {
+//                etRegId.setText(msg + "\n");
+                }
+            }.execute(null, null, null);
+
         }
         return msgId;
     }
 
+
     private void send(GoogleCloudMessaging gcm, ClientMessage message, String msgId) throws IOException {
         Bundle data = new Bundle();
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("message_type", message.getCategory());
-        for (String key : message.getContent().keySet()) {
-            map.put(key, message.getContent().get(key));
-        }
-        data.putString("json", JSONValue.toJSONString(map));
+        String json_request=JSONValue.toJSONString(message.getContent());
+        data.putString("json", json_request);
         gcm.send(Constants.PROJECT_ID + "@gcm.googleapis.com", msgId, Constants.GCM_DEFAULT_TTL, data);
     }
+
+    private String transformMessageInJson(ClientMessage message) {
+        ClientMessage.ClientMessageType messageType = message.getMessageType();
+        Gson gson = new Gson();
+        String json;
+
+        Type type1 = new TypeToken<ClientMessage.ClientMessageType>() {}.getType();
+        json = gson.toJson(message.getMessageType(), type1);
+
+        if (messageType == ClientMessage.ClientMessageType.CREATE_USER) {
+            Type type = new TypeToken<User>() {
+            }.getType();
+            json = json + gson.toJson(message.getUserCreated(), type);
+        }
+
+        return json;
+
+    }
+
+
+
 
     private String sendRegistrationIdToBackend(GoogleCloudMessaging gcm, String regId) {
         String msgId = String.valueOf(System.currentTimeMillis());
