@@ -12,10 +12,9 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
-import com.tiago.finalyearproject.model.Address;
 import com.tiago.finalyearproject.model.Core;
-import com.tiago.finalyearproject.view.AddFriendsFromFBActivity;
 import com.tiago.finalyearproject.view.AppAbstractFragmentActivity;
+import com.tiago.finalyearproject.view.AppActivity;
 import com.tiago.finalyearproject.view.LoginActivity;
 
 public class MainActivity extends AppAbstractFragmentActivity implements View.OnClickListener {
@@ -30,7 +29,9 @@ public class MainActivity extends AppAbstractFragmentActivity implements View.On
         setContentView(R.layout.activity_main);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+
+        //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
 
@@ -116,7 +117,7 @@ public class MainActivity extends AppAbstractFragmentActivity implements View.On
             startActivity(intent);
 
         }else{
-            Intent intent = new Intent(MainActivity.this, AddFriendsFromFBActivity.class);
+            Intent intent = new Intent(MainActivity.this, AppActivity.class);
             startActivity(intent);
         }
 

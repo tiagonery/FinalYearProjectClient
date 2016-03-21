@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -70,7 +69,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
 //        ListAdapter theAdapter = new ArrayAdapter<User>(this, R.layout.row_layout, R.id.textView1, friendsFromFB);
 
 
-//        setContentView(R.layout.events_activity);
+//        setContentView(R.layout.app_activity);
 //        Profile profile = Profile.getCurrentProfile();
 //        TextView mTextDetails = (TextView) findViewById(R.id.textView1);
 //        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -215,7 +214,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
     protected void treatValidMessage(ServerMessage serverMessage) {
 
         if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
-            Intent intent = new Intent(AddFriendsFromFBActivity.this, EventsActivity.class);
+            Intent intent = new Intent(AddFriendsFromFBActivity.this, AppActivity.class);
             startActivity(intent);
         }else if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_ERROR){
             System.out.println("Reply ERROR from adding friends: "+serverMessage.getMessageError());
