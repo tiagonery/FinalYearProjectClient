@@ -34,4 +34,5 @@ dependencies {
     compile files('libs/json-simple.jar')
     compile files('libs/com.fasterxml.jackson.core.jar')
     compile files('libs/gson-2.2.2.jar')
+    compile files('libs/jackson-annotations-2.1.2.jar')
 }

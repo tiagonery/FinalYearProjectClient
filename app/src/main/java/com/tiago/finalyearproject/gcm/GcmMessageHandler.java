@@ -15,7 +15,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationConfig;
 import com.google.android.gms.analytics.j;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
@@ -26,7 +32,10 @@ import com.tiago.finalyearproject.Constants.State;
 import com.tiago.finalyearproject.MainActivity;
 import com.tiago.finalyearproject.gcm.ServerMessage.ServerContentTypeKey;
 import com.tiago.finalyearproject.gcm.ServerMessage.ServerMessageType;
+import com.tiago.finalyearproject.model.Address;
+import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.Core;
+import com.tiago.finalyearproject.model.Post;
 import com.tiago.finalyearproject.model.User;
 
 import org.json.JSONObject;
@@ -35,6 +44,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +109,7 @@ public class GcmMessageHandler extends IntentService {
     /**
      *
      */
-    private ServerMessage getMessage(Map<String, Object> jsonObject) {
+    private ServerMessage getMessage(Map<String, String> jsonObject) {
 //        String from = jsonObject.get("from").toString();
 
         // PackageName of the application that sent this message.
@@ -164,7 +174,7 @@ public class GcmMessageHandler extends IntentService {
                         msg = "empty message";
                     }else{
                         try {
-                            Map<String, Object> jsonMap = (Map<String, Object>) JSONValue.parseWithException(msg);
+                            Map<String, String> jsonMap = (Map<String, String>) JSONValue.parseWithException(msg);
                             ServerMessage serverMessage = getMessage(jsonMap);
                             handleIncomingDataMessage(serverMessage);
 
@@ -282,6 +292,50 @@ public class GcmMessageHandler extends IntentService {
     public String sendMessageToServer(final ClientMessage msg) throws IOException {
         final String msgId = String.valueOf(System.currentTimeMillis());
         final GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getContext());
+
+//        AppEvent appEvent = new AppEvent();
+//        Address address = new Address("aaa","aaa","aaa","aaa","aaa",555,"aaa");
+//        appEvent.setAddress(address);
+//        appEvent.setName("NAME");
+
+//        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+//
+//        Map<String,Object> map = msg.getContent();
+//        for (Map.Entry<String, Object> entry : map.entrySet()) {
+//            String key = entry.getKey();
+//            Object object = entry.getValue();
+//            if (object instanceof User){
+//                String json = ow.writeValueAsString(user);
+//
+//            }else if (object instanceof User){
+//
+//            }
+//        }
+
+//        User user = (User) msg.getContent().get(ClientMessage.ClientContentTypeKey.USER_CREATED.name());
+
+//        if (user != null) {
+//            user.setUserStatus(User.UserStatus.ON);
+//
+//            List<User> list = new ArrayList<User>();
+//            list.add(user);
+//
+//
+//            String json = ow.writeValueAsString(list);
+////        String json = ow.writeValueAsString(msg.getContent());
+//
+//            ObjectMapper mapper = new ObjectMapper();
+//            mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+////            Map<String, User> map;
+//            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//            list = mapper.readValue(json, new TypeReference<ArrayList<User>>(){});
+//
+//            System.out.println(list.get(0).getName());
+//
+//            user.getUserStatus();
+//        User user = mapper.readValue(string, User.class);
+//        }
+
         if (msg.getMessageType() == ClientMessage.ClientMessageType.CREATE_USER) {
             register(gcm, msg, msgId);
 //            GCMManager gcmManager = new GCMManager(getContext());
@@ -309,29 +363,32 @@ public class GcmMessageHandler extends IntentService {
 
 
     private void send(GoogleCloudMessaging gcm, ClientMessage message, String msgId) throws IOException {
+
+
+
         Bundle data = new Bundle();
         String json_request=JSONValue.toJSONString(message.getContent());
         data.putString("json", json_request);
         gcm.send(Constants.PROJECT_ID + "@gcm.googleapis.com", msgId, Constants.GCM_DEFAULT_TTL, data);
     }
 
-    private String transformMessageInJson(ClientMessage message) {
-        ClientMessage.ClientMessageType messageType = message.getMessageType();
-        Gson gson = new Gson();
-        String json;
-
-        Type type1 = new TypeToken<ClientMessage.ClientMessageType>() {}.getType();
-        json = gson.toJson(message.getMessageType(), type1);
-
-        if (messageType == ClientMessage.ClientMessageType.CREATE_USER) {
-            Type type = new TypeToken<User>() {
-            }.getType();
-            json = json + gson.toJson(message.getUserCreated(), type);
-        }
-
-        return json;
-
-    }
+//    private String transformMessageInJson(ClientMessage message) {
+//        ClientMessage.ClientMessageType messageType = message.getMessageType();
+//        Gson gson = new Gson();
+//        String json;
+//
+//        Type type1 = new TypeToken<ClientMessage.ClientMessageType>() {}.getType();
+//        json = gson.toJson(message.getMessageType(), type1);
+//
+//        if (messageType == ClientMessage.ClientMessageType.CREATE_USER) {
+//            Type type = new TypeToken<User>() {
+//            }.getType();
+//            json = json + gson.toJson(message.getUserCreated(), type);
+//        }
+//
+//        return json;
+//
+//    }
 
 
 

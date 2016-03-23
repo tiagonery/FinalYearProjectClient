@@ -32,10 +32,8 @@ public class LoginActivity extends AppAbstractFragmentActivity {
 
             ClientMessage clientRequestMessage = new ClientMessage();
             clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.CREATE_USER);
-//            User user= new User(null,profile.getId(),profile.getFirstName(),profile.getLastName());
-            clientRequestMessage.setFacebookId(profile.getId());
-            clientRequestMessage.setUserName(profile.getFirstName());
-            clientRequestMessage.setUserSurname(profile.getLastName());
+            User user= new User(null,profile.getId(),profile.getFirstName(),profile.getLastName());
+            clientRequestMessage.setUserCreated(user);
             String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
             clientRequestMessage.setMessageId(msgId);
             setPendingClientMessage(clientRequestMessage);

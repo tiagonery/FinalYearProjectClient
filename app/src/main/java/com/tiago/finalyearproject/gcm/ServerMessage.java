@@ -15,8 +15,11 @@
  */
 package com.tiago.finalyearproject.gcm;
 
+import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -29,7 +32,6 @@ public class ServerMessage extends AbstractMessage {
     public ServerMessage() {
 
     }
-
 
 
 
@@ -48,7 +50,14 @@ public class ServerMessage extends AbstractMessage {
         MESSAGE_REPLIED_ID,
         ERROR_MESSAGE,
         FRIENDSHIP_REQUEST_FROM,
-        FRIENDSHIP_REQUEST_ACCEPTED_FROM;
+        FRIENDSHIP_REQUEST_ACCEPTED_FROM,
+        EVENTS_LIST,
+        EVENT_ID,
+        EVENT_NAME,
+        EVENT_DATE,
+        EVENT_CATEGORY,
+        EVENT_LOCATION,
+        USER_EVENT_STATUS;
 
     }
 
@@ -63,21 +72,7 @@ public class ServerMessage extends AbstractMessage {
      */
     private ServerMessageType serverMessageType;
 
-    public ServerMessage(String to, ServerMessageType serverMessageType, String messageId, Map<String, Object> content) {
-        super(messageId, content);
-        this.to = to;
-        setServerMessageType(serverMessageType);
-    }
 
-    /**
-     * @param to2
-     * @param notifyFriendshipRequestReceived
-     */
-    public ServerMessage(String to2, ServerMessageType notifyFriendshipRequestReceived) {
-        this.to = to;
-        setServerMessageType(serverMessageType);
-
-    }
 
     /**
      * @param to
@@ -87,13 +82,9 @@ public class ServerMessage extends AbstractMessage {
         this.to = to;
     }
 
-    /**
-     * @param messageType
-     * @param content
-     */
-    public ServerMessage(ServerMessageType messageType, Map <String, Object> content) {
-        this.content = content;
-        serverMessageType = messageType;
+    public ServerMessage(ServerMessageType serverMessageType, Map<String, String> jsonObject) {
+        this.serverMessageType = serverMessageType;
+        this.content = jsonObject;
     }
 
     /**
@@ -128,10 +119,6 @@ public class ServerMessage extends AbstractMessage {
     }
 
 
-    public void setServerMessageType(ServerMessageType serverMessageType) {
-        this.serverMessageType = serverMessageType;
-        getContent().put(ServerContentTypeKey.MESSAGE_TYPE.name(),serverMessageType);
-    }
 
     /**
      * @param string
@@ -157,5 +144,21 @@ public class ServerMessage extends AbstractMessage {
     }
 
 
+
+    public List<AppEvent> getEventsList() {
+        List<AppEvent> list = new ArrayList<AppEvent>();
+//        List<Map<String, Object>> listOfMaps = (( List<Map<String, Object>>) getContent().get(ServerContentTypeKey.EVENTS_LIST.name()));
+//        for (Map<String, Object> eventMap: listOfMaps) {
+//            AppEvent event = new AppEvent();
+//            event.setEventId((String) eventMap.get(ServerContentTypeKey.EVENT_ID.name()));
+//            event.setName((String) eventMap.get(ServerContentTypeKey.EVENT_NAME.name()));
+////            event.setEventDateTimeStart((String) eventMap.get(ServerContentTypeKey.EVENT_DATE.name()));
+//            event.setEventType(AppEvent.EventType.valueOf((String) eventMap.get(ServerContentTypeKey.EVENT_CATEGORY.name())));
+////            event.setAddress((String)eventMap.get(ServerContentTypeKey.EVENT_LOCATION.name()));
+//            list.add(event);
+//        }
+//
+        return list;
+    }
 
 }

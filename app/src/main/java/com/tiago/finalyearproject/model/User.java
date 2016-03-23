@@ -5,6 +5,9 @@ package com.tiago.finalyearproject.model;
 
 import android.graphics.Bitmap;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
 
@@ -13,6 +16,7 @@ import java.io.Serializable;
  * @author Tiago
  *
  */
+@JsonIgnoreProperties(value = { "profilePicture" })
 public class User implements Serializable{
 
 
@@ -23,7 +27,8 @@ public class User implements Serializable{
 	private String facebookId;
 	private UserStatus userStatus;
 	private int age;
-	private Bitmap profilePicture;
+	@JsonIgnore
+	private transient Bitmap profilePicture;
 
 
 
@@ -64,7 +69,7 @@ public class User implements Serializable{
 		setSurname(surname);
 	}
 
-	public String getFullName() {
+	public String generateFullName() {
 		return getName()+" "+getSurname();
 	}
 	public String getUserName() {
@@ -154,5 +159,12 @@ public class User implements Serializable{
 		this.facebookId = facebookId;
 	}
 
+
+	@JsonIgnore
+	public User getUserWithoutPrivInfo() {
+		User result = this;
+		result.setId(null);
+		return result;
+	}
 	
 }

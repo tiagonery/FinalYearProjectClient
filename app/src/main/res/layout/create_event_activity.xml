@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+        <TextView
+            android:id="@+id/enter_event_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name: "
+            android:layout_alignBaseline="@+id/enter_event_name_edit_text"
+            android:layout_alignBottom="@+id/enter_event_name_edit_text"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+        <EditText android:id="@+id/enter_event_name_edit_text"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="Event Name"
+                  android:layout_alignParentTop="true"
+                  android:layout_alignLeft="@+id/enter_location_edit_text"
+                  android:layout_alignStart="@+id/enter_location_edit_text"/>
+
+        <TextView
+            android:id="@+id/enter_location_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location :"
+            android:layout_alignBaseline="@+id/enter_location_edit_text"
+            android:layout_alignBottom="@+id/enter_location_edit_text"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <EditText android:id="@+id/enter_location_edit_text"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="Place/Address"
+                  android:layout_below="@+id/enter_event_name_edit_text"
+                  android:layout_toRightOf="@id/enter_location_text_view"/>
+
+        <TextView
+            android:id="@+id/enter_event_activity_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity :"
+            android:layout_alignBaseline="@+id/activities_spinner"
+            android:layout_alignBottom="@+id/activities_spinner"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+        <Spinner
+            android:id="@+id/activities_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_location_edit_text"
+            android:layout_alignLeft="@+id/enter_location_edit_text"
+            android:layout_alignStart="@+id/enter_location_edit_text"/>
+
+        <TextView
+            android:id="@+id/enter_date_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date :"
+            android:layout_alignBaseline="@+id/enter_date_edit_text"
+            android:layout_alignBottom="@+id/enter_date_edit_text"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <EditText android:id="@+id/enter_date_edit_text"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:hint="DD/MM/YYYY"
+                  android:layout_below="@+id/activities_spinner"
+                  android:layout_alignLeft="@+id/activities_spinner"
+                  android:layout_alignStart="@+id/activities_spinner"
+                  android:layout_toLeftOf="@+id/select_date_button"
+                  android:layout_toStartOf="@+id/select_date_button"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SELECT Date"
+            android:id="@+id/select_date_button"
+            android:layout_below="@+id/activities_spinner"
+            android:layout_alignRight="@+id/activities_spinner"
+            android:layout_alignEnd="@+id/activities_spinner"/>
+
+    <TextView
+            android:id="@+id/enter_time_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time :"
+            android:layout_alignBaseline="@+id/enter_time_edit_text"
+            android:layout_alignBottom="@+id/enter_time_edit_text"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+        <EditText android:id="@+id/enter_time_edit_text"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:hint="00:00"
+                  android:layout_below="@+id/select_date_button"
+                  android:layout_alignLeft="@+id/enter_date_edit_text"
+                  android:layout_alignStart="@+id/enter_date_edit_text"
+                  android:layout_toLeftOf="@+id/select_date_button"
+                  android:layout_toStartOf="@+id/select_date_button"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SELECT Time"
+            android:id="@+id/select_time_button"
+            android:layout_alignTop="@+id/enter_time_edit_text"
+            android:layout_toRightOf="@+id/enter_time_edit_text"
+            android:layout_toEndOf="@+id/enter_time_edit_text"/>
+
+
+
+    <TextView
+        android:id="@+id/invite_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Invite :"
+        android:layout_below="@+id/enter_time_edit_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <ScrollView
+        android:id="@+id/eventsScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="vertical"
+        android:layout_above="@+id/create_event_button"
+        android:layout_below="@+id/invite_text_view">
+        <ListView
+            android:id="@+id/eventsListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create"
+        android:id="@+id/create_event_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/activities_spinner"
+        android:layout_alignEnd="@+id/activities_spinner"/>
+
+</RelativeLayout>

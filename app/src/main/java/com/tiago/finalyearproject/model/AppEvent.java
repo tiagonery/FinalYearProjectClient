@@ -3,6 +3,7 @@
  */
 package com.tiago.finalyearproject.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -10,12 +11,12 @@ import java.util.List;
  * @author Tiago
  *
  */
-public class AppEvent {
+public class AppEvent implements Serializable{
 
 
-	private int eventId;
+	private String eventId;
 	private String name;
-	private Timestamp eventDateTimeStart;
+	private String eventDateTimeStart;
 	private Timestamp eventDateTimeEnd;
 	private Address address;
 	private User eventOwner;
@@ -23,21 +24,39 @@ public class AppEvent {
 	private List<User> invitedUsers;
 	private EventType eventType;
 	private Venue venue;
-	
-	
+	private EventActivity activity;
+	private UserEvent.UserEventState state;
+
+	public AppEvent(String name, EventActivity activity , UserEvent.UserEventState state) {
+		this.name = name;
+		this.activity = activity;
+		this.state =state;
+	}
+
+
 	public enum EventType{
 		PUBLIC,
 		PUBLIC_FOR_FRIENDS,
 		PRIVATE;
 	}
 
+	public enum EventActivity{
+		DRINKS,
+		FOOD,
+		SPORTS,
+		BUSINESS,
+		FILM,
+		CLUB,
+		OTHER;
+	}
 
-	public int getEventId() {
+
+	public String getEventId() {
 		return eventId;
 	}
 
 
-	public void setEventId(int eventId) {
+	public void setEventId(String eventId) {
 		this.eventId = eventId;
 	}
 
@@ -52,12 +71,12 @@ public class AppEvent {
 	}
 
 
-	public Timestamp getEventDateTimeStart() {
+	public String getEventDateTimeStart() {
 		return eventDateTimeStart;
 	}
 
 
-	public void setEventDateTimeStart(Timestamp eventDateTimeStart) {
+	public void setEventDateTimeStart(String eventDateTimeStart) {
 		this.eventDateTimeStart = eventDateTimeStart;
 	}
 
@@ -129,6 +148,23 @@ public class AppEvent {
 
 	public void setVenue(Venue venue) {
 		this.venue = venue;
+	}
+
+	public EventActivity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(EventActivity activity) {
+		this.activity = activity;
+	}
+
+
+	public UserEvent.UserEventState getState() {
+		return state;
+	}
+
+	public void setState(UserEvent.UserEventState state) {
+		this.state = state;
 	}
 
 }

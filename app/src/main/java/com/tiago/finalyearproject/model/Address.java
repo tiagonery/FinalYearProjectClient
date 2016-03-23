@@ -4,11 +4,13 @@
 package com.tiago.finalyearproject.model;
 
 
+import java.io.Serializable;
+
 /**
  * @author Tiago
  *
  */
-public class Address {
+public class Address implements Serializable{
 
 
 	private String postCode;

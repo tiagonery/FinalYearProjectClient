@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +27,7 @@ class AddFriendsAdapter extends ArrayAdapter<User> {
 
     public AddFriendsAdapter(Context context, List<User> users){
 
-        super(context, R.layout.row_layout, users);
+        super(context, R.layout.add_friends_row_layout, users);
         checkBoxArray = new CheckBox[users.size()];
 
 
@@ -50,7 +49,7 @@ class AddFriendsAdapter extends ArrayAdapter<User> {
 
         // inflate takes the resource to load, the parent that the resource may be
         // loaded into and true or false if we are loading into a parent view.
-        View theView = theInflater.inflate(R.layout.row_layout, parent, false);
+        View theView = theInflater.inflate(R.layout.add_friends_row_layout, parent, false);
 
 
 
@@ -80,7 +79,7 @@ class AddFriendsAdapter extends ArrayAdapter<User> {
         TextView theTextView = (TextView) theView.findViewById(R.id.friendNameTextView);
 
         // Put the next TV Show into the TextView
-        theTextView.setText(user.getFullName());
+        theTextView.setText(user.generateFullName());
 
         // Get the ImageView in the layout
         ImageView theImageView = (ImageView) theView.findViewById(R.id.friendPictureImageView);

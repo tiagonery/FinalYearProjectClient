@@ -13,6 +13,7 @@ import com.facebook.ProfileTracker;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.Core;
+import com.tiago.finalyearproject.view.AddFriendsFromFBActivity;
 import com.tiago.finalyearproject.view.AppAbstractFragmentActivity;
 import com.tiago.finalyearproject.view.AppActivity;
 import com.tiago.finalyearproject.view.LoginActivity;
@@ -29,6 +30,7 @@ public class MainActivity extends AppAbstractFragmentActivity implements View.On
         setContentView(R.layout.activity_main);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
+
 
 
         //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

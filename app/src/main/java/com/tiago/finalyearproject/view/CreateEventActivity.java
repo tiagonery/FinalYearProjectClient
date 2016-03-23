@@ -1,22 +1,18 @@
 package com.tiago.finalyearproject.view;
 
 
-import android.support.v7.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 
 import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
-import com.tiago.finalyearproject.model.AppEvent;
-
-import java.util.List;
 
 /**
  * Created by Tiago on 14/03/2016.
  */
-public class AppActivity extends AppAbstractFragmentActivity implements ActionBar.TabListener {
+public class CreateEventActivity extends AppAbstractFragmentActivity implements ActionBar.TabListener {
 
 
     private ViewPager viewPager;

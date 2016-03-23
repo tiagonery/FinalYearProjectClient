@@ -66,7 +66,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
 
         getFriendsFromFacebook();
 
-//        ListAdapter theAdapter = new ArrayAdapter<User>(this, R.layout.row_layout, R.id.textView1, friendsFromFB);
+//        ListAdapter theAdapter = new ArrayAdapter<User>(this, R.layout.add_friends_row_layout, R.id.textView1, friendsFromFB);
 
 
 //        setContentView(R.layout.app_activity);
