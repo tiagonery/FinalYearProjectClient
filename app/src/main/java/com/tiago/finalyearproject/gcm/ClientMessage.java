@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.Friendship;
 import com.tiago.finalyearproject.model.User;
 
@@ -67,7 +68,7 @@ public class ClientMessage extends AbstractMessage{
 		REG_ID,
 		FB_ID,
 		INVITE_ID,
-		EVENT_ID,
+		EVENT,
 		FRIENDSHIP,
 		USER_CREATED,
 		FB_IDS_LIST;
@@ -110,6 +111,11 @@ public class ClientMessage extends AbstractMessage{
 	public void setMessageType(ClientMessageType messageType) {
 		this.messageType = messageType;
 		getContent().put(ClientContentTypeKey.MESSAGE_TYPE.name(),messageType.name());
+	}
+
+	public void setEvent(AppEvent event) {
+		String string = getJsonValueOf(event);
+		getContent().put(ClientContentTypeKey.EVENT.name(), string);
 	}
 
 

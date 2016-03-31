@@ -1,9 +1,11 @@
 package com.tiago.finalyearproject.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Tiago on 22/03/2016.
  */
-public class UserEvent {
+public class UserEvent implements Serializable{
 
     private String userId;
     private String eventId;
@@ -13,7 +15,8 @@ public class UserEvent {
         INVITED(1),
         GOING(2),
         NOT_GOING(3),
-        IDLE(4);
+        IDLE(4),
+        OWNER(5);
 
 
         private final int num;

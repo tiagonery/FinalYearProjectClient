@@ -23,7 +23,7 @@ public class User implements Serializable{
 	private String username;
 	private String name;
 	private String surname;
-	private String id;
+	private String regId;
 	private String facebookId;
 	private UserStatus userStatus;
 	private int age;
@@ -49,21 +49,21 @@ public class User implements Serializable{
 	}
 
 
-	public User(String id) {
-		this.id = id;
+	public User(String regId) {
+		this.regId = regId;
 	}
 
 	public User() {
 	}
 
 	/**
-	 * @param id
+	 * @param regId
 	 * @param facebookId
 	 * @param name
 	 * @param surname
 	 */
-	public User(String id, String facebookId, String name, String surname) {
-		this(id);
+	public User(String regId, String facebookId, String name, String surname) {
+		this(regId);
 		setFacebookId(facebookId);
 		setName(name);
 		setSurname(surname);
@@ -96,13 +96,13 @@ public class User implements Serializable{
 	}
 
 
-	public String getId() {
-		return id;
+	public String getRegId() {
+		return regId;
 	}
 
 
-	public void setId(String id) {
-		this.id = id;
+	public void setRegId(String regId) {
+		this.regId = regId;
 	}
 
 
@@ -163,7 +163,7 @@ public class User implements Serializable{
 	@JsonIgnore
 	public User getUserWithoutPrivInfo() {
 		User result = this;
-		result.setId(null);
+		result.setRegId(null);
 		return result;
 	}
 	

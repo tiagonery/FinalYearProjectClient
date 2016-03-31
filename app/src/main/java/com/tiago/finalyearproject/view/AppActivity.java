@@ -65,6 +65,8 @@ public class AppActivity extends AppAbstractFragmentActivity implements ActionBa
             public void onPageScrollStateChanged(int arg0) {
             }
         });
+
+        viewPager.setCurrentItem(1);
     }
 
     @Override
@@ -75,8 +77,8 @@ public class AppActivity extends AppAbstractFragmentActivity implements ActionBa
             switch (clientMessageType) {
                 case REQUEST_EVENTS:
                     if(serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES){
-//                        List<AppEvent> eventsList = ServerMessage.getEventsList();
-//                                ((EventsFragment) mAdapter.getItem(1)).createEventsListView();
+                        List<AppEvent> eventsList = serverMessage.getEventsList();
+                        ((EventsFragment) mAdapter.getItem(1)).createEventsListView(eventsList);
                     }else{
 
                 }

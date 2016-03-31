@@ -15,9 +15,13 @@
  */
 package com.tiago.finalyearproject.gcm;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.User;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +44,8 @@ public class ServerMessage extends AbstractMessage {
         REPLY_SUCCES,
         REPLY_ERROR,
         NOTIFY_FRIENDSHIP_REQUEST_RECEIVED,
-        NOTIFY_INVITATION_RECEIVED;
+        NOTIFY_INVITATION_RECEIVED,
+        NOTIFY_NEW_EVENTAVAILABLE;;
 
     }
 
@@ -52,12 +57,7 @@ public class ServerMessage extends AbstractMessage {
         FRIENDSHIP_REQUEST_FROM,
         FRIENDSHIP_REQUEST_ACCEPTED_FROM,
         EVENTS_LIST,
-        EVENT_ID,
-        EVENT_NAME,
-        EVENT_DATE,
-        EVENT_CATEGORY,
-        EVENT_LOCATION,
-        USER_EVENT_STATUS;
+        EVENT;
 
     }
 
@@ -145,20 +145,33 @@ public class ServerMessage extends AbstractMessage {
 
 
 
+
+
+
+    public AppEvent getEvent() {
+        String json = (String) getContent().get(ServerContentTypeKey.EVENT.name());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+        AppEvent event = null;
+        try {
+            event = mapper.readValue(json, AppEvent.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return event;
+    }
+
     public List<AppEvent> getEventsList() {
-        List<AppEvent> list = new ArrayList<AppEvent>();
-//        List<Map<String, Object>> listOfMaps = (( List<Map<String, Object>>) getContent().get(ServerContentTypeKey.EVENTS_LIST.name()));
-//        for (Map<String, Object> eventMap: listOfMaps) {
-//            AppEvent event = new AppEvent();
-//            event.setEventId((String) eventMap.get(ServerContentTypeKey.EVENT_ID.name()));
-//            event.setName((String) eventMap.get(ServerContentTypeKey.EVENT_NAME.name()));
-////            event.setEventDateTimeStart((String) eventMap.get(ServerContentTypeKey.EVENT_DATE.name()));
-//            event.setEventType(AppEvent.EventType.valueOf((String) eventMap.get(ServerContentTypeKey.EVENT_CATEGORY.name())));
-////            event.setAddress((String)eventMap.get(ServerContentTypeKey.EVENT_LOCATION.name()));
-//            list.add(event);
-//        }
-//
-        return list;
+        String json = (String) getContent().get(ServerContentTypeKey.EVENTS_LIST.name());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+        List<AppEvent> eventsList = null;
+        try {
+            eventsList = mapper.readValue(json, new TypeReference<List<AppEvent>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return eventsList;
     }
 
 }

@@ -64,64 +64,132 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>
 
-        <EditText android:id="@+id/enter_date_edit_text"
+        <TextView android:id="@+id/enter_date_edit_text"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:hint="DD/MM/YYYY"
+                  android:textSize="17sp"
                   android:layout_below="@+id/activities_spinner"
                   android:layout_alignLeft="@+id/activities_spinner"
-                  android:layout_alignStart="@+id/activities_spinner"
-                  android:layout_toLeftOf="@+id/select_date_button"
-                  android:layout_toStartOf="@+id/select_date_button"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SELECT Date"
-            android:id="@+id/select_date_button"
-            android:layout_below="@+id/activities_spinner"
-            android:layout_alignRight="@+id/activities_spinner"
-            android:layout_alignEnd="@+id/activities_spinner"/>
+                  android:layout_alignStart="@+id/activities_spinner"/>
 
     <TextView
             android:id="@+id/enter_time_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Time :"
-            android:layout_alignBaseline="@+id/enter_time_edit_text"
-            android:layout_alignBottom="@+id/enter_time_edit_text"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
-        <EditText android:id="@+id/enter_time_edit_text"
+            android:layout_alignTop="@+id/enter_date_text_view"
+            android:layout_toRightOf="@+id/enter_date_edit_text"
+            android:layout_toEndOf="@+id/enter_date_edit_text"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"/>
+        <TextView android:id="@+id/enter_time_edit_text"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+                  android:textSize="17sp"
                   android:hint="00:00"
-                  android:layout_below="@+id/select_date_button"
-                  android:layout_alignLeft="@+id/enter_date_edit_text"
-                  android:layout_alignStart="@+id/enter_date_edit_text"
-                  android:layout_toLeftOf="@+id/select_date_button"
-                  android:layout_toStartOf="@+id/select_date_button"/>
-        <Button
+                  android:layout_alignTop="@+id/enter_date_edit_text"
+                  android:layout_toRightOf="@+id/enter_time_text_view"
+                  android:layout_toEndOf="@+id/enter_time_text_view"/>
+
+
+    <TextView
+        android:id="@+id/visualization_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/visualization_privacy_text"
+        android:layout_alignBaseline="@+id/visualization_settings_radio_group"
+        android:layout_alignBottom="@+id/visualization_settings_radio_group"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/enter_date_edit_text"
+        android:id="@+id/visualization_settings_radio_group"
+        android:layout_alignLeft="@+id/activities_spinner"
+        android:layout_alignStart="@+id/activities_spinner"
+        android:orientation = "horizontal">
+
+        <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SELECT Time"
-            android:id="@+id/select_time_button"
-            android:layout_alignTop="@+id/enter_time_edit_text"
-            android:layout_toRightOf="@+id/enter_time_edit_text"
-            android:layout_toEndOf="@+id/enter_time_edit_text"/>
+            android:text="Invited Friends"
+            android:id="@+id/invited_friends_radio_button"
+            android:layout_below="@+id/enter_date_edit_text"
+            android:tag="INVTED_FRIENDS"
+            android:checked="false"/>
 
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All Friends"
+            android:tag="ALL_FRIENDS"
+            android:id="@+id/all_friends_radio_button"
+            android:checked="false"/>
+    </RadioGroup>
 
+    <TextView
+        android:id="@+id/matching_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Match\nwith:"
+        android:layout_alignBaseline="@+id/matching_settings_radio_group"
+        android:layout_alignBottom="@+id/matching_settings_radio_group"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/visualization_settings_radio_group"
+        android:id="@+id/matching_settings_radio_group"
+        android:layout_alignLeft="@+id/activities_spinner"
+        android:layout_alignStart="@+id/activities_spinner"
+        android:orientation = "horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_alignRight="@+id/activities_spinner"
+        android:layout_alignEnd="@+id/activities_spinner">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No one"
+            android:tag="DISABLED"
+            android:id="@+id/none_radio_button"
+            android:layout_below="@+id/enter_date_edit_text"
+            android:checked="false"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friends"
+            android:tag="ENABLED_FOR_FRIENDS"
+            android:id="@+id/friends_radio_button"
+            android:layout_alignLeft="@+id/all_friends_radio_button"
+            android:layout_alignStart="@+id/all_friends_radio_button"
+            android:checked="false"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anyone"
+            android:tag="ENABLE_PUBLIC"
+            android:id="@+id/anyone_radio_button"
+            android:checked="false"/>
+    </RadioGroup>
 
     <TextView
         android:id="@+id/invite_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Invite :"
-        android:layout_below="@+id/enter_time_edit_text"
+        android:layout_below="@+id/matching_settings_radio_group"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
     <ScrollView
-        android:id="@+id/eventsScrollView"
+        android:id="@+id/invite_friends_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
@@ -129,7 +197,7 @@
         android:layout_above="@+id/create_event_button"
         android:layout_below="@+id/invite_text_view">
         <ListView
-            android:id="@+id/eventsListView"
+            android:id="@+id/invite_friends_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </ScrollView>

@@ -5,4 +5,5 @@
     <string name="facebook_app_id">1046292665421647</string>
     <string name="gcm_project_id">956122336085</string>
     <string name="hangout_button_text">HELP!!!\nI\'m BORED</string>
+    <string name="visualization_privacy_text">Who can\n see :</string>
 </resources>

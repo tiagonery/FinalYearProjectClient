@@ -42,7 +42,7 @@ class AddFriendsAdapter extends ArrayAdapter<User> {
     // A ViewGroup are invisible containers that hold a bunch of views and
     // define their layout properties.
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         // The LayoutInflator puts a layout into the right View
         LayoutInflater theInflater = LayoutInflater.from(getContext());
@@ -68,7 +68,7 @@ class AddFriendsAdapter extends ArrayAdapter<User> {
         cBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                checkBoxArray[position].setChecked(isChecked);
             }
 
         }); // set the listener

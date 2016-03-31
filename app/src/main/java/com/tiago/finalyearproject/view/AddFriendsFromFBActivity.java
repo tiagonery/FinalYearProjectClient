@@ -75,7 +75,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
 //        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 //        String regId = prefs.getString(Constants.KEY_REG_ID, null);
 //
-//        mTextDetails.append(profile.getFirstName() + " " + profile.getLastName() + " " + profile.getId() + " regid: " + regId);
+//        mTextDetails.append(profile.getFirstName() + " " + profile.getLastName() + " " + profile.getRegId() + " regid: " + regId);
 
 
 //        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
@@ -105,7 +105,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
 
         ClientMessage clientRequestMessage = new ClientMessage();
         clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.REQUEST_FRIENDSHIP_FB);
-//            User user= new User(null,profile.getId(),profile.getFirstName(),profile.getLastName());
+//            User user= new User(null,profile.getRegId(),profile.getFirstName(),profile.getLastName());
         clientRequestMessage.setFacebookIdsList(listOfUsersIdsToAdd);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);

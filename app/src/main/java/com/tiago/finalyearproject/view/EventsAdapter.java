@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.Profile;
 import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.UserEvent;
@@ -65,7 +66,8 @@ class EventsAdapter extends ArrayAdapter<AppEvent> {
         // We retrieve the text from the array
         AppEvent event = getItem(position);
 
-        UserEvent.UserEventState state = event.getState();
+        Profile profile = Profile.getCurrentProfile();
+        UserEvent.UserEventState state = event.getCurrentUserEventState(profile.getId());
         if(state == UserEvent.UserEventState.INVITED){
             theView.setBackgroundColor(Color.parseColor("#b3b3ff"));
         }
@@ -77,6 +79,9 @@ class EventsAdapter extends ArrayAdapter<AppEvent> {
         }
         else if(state == UserEvent.UserEventState.NOT_GOING){
             theView.setBackgroundColor(Color.parseColor("#ffb3b3"));
+        }
+        else if(state == UserEvent.UserEventState.OWNER){
+            theView.setBackgroundColor(Color.parseColor("#ffffb3"));
         }
 
         // Get the TextView we want to edit

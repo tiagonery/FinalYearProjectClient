@@ -5,6 +5,7 @@ package com.tiago.finalyearproject.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,30 +15,47 @@ import java.util.List;
 public class AppEvent implements Serializable{
 
 
-	private String eventId;
+	private int eventId;
 	private String name;
-	private String eventDateTimeStart;
-	private Timestamp eventDateTimeEnd;
-	private Address address;
+	private Date eventDateTimeStart;
+//	private Timestamp eventDateTimeEnd;
+//	private Address address;
 	private User eventOwner;
-	private List<User> confirmedParticipants;
-	private List<User> invitedUsers;
-	private EventType eventType;
-	private Venue venue;
+	private String location;
+	private List<UserEvent> userEventList;
+	private EventVisualizationPrivacy eventVisualizationPrivacy;
+	private EventMatchingPrivacy eventMatchingPrivacy;
+//	private Venue venue;
 	private EventActivity activity;
-	private UserEvent.UserEventState state;
 
-	public AppEvent(String name, EventActivity activity , UserEvent.UserEventState state) {
+	public AppEvent(String name, EventActivity activity) {
 		this.name = name;
 		this.activity = activity;
-		this.state =state;
+
+	}
+	public AppEvent() {
+	}
+
+	public UserEvent.UserEventState getCurrentUserEventState(String id) {
+		UserEvent.UserEventState state = null;
+		for (UserEvent userEvent: getUserEventList()) {
+			if((userEvent.getUserId()+"").equals(id)){
+				state = userEvent.getState();
+			}
+		}
+		return state;
 	}
 
 
-	public enum EventType{
-		PUBLIC,
-		PUBLIC_FOR_FRIENDS,
-		PRIVATE;
+	public enum EventVisualizationPrivacy {
+		INVTED_FRIENDS,
+		ALL_FRIENDS;
+	}
+
+	public enum EventMatchingPrivacy {
+		DISABLED,
+		ENABLED_FOR_FRIENDS,
+		ENABLE_PUBLIC;
 	}
 
 	public enum EventActivity{
@@ -48,15 +66,26 @@ public class AppEvent implements Serializable{
 		FILM,
 		CLUB,
 		OTHER;
+
+		public static String[] names() {
+			EventActivity[] states = values();
+			String[] names = new String[states.length];
+
+			for (int i = 0; i < states.length; i++) {
+				names[i] = states[i].name();
+			}
+
+			return names;
+		}
 	}
 
 
-	public String getEventId() {
+	public int getEventId() {
 		return eventId;
 	}
 
 
-	public void setEventId(String eventId) {
+	public void setEventId(int eventId) {
 		this.eventId = eventId;
 	}
 
@@ -71,34 +100,34 @@ public class AppEvent implements Serializable{
 	}
 
 
-	public String getEventDateTimeStart() {
+	public Date getEventDateTimeStart() {
 		return eventDateTimeStart;
 	}
 
 
-	public void setEventDateTimeStart(String eventDateTimeStart) {
+	public void setEventDateTimeStart(Date eventDateTimeStart) {
 		this.eventDateTimeStart = eventDateTimeStart;
 	}
 
 
-	public Timestamp getEventDateTimeEnd() {
-		return eventDateTimeEnd;
-	}
-
-
-	public void setEventDateTimeEnd(Timestamp eventDateTimeEnd) {
-		this.eventDateTimeEnd = eventDateTimeEnd;
-	}
-
-
-	public Address getAddress() {
-		return address;
-	}
-
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+//	public Timestamp getEventDateTimeEnd() {
+//		return eventDateTimeEnd;
+//	}
+//
+//
+//	public void setEventDateTimeEnd(Timestamp eventDateTimeEnd) {
+//		this.eventDateTimeEnd = eventDateTimeEnd;
+//	}
+//
+//
+//	public Address getAddress() {
+//		return address;
+//	}
+//
+//
+//	public void setAddress(Address address) {
+//		this.address = address;
+//	}
 
 
 	public User getEventOwner() {
@@ -111,44 +140,34 @@ public class AppEvent implements Serializable{
 	}
 
 
-	public List<User> getConfirmedParticipants() {
-		return confirmedParticipants;
+	public List<UserEvent> getUserEventList() {
+		return userEventList;
 	}
 
 
-	public void setConfirmedParticipants(List<User> confirmedParticipants) {
-		this.confirmedParticipants = confirmedParticipants;
+	public void setUserEventList(List<UserEvent> userEventList) {
+		this.userEventList = userEventList;
 	}
 
 
-	public List<User> getInvitedUsers() {
-		return invitedUsers;
+	public EventVisualizationPrivacy getEventVisualizationPrivacy() {
+		return eventVisualizationPrivacy;
 	}
 
 
-	public void setInvitedUsers(List<User> invitedUsers) {
-		this.invitedUsers = invitedUsers;
+	public void setEventVisualizationPrivacy(EventVisualizationPrivacy eventVisualizationPrivacy) {
+		this.eventVisualizationPrivacy = eventVisualizationPrivacy;
 	}
 
 
-	public EventType getEventType() {
-		return eventType;
-	}
-
-
-	public void setEventType(EventType eventType) {
-		this.eventType = eventType;
-	}
-
-
-	public Venue getVenue() {
-		return venue;
-	}
-
-
-	public void setVenue(Venue venue) {
-		this.venue = venue;
-	}
+//	public Venue getVenue() {
+//		return venue;
+//	}
+//
+//
+//	public void setVenue(Venue venue) {
+//		this.venue = venue;
+//	}
 
 	public EventActivity getActivity() {
 		return activity;
@@ -159,12 +178,20 @@ public class AppEvent implements Serializable{
 	}
 
 
-	public UserEvent.UserEventState getState() {
-		return state;
+	public EventMatchingPrivacy getEventMatchingPrivacy() {
+		return eventMatchingPrivacy;
 	}
 
-	public void setState(UserEvent.UserEventState state) {
-		this.state = state;
+	public void setEventMatchingPrivacy(EventMatchingPrivacy eventMatchingPrivacy) {
+		this.eventMatchingPrivacy = eventMatchingPrivacy;
 	}
 
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 }

@@ -50,9 +50,14 @@ public class Core {
 	}
 
 	public void notifyFriendshipRequestReceived(ServerMessage serverMessage) {
+//		getCurrentActivity().recreate();
 	}
 
 	public void notifyInvitationReceived(ServerMessage serverMessage) {
+//		getCurrentActivity().recreate();
+	}
+	public void notifyNewEventAvailableReceived(ServerMessage serverMessage) {
+//		getCurrentActivity().recreate();
 	}
 
 
