@@ -214,7 +214,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
     protected void treatValidMessage(ServerMessage serverMessage) {
 
         if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
-            Intent intent = new Intent(AddFriendsFromFBActivity.this, AppActivity.class);
+            Intent intent = new Intent(AddFriendsFromFBActivity.this, HomeActivity.class);
             startActivity(intent);
         }else if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_ERROR){
             System.out.println("Reply ERROR from adding friends: "+serverMessage.getMessageError());

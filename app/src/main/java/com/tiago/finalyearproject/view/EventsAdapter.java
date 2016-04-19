@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.facebook.Profile;
 import com.tiago.finalyearproject.R;
+import com.tiago.finalyearproject.model.AppActivity;
 import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.UserEvent;
 
@@ -94,10 +95,10 @@ class EventsAdapter extends ArrayAdapter<AppEvent> {
         ImageView theImageView = (ImageView) theView.findViewById(R.id.eventCategoryImageView);
 
         // We can set a ImageView like this
-        AppEvent.EventActivity activity = event.getActivity();
-        if(activity == AppEvent.EventActivity.SPORTS) {
+        AppActivity.ActivityType activity = event.getActivity();
+        if(activity == AppActivity.ActivityType.SPORTS) {
             theImageView.setImageResource(R.drawable.football);
-        }else if (activity == AppEvent.EventActivity.DRINKS){
+        }else if (activity == AppActivity.ActivityType.DRINKS){
             theImageView.setImageResource(R.drawable.drink);
         }
 

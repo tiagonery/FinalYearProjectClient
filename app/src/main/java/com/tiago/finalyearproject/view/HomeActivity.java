@@ -16,14 +16,14 @@ import java.util.List;
 /**
  * Created by Tiago on 14/03/2016.
  */
-public class AppActivity extends AppAbstractFragmentActivity implements ActionBar.TabListener {
+public class HomeActivity extends AppAbstractFragmentActivity implements ActionBar.TabListener {
 
 
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
     // Tab titles
-    private String[] tabs = { "Feed", "Events", "Friends" };
+    private String[] tabs = { "Activities", "Events", "Friends" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

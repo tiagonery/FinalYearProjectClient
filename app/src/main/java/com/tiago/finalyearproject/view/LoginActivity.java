@@ -39,7 +39,7 @@ public class LoginActivity extends AppAbstractFragmentActivity {
             setPendingClientMessage(clientRequestMessage);
 
 
-//            Intent intent = new Intent(LoginActivity.this, AppActivity.class);
+//            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 //            startActivity(intent);
 //        createRegId();
 //        }

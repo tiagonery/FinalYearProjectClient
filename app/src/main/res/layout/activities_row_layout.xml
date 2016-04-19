@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+              android:focusableInTouchMode="true"
+              android:clickable="true"
+              android:focusable="true" >
+
+
+
+    <!-- Image for each ListItem row
+    We can refer to images in our drawable folder with
+    @drawable/dot for the image named dot.png -->
+    <ImageView
+        android:id="@+id/userPictureImageView"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"/>
+
+    <!-- Used to define a custom ListView row -->
+    <TextView
+        android:id="@+id/userNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/userPictureImageView"
+        android:layout_toLeftOf="@+id/activityCategoryImageView"
+        android:layout_marginLeft="10dp"
+        android:layout_above="@+id/isUpForTextView"
+        android:gravity="start"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:padding="2dp"
+        />
+    <TextView
+        android:id="@+id/isUpForTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/userPictureImageView"
+        android:layout_toLeftOf="@+id/activityCategoryImageView"
+        android:layout_marginLeft="10dp"
+        android:layout_above="@+id/activityNameTextView"
+        android:gravity="start"
+        android:textAlignment="textStart"
+        android:text="wants to"
+        android:textSize="15sp"
+        android:padding="2dp"
+        />
+    <TextView
+        android:id="@+id/activityNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/userPictureImageView"
+        android:layout_toLeftOf="@+id/activityCategoryImageView"
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@+id/userPictureImageView"
+        android:gravity="end"
+        android:textAlignment="textEnd"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:padding="2dp"
+        />
+    <ImageView
+        android:id="@+id/activityCategoryImageView"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignBottom="@+id/userPictureImageView"
+        android:layout_toLeftOf="@+id/join_activity_ImageView"/>
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:id="@+id/join_activity_ImageView"
+        android:layout_alignBottom="@+id/userPictureImageView"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:id="@+id/activityDateTextView"
+        android:layout_below="@+id/userPictureImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:layout_marginLeft="10dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@+id/activityDateTextView"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/darker_gray"/>
+
+</RelativeLayout>

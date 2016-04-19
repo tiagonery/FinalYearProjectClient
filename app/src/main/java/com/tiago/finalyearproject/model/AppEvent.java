@@ -4,7 +4,6 @@
 package com.tiago.finalyearproject.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -26,9 +25,9 @@ public class AppEvent implements Serializable{
 	private EventVisualizationPrivacy eventVisualizationPrivacy;
 	private EventMatchingPrivacy eventMatchingPrivacy;
 //	private Venue venue;
-	private EventActivity activity;
+	private AppActivity.ActivityType activity;
 
-	public AppEvent(String name, EventActivity activity) {
+	public AppEvent(String name, AppActivity.ActivityType activity) {
 		this.name = name;
 		this.activity = activity;
 
@@ -56,27 +55,6 @@ public class AppEvent implements Serializable{
 		DISABLED,
 		ENABLED_FOR_FRIENDS,
 		ENABLE_PUBLIC;
-	}
-
-	public enum EventActivity{
-		DRINKS,
-		FOOD,
-		SPORTS,
-		BUSINESS,
-		FILM,
-		CLUB,
-		OTHER;
-
-		public static String[] names() {
-			EventActivity[] states = values();
-			String[] names = new String[states.length];
-
-			for (int i = 0; i < states.length; i++) {
-				names[i] = states[i].name();
-			}
-
-			return names;
-		}
 	}
 
 
@@ -169,11 +147,11 @@ public class AppEvent implements Serializable{
 //		this.venue = venue;
 //	}
 
-	public EventActivity getActivity() {
+	public AppActivity.ActivityType getActivity() {
 		return activity;
 	}
 
-	public void setActivity(EventActivity activity) {
+	public void setActivity(AppActivity.ActivityType activity) {
 		this.activity = activity;
 	}
 

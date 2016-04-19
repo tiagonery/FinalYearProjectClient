@@ -26,7 +26,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
             switch (index) {
                 case 0:
                     // Feed fragment activity
-                    return new FeedFragment();
+                    return new ActivitiesFragment();
                 case 1:
                     // Events fragment activity
                     return new EventsFragment();

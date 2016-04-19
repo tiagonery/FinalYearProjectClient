@@ -13,9 +13,8 @@ import com.facebook.ProfileTracker;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.Core;
-import com.tiago.finalyearproject.view.AddFriendsFromFBActivity;
 import com.tiago.finalyearproject.view.AppAbstractFragmentActivity;
-import com.tiago.finalyearproject.view.AppActivity;
+import com.tiago.finalyearproject.view.HomeActivity;
 import com.tiago.finalyearproject.view.LoginActivity;
 
 public class MainActivity extends AppAbstractFragmentActivity implements View.OnClickListener {
@@ -119,7 +118,7 @@ public class MainActivity extends AppAbstractFragmentActivity implements View.On
             startActivity(intent);
 
         }else{
-            Intent intent = new Intent(MainActivity.this, AppActivity.class);
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
         }
 

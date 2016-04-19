@@ -30,6 +30,7 @@ import com.facebook.Profile;
 import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
+import com.tiago.finalyearproject.model.AppActivity;
 import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.Core;
 import com.tiago.finalyearproject.model.User;
@@ -131,7 +132,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
         });
 
         activitiesSpinner = (Spinner) findViewById(R.id.activities_spinner);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, AppEvent.EventActivity.names()); //selected item will look like a spinner set from XML
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, AppActivity.ActivityType.names()); //selected item will look like a spinner set from XML
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         activitiesSpinner.setAdapter(spinnerArrayAdapter);
 
@@ -175,7 +176,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
                 date.setMinutes(minute);
                 newEvent.setEventDateTimeStart(date);
 
-                newEvent.setActivity(AppEvent.EventActivity.valueOf(activitiesSpinner.getSelectedItem().toString()));
+                newEvent.setActivity(AppActivity.ActivityType.valueOf(activitiesSpinner.getSelectedItem().toString()));
 
                 int selectedId = visualizationRadioGroup.getCheckedRadioButtonId();
                 visualizationRadioButton = (RadioButton) findViewById(selectedId);
@@ -327,7 +328,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
     @Override
     protected void treatValidMessage(ServerMessage serverMessage) {
         if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
-            Intent intent = new Intent(CreateEventActivity.this, AppActivity.class);
+            Intent intent = new Intent(CreateEventActivity.this, HomeActivity.class);
             startActivity(intent);
         }else if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_ERROR){
             System.out.println("Could not create Event");
