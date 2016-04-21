@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+        <TextView
+            android:id="@+id/enter_wish_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name: "
+            android:layout_alignBaseline="@+id/enter_wish_name_edit_text"
+            android:layout_alignBottom="@+id/enter_wish_name_edit_text"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+        <EditText android:id="@+id/enter_wish_name_edit_text"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="I Wish To..."
+                  android:layout_alignParentTop="true"
+                  android:layout_toRightOf="@+id/enter_wish_name_text_view"/>
+
+
+
+    <TextView
+        android:id="@+id/wish_category_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category:"
+        android:layout_below="@+id/enter_wish_name_edit_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <ScrollView
+        android:id="@+id/categories_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="vertical"
+        android:layout_above="@+id/create_wish_button"
+        android:layout_below="@+id/wish_category_text_view">
+        <GridView
+            android:id="@+id/categories_grid_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:numColumns="auto_fit"
+            android:gravity="center"
+            android:stretchMode="columnWidth"
+            android:drawSelectorOnTop="true"
+            android:focusable="true"
+            android:clickable="true"
+            android:scrollbars="none"
+            >
+
+        </GridView>
+    </ScrollView>
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create"
+        android:id="@+id/create_wish_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

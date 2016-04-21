@@ -1,7 +1,6 @@
 package com.tiago.finalyearproject.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,9 @@ import android.widget.TextView;
 
 import com.facebook.Profile;
 import com.tiago.finalyearproject.R;
-import com.tiago.finalyearproject.model.AppActivity;
 import com.tiago.finalyearproject.model.AppEvent;
-import com.tiago.finalyearproject.model.UserActivity;
-import com.tiago.finalyearproject.model.UserEvent;
+import com.tiago.finalyearproject.model.Wish;
+import com.tiago.finalyearproject.model.UserWish;
 
 import java.util.List;
 
@@ -24,12 +22,12 @@ import java.util.List;
  */
 
 // We can create custom adapters
-class ActivitiesAdapter extends ArrayAdapter<AppActivity> {
+class ActivitiesAdapter extends ArrayAdapter<Wish> {
 
 
     CheckBox[] checkBoxArray;
 
-    public ActivitiesAdapter(Context context, List<AppActivity> activities){
+    public ActivitiesAdapter(Context context, List<Wish> activities){
 
         super(context, R.layout.add_friends_row_layout, activities);
         checkBoxArray = new CheckBox[activities.size()];
@@ -53,7 +51,7 @@ class ActivitiesAdapter extends ArrayAdapter<AppActivity> {
 
         // inflate takes the resource to load, the parent that the resource may be
         // loaded into and true or false if we are loading into a parent view.
-        View theView = theInflater.inflate(R.layout.activities_row_layout, parent, false);
+        View theView = theInflater.inflate(R.layout.wishes_row_layout, parent, false);
 
         theView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,18 +64,18 @@ class ActivitiesAdapter extends ArrayAdapter<AppActivity> {
 
 
         // We retrieve the text from the array
-        AppActivity activity = getItem(position);
+        Wish activity = getItem(position);
 
         Profile profile = Profile.getCurrentProfile();
-        UserActivity.UserActivityState state = activity.getCurrentUserActivityState(profile.getId());
+        UserWish.UserWishState state = activity.getCurrentUserWishState(profile.getId());
 
         // Get the ImageView in the layout
         ImageView joinActivityImage = (ImageView) theView.findViewById(R.id.join_activity_ImageView);
 
-        if(state == UserActivity.UserActivityState.IN || state == UserActivity.UserActivityState.OWNER){
+        if(state == UserWish.UserWishState.IN || state == UserWish.UserWishState.OWNER){
             joinActivityImage.setImageResource(R.drawable.joined);
         }
-        else if(state == UserActivity.UserActivityState.OUT){
+        else if(state == UserWish.UserWishState.OUT){
             joinActivityImage.setImageResource(R.drawable.not_joined);
         }
 
@@ -85,39 +83,39 @@ class ActivitiesAdapter extends ArrayAdapter<AppActivity> {
         TextView userNameTextView = (TextView) theView.findViewById(R.id.userNameTextView);
 
         // Put the next TV Show into the TextView
-        userNameTextView.setText(activity.getActivityOwner().getName());
+        userNameTextView.setText(activity.getWishOwner().getName());
 
         // Get the TextView we want to edit
-        TextView activityNameTextView = (TextView) theView.findViewById(R.id.activityNameTextView);
+        TextView activityNameTextView = (TextView) theView.findViewById(R.id.wishNameTextView);
 
         // Put the next TV Show into the TextView
         activityNameTextView.setText(activity.getName());
 
         // Get the TextView we want to edit
-        TextView activityDateTextView = (TextView) theView.findViewById(R.id.activityDateTextView);
+        TextView activityDateTextView = (TextView) theView.findViewById(R.id.wishDateTextView);
 
-        String hour = String.format("%02d", activity.getActivityDateTime().getHours());
-        String minute = String.format("%02d", activity.getActivityDateTime().getMinutes());
-        String day = String.format("%02d", activity.getActivityDateTime().getDate());
-        String month = String.format("%02d", activity.getActivityDateTime().getMonth()+1);
-        String year = String.format("%02d", activity.getActivityDateTime().getYear()+1900);
+        String hour = String.format("%02d", activity.getWishDateTime().getHours());
+        String minute = String.format("%02d", activity.getWishDateTime().getMinutes());
+        String day = String.format("%02d", activity.getWishDateTime().getDate());
+        String month = String.format("%02d", activity.getWishDateTime().getMonth()+1);
+        String year = String.format("%02d", activity.getWishDateTime().getYear()+1900);
         // Put the next TV Show into the TextView
         activityDateTextView.setText(hour+":"+minute+" "+day+"/"+month+"/"+year);
 
         // Get the ImageView in the layout
         ImageView userPictureImageView = (ImageView) theView.findViewById(R.id.userPictureImageView);
 
-        userPictureImageView.setImageBitmap(activity.getActivityOwner().getProfilePicture());
+        userPictureImageView.setImageBitmap(activity.getWishOwner().getProfilePicture());
 
         // Get the ImageView in the layout
-        ImageView categoryImageView = (ImageView) theView.findViewById(R.id.activityCategoryImageView);
+        ImageView categoryImageView = (ImageView) theView.findViewById(R.id.wishCategoryImageView);
 
 
         // We can set a ImageView like this
-        AppActivity.ActivityType activityType = activity.getActivityType();
-        if(activityType == AppActivity.ActivityType.SPORTS) {
+        AppEvent.EventType eventType = activity.getEventType();
+        if(eventType == AppEvent.EventType.SPORTS) {
             categoryImageView.setImageResource(R.drawable.football);
-        }else if (activityType == AppActivity.ActivityType.DRINKS){
+        }else if (eventType == AppEvent.EventType.DRINKS){
             categoryImageView.setImageResource(R.drawable.drink);
         }
 

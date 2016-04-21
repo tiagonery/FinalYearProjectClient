@@ -3,9 +3,13 @@
  */
 package com.tiago.finalyearproject.model;
 
+import com.tiago.finalyearproject.R;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Tiago
@@ -25,11 +29,57 @@ public class AppEvent implements Serializable{
 	private EventVisualizationPrivacy eventVisualizationPrivacy;
 	private EventMatchingPrivacy eventMatchingPrivacy;
 //	private Venue venue;
-	private AppActivity.ActivityType activity;
+	private EventType eventType;
 
-	public AppEvent(String name, AppActivity.ActivityType activity) {
+
+	public enum EventType {
+		DRINKS(R.drawable.drink),
+		FOOD(R.drawable.football),
+		SPORTS(R.drawable.football),
+		BUSINESS(R.drawable.football),
+		FILM(R.drawable.football),
+		CLUB(R.drawable.football),
+		OTHER(R.drawable.football);
+
+		private final int num;
+
+		private static Map<Integer, EventType> map = new HashMap<Integer, EventType>();
+
+		static {
+			for (EventType eventType : EventType.values()) {
+				map.put(eventType.num, eventType);
+			}
+		}
+
+		public static EventType valueOf(int num) {
+			return map.get(num);
+		}
+
+		private EventType(int num)
+		{
+			this.num = num;
+		}
+
+		public int getNumber()
+		{
+			return num;
+		}
+
+		public static String[] names() {
+			EventType[] states = values();
+			String[] names = new String[states.length];
+
+			for (int i = 0; i < states.length; i++) {
+				names[i] = states[i].name();
+			}
+
+			return names;
+		}
+	}
+
+	public AppEvent(String name, EventType eventType) {
 		this.name = name;
-		this.activity = activity;
+		this.eventType = eventType;
 
 	}
 	public AppEvent() {
@@ -147,12 +197,12 @@ public class AppEvent implements Serializable{
 //		this.venue = venue;
 //	}
 
-	public AppActivity.ActivityType getActivity() {
-		return activity;
+	public EventType getEventType() {
+		return eventType;
 	}
 
-	public void setActivity(AppActivity.ActivityType activity) {
-		this.activity = activity;
+	public void setEventType(EventType eventType) {
+		this.eventType = eventType;
 	}
 
 
@@ -172,4 +222,5 @@ public class AppEvent implements Serializable{
 	public void setLocation(String location) {
 		this.location = location;
 	}
+
 }

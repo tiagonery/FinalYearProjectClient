@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/userPictureImageView"
-        android:layout_toLeftOf="@+id/activityCategoryImageView"
+        android:layout_toLeftOf="@+id/wishCategoryImageView"
         android:layout_marginLeft="10dp"
         android:layout_above="@+id/isUpForTextView"
         android:gravity="start"
@@ -39,9 +39,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/userPictureImageView"
-        android:layout_toLeftOf="@+id/activityCategoryImageView"
+        android:layout_toLeftOf="@+id/wishCategoryImageView"
         android:layout_marginLeft="10dp"
-        android:layout_above="@+id/activityNameTextView"
+        android:layout_above="@+id/wishNameTextView"
         android:gravity="start"
         android:textAlignment="textStart"
         android:text="wants to"
@@ -49,11 +49,11 @@
         android:padding="2dp"
         />
     <TextView
-        android:id="@+id/activityNameTextView"
+        android:id="@+id/wishNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/userPictureImageView"
-        android:layout_toLeftOf="@+id/activityCategoryImageView"
+        android:layout_toLeftOf="@+id/wishCategoryImageView"
         android:layout_marginLeft="10dp"
         android:layout_alignBottom="@+id/userPictureImageView"
         android:gravity="end"
@@ -63,7 +63,7 @@
         android:padding="2dp"
         />
     <ImageView
-        android:id="@+id/activityCategoryImageView"
+        android:id="@+id/wishCategoryImageView"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginLeft="10dp"
@@ -80,7 +80,7 @@
         android:layout_alignParentEnd="true"/>
 
     <TextView
-        android:id="@+id/activityDateTextView"
+        android:id="@+id/wishDateTextView"
         android:layout_below="@+id/userPictureImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
         android:layout_marginLeft="10dp"/>
     <View
         android:layout_width="match_parent"
-        android:layout_below="@+id/activityDateTextView"
+        android:layout_below="@+id/wishDateTextView"
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
         android:background="@android:color/darker_gray"/>

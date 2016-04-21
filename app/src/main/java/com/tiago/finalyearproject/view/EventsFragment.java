@@ -48,12 +48,12 @@ public class EventsFragment extends Fragment {
 
 
 //        List<AppEvent> eventsList = new ArrayList<AppEvent>();
-//        eventsList.add(new AppEvent("Drinks at Pub", AppEvent.ActivityType.DRINKS, UserEvent.UserEventState.INVITED));
-//        eventsList.add(new AppEvent("Friend's Football", AppEvent.ActivityType.SPORTS, UserEvent.UserEventState.GOING));
-//        eventsList.add(new AppEvent("Drinks at Dylan's", AppEvent.ActivityType.DRINKS, UserEvent.UserEventState.IDLE));
-//        eventsList.add(new AppEvent("Football Championship", AppEvent.ActivityType.SPORTS, UserEvent.UserEventState.IDLE));
-//        eventsList.add(new AppEvent("Handball Match", AppEvent.ActivityType.SPORTS, UserEvent.UserEventState.IDLE));
-//        eventsList.add(new AppEvent("Friend's Basketball", AppEvent.ActivityType.SPORTS, UserEvent.UserEventState.NOT_GOING));
+//        eventsList.add(new AppEvent("Drinks at Pub", AppEvent.EventType.DRINKS, UserEvent.UserEventState.INVITED));
+//        eventsList.add(new AppEvent("Friend's Football", AppEvent.EventType.SPORTS, UserEvent.UserEventState.GOING));
+//        eventsList.add(new AppEvent("Drinks at Dylan's", AppEvent.EventType.DRINKS, UserEvent.UserEventState.IDLE));
+//        eventsList.add(new AppEvent("Football Championship", AppEvent.EventType.SPORTS, UserEvent.UserEventState.IDLE));
+//        eventsList.add(new AppEvent("Handball Match", AppEvent.EventType.SPORTS, UserEvent.UserEventState.IDLE));
+//        eventsList.add(new AppEvent("Friend's Basketball", AppEvent.EventType.SPORTS, UserEvent.UserEventState.NOT_GOING));
 //
 //        createEventsListView(eventsList);
 

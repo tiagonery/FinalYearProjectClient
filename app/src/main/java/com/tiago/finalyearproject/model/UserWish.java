@@ -5,13 +5,13 @@ import java.io.Serializable;
 /**
  * Created by Tiago on 22/03/2016.
  */
-public class UserActivity implements Serializable{
+public class UserWish implements Serializable{
 
     private String userId;
-    private int activityId;
-    private UserActivityState state;
+    private int wishId;
+    private UserWishState state;
 
-    public enum UserActivityState {
+    public enum UserWishState {
         IN(1),
         OUT(2),
         OWNER(2);
@@ -19,7 +19,7 @@ public class UserActivity implements Serializable{
 
         private final int num;
 
-        private UserActivityState(int num)
+        private UserWishState(int num)
         {
             this.num = num;
         }
@@ -32,12 +32,12 @@ public class UserActivity implements Serializable{
 
     /**
      * @param userId
-     * @param activityId
+     * @param wishId
      * @param state
      */
-    public UserActivity(String userId, int activityId, UserActivityState state) {
+    public UserWish(String userId, int wishId, UserWishState state) {
         this.userId = userId;
-        this.activityId = activityId;
+        this.wishId = wishId;
         this.state = state;
     }
 
@@ -50,18 +50,18 @@ public class UserActivity implements Serializable{
     }
 
     public int getActivityId() {
-        return activityId;
+        return wishId;
     }
 
-    public void setActivityId(int activityId) {
-        this.activityId = activityId;
+    public void setActivityId(int wishId) {
+        this.wishId = wishId;
     }
 
-    public UserActivityState getState() {
+    public UserWishState getState() {
         return state;
     }
 
-    public void setState(UserActivityState state) {
+    public void setState(UserWishState state) {
         this.state = state;
     }
 
