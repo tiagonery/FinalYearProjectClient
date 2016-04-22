@@ -25,12 +25,10 @@ import java.util.List;
 class EventsAdapter extends ArrayAdapter<AppEvent> {
 
 
-    CheckBox[] checkBoxArray;
 
     public EventsAdapter(Context context, List<AppEvent> events){
 
         super(context, R.layout.add_friends_row_layout, events);
-        checkBoxArray = new CheckBox[events.size()];
 
 
     }
@@ -96,17 +94,14 @@ class EventsAdapter extends ArrayAdapter<AppEvent> {
         // We can set a ImageView like this
         AppEvent.EventType activity = event.getEventType();
         if(activity == AppEvent.EventType.SPORTS) {
-            theImageView.setImageResource(AppEvent.EventType.SPORTS.getNumber());
+            theImageView.setImageResource(AppEvent.EventType.SPORTS.getImage());
         }else if (activity == AppEvent.EventType.DRINKS){
-            theImageView.setImageResource(AppEvent.EventType.DRINKS.getNumber());
+            theImageView.setImageResource(AppEvent.EventType.DRINKS.getImage());
         }
 
         return theView;
     }
 
-    public CheckBox[] getCheckBoxArray() {
-        return checkBoxArray;
-    }
 
 
 

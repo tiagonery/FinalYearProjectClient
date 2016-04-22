@@ -1,6 +1,8 @@
 package com.tiago.finalyearproject.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Tiago on 22/03/2016.
@@ -8,7 +10,7 @@ import java.io.Serializable;
 public class UserEvent implements Serializable{
 
     private String userId;
-    private String eventId;
+    private int eventId;
     private UserEventState state;
 
     public enum UserEventState {
@@ -20,6 +22,14 @@ public class UserEvent implements Serializable{
 
 
         private final int num;
+
+        private static Map<Integer, UserEventState> map = new HashMap<Integer, UserEventState>();
+
+        static {
+            for (UserEventState state : UserEventState.values()) {
+                map.put(state.num, state);
+            }
+        }
 
         private UserEventState(int num)
         {
@@ -37,10 +47,14 @@ public class UserEvent implements Serializable{
      * @param eventId
      * @param state
      */
-    public UserEvent(String userId, String eventId, UserEventState state) {
+    public UserEvent(String userId, int eventId, UserEventState state) {
         this.userId = userId;
         this.eventId = eventId;
         this.state = state;
+    }
+
+    public UserEvent() {
+
     }
 
     public String getUserId() {
@@ -51,11 +65,11 @@ public class UserEvent implements Serializable{
         this.userId = userId;
     }
 
-    public String getEventId() {
+    public int getEventId() {
         return eventId;
     }
 
-    public void setEventId(String eventId) {
+    public void setEventId(int eventId) {
         this.eventId = eventId;
     }
 

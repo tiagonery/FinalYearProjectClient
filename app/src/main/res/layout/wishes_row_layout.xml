@@ -69,11 +69,11 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_alignBottom="@+id/userPictureImageView"
-        android:layout_toLeftOf="@+id/join_activity_ImageView"/>
+        android:layout_toLeftOf="@+id/join_wish_ImageView"/>
     <ImageView
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:id="@+id/join_activity_ImageView"
+        android:id="@+id/join_wish_ImageView"
         android:layout_alignBottom="@+id/userPictureImageView"
         android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"

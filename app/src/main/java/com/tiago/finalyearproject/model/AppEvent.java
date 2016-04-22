@@ -33,21 +33,22 @@ public class AppEvent implements Serializable{
 
 
 	public enum EventType {
-		DRINKS(R.drawable.drink),
-		FOOD(R.drawable.football),
-		SPORTS(R.drawable.football),
-		BUSINESS(R.drawable.football),
-		FILM(R.drawable.football),
-		CLUB(R.drawable.football),
-		OTHER(R.drawable.football);
+		DRINKS(R.drawable.drink, R.drawable.football),
+		FOOD(R.drawable.football,R.drawable.drink),
+		SPORTS(R.drawable.football,R.drawable.drink),
+		BUSINESS(R.drawable.football,R.drawable.drink),
+		FILM(R.drawable.football,R.drawable.drink),
+		CLUB(R.drawable.football,R.drawable.drink),
+		OTHER(R.drawable.football,R.drawable.drink);
 
-		private final int num;
+		private final int selectedImage;
+		private final int image;
 
 		private static Map<Integer, EventType> map = new HashMap<Integer, EventType>();
 
 		static {
 			for (EventType eventType : EventType.values()) {
-				map.put(eventType.num, eventType);
+				map.put(eventType.image, eventType);
 			}
 		}
 
@@ -55,14 +56,19 @@ public class AppEvent implements Serializable{
 			return map.get(num);
 		}
 
-		private EventType(int num)
+		private EventType(int image, int selectedImage)
 		{
-			this.num = num;
+			this.image = image;
+			this.selectedImage = selectedImage;
 		}
 
-		public int getNumber()
+		public int getImage()
 		{
-			return num;
+			return image;
+		}
+		public int getSelectedImage()
+		{
+			return selectedImage;
 		}
 
 		public static String[] names() {

@@ -1,55 +1,18 @@
 package com.tiago.finalyearproject.view;
 
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
+import android.widget.ImageView;
 
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
-import com.facebook.Profile;
 import com.tiago.finalyearproject.R;
-import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.AppEvent;
-import com.tiago.finalyearproject.model.Core;
-import com.tiago.finalyearproject.model.User;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Tiago on 14/03/2016.
@@ -77,9 +40,10 @@ public class CreateWishActivity extends AppAbstractFragmentActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                setEventType(AppEvent.EventType.valueOf(getEventTypeAdapter().mThumbIds[position].getNumber()));
-
-                gridview.setItemChecked(position, true);
+                deselectAllImages();
+                setEventType(AppEvent.EventType.valueOf(getEventTypeAdapter().eventTypeList[position].getImage()));
+                ((ImageView)v).setImageResource(getEventTypeAdapter().eventTypeList[position].getSelectedImage());
+//                gridview.setItemChecked(position, true);
             }
         });
 
@@ -93,6 +57,11 @@ public class CreateWishActivity extends AppAbstractFragmentActivity {
         });
     }
 
+    private void deselectAllImages() {
+        for (int i = 0; i<gridview.getChildCount();i++) {
+            ((ImageView)gridview.getChildAt(i)).setImageResource(getEventTypeAdapter().eventTypeList[i].getImage());
+        }
+    }
 
 
     public AppEvent.EventType getEventType() {

@@ -1,22 +1,13 @@
 package com.tiago.finalyearproject.view;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.model.AppEvent;
-import com.tiago.finalyearproject.model.User;
-
-import java.util.List;
 
 /**
  * Created by Tiago on 15/03/2016.
@@ -28,7 +19,7 @@ class EventTypeAdapter extends BaseAdapter {
     private Context mContext;
 
     // Keep all Images in array
-    public AppEvent.EventType[] mThumbIds = AppEvent.EventType.values();
+    public AppEvent.EventType[] eventTypeList = AppEvent.EventType.values();
 
     // Constructor
     public EventTypeAdapter(Context c) {
@@ -36,7 +27,7 @@ class EventTypeAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return eventTypeList.length;
     }
 
     public Object getItem(int position) {
@@ -61,7 +52,7 @@ class EventTypeAdapter extends BaseAdapter {
         {
             imageView = (ImageView) convertView;
         }
-        imageView.setImageResource(mThumbIds[position].getNumber());
+        imageView.setImageResource(eventTypeList[position].getImage());
         return imageView;
     }
 

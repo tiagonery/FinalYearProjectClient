@@ -22,12 +22,12 @@ import java.util.List;
  */
 
 // We can create custom adapters
-class ActivitiesAdapter extends ArrayAdapter<Wish> {
+class WishesAdapter extends ArrayAdapter<Wish> {
 
 
     CheckBox[] checkBoxArray;
 
-    public ActivitiesAdapter(Context context, List<Wish> activities){
+    public WishesAdapter(Context context, List<Wish> activities){
 
         super(context, R.layout.add_friends_row_layout, activities);
         checkBoxArray = new CheckBox[activities.size()];
@@ -64,13 +64,13 @@ class ActivitiesAdapter extends ArrayAdapter<Wish> {
 
 
         // We retrieve the text from the array
-        Wish activity = getItem(position);
+        Wish wish = getItem(position);
 
         Profile profile = Profile.getCurrentProfile();
-        UserWish.UserWishState state = activity.getCurrentUserWishState(profile.getId());
+        UserWish.UserWishState state = wish.getCurrentUserWishState(profile.getId());
 
         // Get the ImageView in the layout
-        ImageView joinActivityImage = (ImageView) theView.findViewById(R.id.join_activity_ImageView);
+        ImageView joinActivityImage = (ImageView) theView.findViewById(R.id.join_wish_ImageView);
 
         if(state == UserWish.UserWishState.IN || state == UserWish.UserWishState.OWNER){
             joinActivityImage.setImageResource(R.drawable.joined);
@@ -83,36 +83,36 @@ class ActivitiesAdapter extends ArrayAdapter<Wish> {
         TextView userNameTextView = (TextView) theView.findViewById(R.id.userNameTextView);
 
         // Put the next TV Show into the TextView
-        userNameTextView.setText(activity.getWishOwner().getName());
+        userNameTextView.setText(wish.getWishOwner().getName());
 
         // Get the TextView we want to edit
-        TextView activityNameTextView = (TextView) theView.findViewById(R.id.wishNameTextView);
+        TextView wishNameTextView = (TextView) theView.findViewById(R.id.wishNameTextView);
 
         // Put the next TV Show into the TextView
-        activityNameTextView.setText(activity.getName());
+        wishNameTextView.setText(wish.getName());
 
         // Get the TextView we want to edit
-        TextView activityDateTextView = (TextView) theView.findViewById(R.id.wishDateTextView);
+        TextView wishDateTextView = (TextView) theView.findViewById(R.id.wishDateTextView);
 
-        String hour = String.format("%02d", activity.getWishDateTime().getHours());
-        String minute = String.format("%02d", activity.getWishDateTime().getMinutes());
-        String day = String.format("%02d", activity.getWishDateTime().getDate());
-        String month = String.format("%02d", activity.getWishDateTime().getMonth()+1);
-        String year = String.format("%02d", activity.getWishDateTime().getYear()+1900);
+        String hour = String.format("%02d", wish.getWishDateTime().getHours());
+        String minute = String.format("%02d", wish.getWishDateTime().getMinutes());
+        String day = String.format("%02d", wish.getWishDateTime().getDate());
+        String month = String.format("%02d", wish.getWishDateTime().getMonth()+1);
+        String year = String.format("%02d", wish.getWishDateTime().getYear()+1900);
         // Put the next TV Show into the TextView
-        activityDateTextView.setText(hour+":"+minute+" "+day+"/"+month+"/"+year);
+        wishDateTextView.setText(hour + ":" + minute + " " + day + "/" + month + "/" + year);
 
         // Get the ImageView in the layout
         ImageView userPictureImageView = (ImageView) theView.findViewById(R.id.userPictureImageView);
 
-        userPictureImageView.setImageBitmap(activity.getWishOwner().getProfilePicture());
+        userPictureImageView.setImageBitmap(wish.getWishOwner().getProfilePicture());
 
         // Get the ImageView in the layout
         ImageView categoryImageView = (ImageView) theView.findViewById(R.id.wishCategoryImageView);
 
 
         // We can set a ImageView like this
-        AppEvent.EventType eventType = activity.getEventType();
+        AppEvent.EventType eventType = wish.getEventType();
         if(eventType == AppEvent.EventType.SPORTS) {
             categoryImageView.setImageResource(R.drawable.football);
         }else if (eventType == AppEvent.EventType.DRINKS){
