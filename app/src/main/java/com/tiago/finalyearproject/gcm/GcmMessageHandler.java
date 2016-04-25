@@ -96,6 +96,9 @@ public class GcmMessageHandler extends IntentService {
                     case NOTIFY_NEW_EVENTAVAILABLE:
                         core.notifyNewEventAvailableReceived(serverMessage); //not implemented
                         break;
+                    case NOTIFY_NEW_WISH_AVAILABLE:
+                        core.notifyNewWishAvailableReceived(serverMessage); //not implemented
+                        break;
 
                     default:
                         // Statements

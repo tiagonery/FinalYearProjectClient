@@ -20,6 +20,7 @@ public class Wish implements Serializable{
 	private User wishOwner;
 	private List<UserWish> userWishList;
 	private AppEvent.EventType eventType;
+	private AppEvent linkedEvent;
 
 	public Wish(int wishId, String name, Date wishDateTime, AppEvent.EventType eventType, User wishOwner, List<UserWish> userWishList) {
 		this.wishId = wishId;
@@ -33,15 +34,15 @@ public class Wish implements Serializable{
 	public Wish() {
 	}
 
-	public UserWish.UserWishState getCurrentUserWishState(String id) {
-		UserWish.UserWishState state = null;
-		for (UserWish userWish : getUserWishList()) {
-			if((userWish.getUserId()).equals(id)){
-				state = userWish.getState();
-			}
-		}
-		return state;
-	}
+//	public UserWish.UserWishState getCurrentUserWishState(String id) {
+//		UserWish.UserWishState state = null;
+//		for (UserWish userWish : getUserWishList()) {
+//			if((userWish.getUserId()).equals(id)){
+//				state = userWish.getState();
+//			}
+//		}
+//		return state;
+//	}
 
 
 	public int getWishId() {
@@ -100,10 +101,17 @@ public class Wish implements Serializable{
 		return eventType;
 	}
 
-	public void setEvent(AppEvent.EventType eventType) {
+	public void setEventType(AppEvent.EventType eventType) {
 		this.eventType = eventType;
 	}
 
 
+	public AppEvent getLinkedEvent() {
+		return linkedEvent;
+	}
+
+	public void setLinkedEvent(AppEvent linkedEvent) {
+		this.linkedEvent = linkedEvent;
+	}
 
 }

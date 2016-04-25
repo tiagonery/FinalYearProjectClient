@@ -10,9 +10,16 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.facebook.Profile;
 import com.tiago.finalyearproject.R;
+import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.AppEvent;
+import com.tiago.finalyearproject.model.Core;
+import com.tiago.finalyearproject.model.Wish;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Tiago on 14/03/2016.
@@ -52,9 +59,32 @@ public class CreateWishActivity extends AppAbstractFragmentActivity {
         createWishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Wish newWish = new Wish();
+
+
+                newWish.setName(editWishName.getText().toString());
+                newWish.setEventType(eventType);
+
+                SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
+                Date date = new Date();
+                newWish.setWishDateTime(date);
+                createWish(newWish);
 
             }
         });
+    }
+
+    private void createWish(Wish wish) {
+
+        Profile profile = Profile.getCurrentProfile();
+
+        ClientMessage clientRequestMessage = new ClientMessage();
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.CREATE_WISH);
+        clientRequestMessage.setWish(wish);
+        String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
+        clientRequestMessage.setMessageId(msgId);
+        getPendingClientMessages().add(clientRequestMessage);
+
     }
 
     private void deselectAllImages() {
@@ -98,11 +128,12 @@ public class CreateWishActivity extends AppAbstractFragmentActivity {
 
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage) {
+    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
             Intent intent = new Intent(CreateWishActivity.this, HomeActivity.class);
             startActivity(intent);
         }else if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_ERROR){
+//            Intent intent = new Intent(CreateWishActivity.this, HomeActivity.class);
             System.out.println("Could not create Event");
         }
 

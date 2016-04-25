@@ -14,12 +14,11 @@ public class UserEvent implements Serializable{
     private UserEventState state;
 
     public enum UserEventState {
-        INVITED(1),
-        GOING(2),
-        NOT_GOING(3),
+        OWNER(1),
+        INVITED(2),
+        GOING(3),
         IDLE(4),
-        OWNER(5);
-
+        NOT_GOING(5);
 
         private final int num;
 

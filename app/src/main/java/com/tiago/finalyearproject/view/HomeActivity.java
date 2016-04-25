@@ -2,7 +2,6 @@ package com.tiago.finalyearproject.view;
 
 
 import android.support.v7.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
@@ -10,6 +9,7 @@ import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.AppEvent;
+import com.tiago.finalyearproject.model.Wish;
 
 import java.util.List;
 
@@ -36,6 +36,7 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
         mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(mAdapter);
+        viewPager.setOffscreenPageLimit(3);
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -70,18 +71,23 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
     }
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage) {
+    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         ServerMessage.ServerMessageType serverMessageType = serverMessage.getServerMessageType();
         if (serverMessageType== ServerMessage.ServerMessageType.REPLY_SUCCES || serverMessageType== ServerMessage.ServerMessageType.REPLY_ERROR){
-            ClientMessage.ClientMessageType clientMessageType = getPendingClientMessage().getMessageType();
             switch (clientMessageType) {
                 case REQUEST_EVENTS:
                     if(serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES){
                         List<AppEvent> eventsList = serverMessage.getEventsList();
                         ((EventsFragment) mAdapter.getItem(1)).createEventsListView(eventsList);
                     }else{
-
-                }
+                    }
+                    break;
+                case REQUEST_WISHES:
+                    if(serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES){
+                        List<Wish> wishesList = serverMessage.getWishesList();
+                        ((WishesFragment) mAdapter.getItem(0)).setUsersPicturesFromActivities(wishesList);
+                    }else{
+                    }
                     break;
 
                 default:

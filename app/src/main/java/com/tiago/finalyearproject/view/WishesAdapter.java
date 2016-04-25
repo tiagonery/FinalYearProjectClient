@@ -25,13 +25,9 @@ import java.util.List;
 class WishesAdapter extends ArrayAdapter<Wish> {
 
 
-    CheckBox[] checkBoxArray;
-
     public WishesAdapter(Context context, List<Wish> activities){
 
         super(context, R.layout.add_friends_row_layout, activities);
-        checkBoxArray = new CheckBox[activities.size()];
-
 
     }
 
@@ -67,15 +63,15 @@ class WishesAdapter extends ArrayAdapter<Wish> {
         Wish wish = getItem(position);
 
         Profile profile = Profile.getCurrentProfile();
-        UserWish.UserWishState state = wish.getCurrentUserWishState(profile.getId());
+//        UserWish.UserWishState state = wish.getCurrentUserWishState(profile.getId());
 
         // Get the ImageView in the layout
         ImageView joinActivityImage = (ImageView) theView.findViewById(R.id.join_wish_ImageView);
 
-        if(state == UserWish.UserWishState.IN || state == UserWish.UserWishState.OWNER){
+        if(wish.getWishOwner().getFacebookId()==profile.getId()||!wish.getUserWishList().isEmpty()){
             joinActivityImage.setImageResource(R.drawable.joined);
         }
-        else if(state == UserWish.UserWishState.OUT){
+        else {
             joinActivityImage.setImageResource(R.drawable.not_joined);
         }
 
@@ -113,17 +109,10 @@ class WishesAdapter extends ArrayAdapter<Wish> {
 
         // We can set a ImageView like this
         AppEvent.EventType eventType = wish.getEventType();
-        if(eventType == AppEvent.EventType.SPORTS) {
-            categoryImageView.setImageResource(R.drawable.football);
-        }else if (eventType == AppEvent.EventType.DRINKS){
-            categoryImageView.setImageResource(R.drawable.drink);
-        }
+        categoryImageView.setImageResource(eventType.getSelectedImage());
+
 
         return theView;
-    }
-
-    public CheckBox[] getCheckBoxArray() {
-        return checkBoxArray;
     }
 
 

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.facebook.Profile;
@@ -15,10 +14,7 @@ import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.Core;
-import com.tiago.finalyearproject.model.User;
-import com.tiago.finalyearproject.model.UserEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,9 +44,9 @@ public class EventsFragment extends Fragment {
 
 
 //        List<AppEvent> eventsList = new ArrayList<AppEvent>();
-//        eventsList.add(new AppEvent("Drinks at Pub", AppEvent.EventType.DRINKS, UserEvent.UserEventState.INVITED));
+//        eventsList.add(new AppEvent("Drinks at Pub", AppEvent.EventType.BAR, UserEvent.UserEventState.INVITED));
 //        eventsList.add(new AppEvent("Friend's Football", AppEvent.EventType.SPORTS, UserEvent.UserEventState.GOING));
-//        eventsList.add(new AppEvent("Drinks at Dylan's", AppEvent.EventType.DRINKS, UserEvent.UserEventState.IDLE));
+//        eventsList.add(new AppEvent("Drinks at Dylan's", AppEvent.EventType.BAR, UserEvent.UserEventState.IDLE));
 //        eventsList.add(new AppEvent("Football Championship", AppEvent.EventType.SPORTS, UserEvent.UserEventState.IDLE));
 //        eventsList.add(new AppEvent("Handball Match", AppEvent.EventType.SPORTS, UserEvent.UserEventState.IDLE));
 //        eventsList.add(new AppEvent("Friend's Basketball", AppEvent.EventType.SPORTS, UserEvent.UserEventState.NOT_GOING));
@@ -72,7 +68,7 @@ public class EventsFragment extends Fragment {
 //            User user= new User(null,profile.getRegId(),profile.getFirstName(),profile.getLastName());
         String msgId = Core.getInstance().sendRequest((AppAbstractFragmentActivity) getActivity(), clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        ((AppAbstractFragmentActivity) getActivity()).setPendingClientMessage(clientRequestMessage);
+        ((AppAbstractFragmentActivity) getActivity()).getPendingClientMessages().add(clientRequestMessage);
     }
 
     public void createEventsListView(final List<AppEvent> eventsList) {

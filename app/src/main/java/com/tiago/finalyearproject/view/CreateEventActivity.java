@@ -15,8 +15,6 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -76,12 +74,12 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
     String month;
     String day;
 
-    private RadioGroup visualizationRadioGroup;
-    private RadioButton visualizationRadioButton;
+//    private RadioGroup visualizationRadioGroup;
+//    private RadioButton visualizationRadioButton;
 //    private RadioButton invitedFriendsRadioButton;
 //    private RadioButton allFriendsRadioButton;
-    private RadioGroup matchingRadioGroup;
-    private RadioButton matchingRadioButton;
+//    private RadioGroup matchingRadioGroup;
+//    private RadioButton matchingRadioButton;
 //    private RadioButton disabledRadioButton;
 //    private RadioButton friendsRadioButton;
 //    private RadioButton anyoneRadioButton;
@@ -139,10 +137,10 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
 
 
 
-        visualizationRadioGroup = (RadioGroup) findViewById(R.id.visualization_settings_radio_group);
+//        visualizationRadioGroup = (RadioGroup) findViewById(R.id.visualization_settings_radio_group);
 //        invitedFriendsRadioButton = (RadioButton) findViewById(R.id.invited_friends_radio_button);
 //        allFriendsRadioButton = (RadioButton) findViewById(R.id.all_friends_radio_button);
-        matchingRadioGroup = (RadioGroup) findViewById(R.id.matching_settings_radio_group);
+//        matchingRadioGroup = (RadioGroup) findViewById(R.id.matching_settings_radio_group);
 //        disabledRadioButton = (RadioButton) findViewById(R.id.none_radio_button);
 //        friendsRadioButton = (RadioButton) findViewById(R.id.friends_radio_button);
 //        anyoneRadioButton = (RadioButton) findViewById(R.id.anyone_radio_button);
@@ -177,13 +175,13 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
 
                 newEvent.setEventType(AppEvent.EventType.valueOf(activitiesSpinner.getSelectedItem().toString()));
 
-                int selectedId = visualizationRadioGroup.getCheckedRadioButtonId();
-                visualizationRadioButton = (RadioButton) findViewById(selectedId);
-                newEvent.setEventVisualizationPrivacy(AppEvent.EventVisualizationPrivacy.valueOf(visualizationRadioButton.getTag().toString()));
+//                int selectedId = visualizationRadioGroup.getCheckedRadioButtonId();
+//                visualizationRadioButton = (RadioButton) findViewById(selectedId);
+//                newEvent.setEventVisualizationPrivacy(AppEvent.EventVisualizationPrivacy.valueOf(visualizationRadioButton.getTag().toString()));
 
-                int selectedMatchId = matchingRadioGroup.getCheckedRadioButtonId();
-                matchingRadioButton = (RadioButton) findViewById(selectedMatchId);
-                newEvent.setEventMatchingPrivacy(AppEvent.EventMatchingPrivacy.valueOf(matchingRadioButton.getTag().toString()));
+//                int selectedMatchId = matchingRadioGroup.getCheckedRadioButtonId();
+//                matchingRadioButton = (RadioButton) findViewById(selectedMatchId);
+//                newEvent.setEventMatchingPrivacy(AppEvent.EventMatchingPrivacy.valueOf(matchingRadioButton.getTag().toString()));
 
                 createEvent(newEvent, listOfUsersIds);
 
@@ -203,7 +201,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setFacebookIdsList(invitedUsersIds);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        setPendingClientMessage(clientRequestMessage);
+        getPendingClientMessages().add(clientRequestMessage);
 
     }
 
@@ -325,7 +323,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
     }
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage) {
+    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
             Intent intent = new Intent(CreateEventActivity.this, HomeActivity.class);
             startActivity(intent);

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.User;
+import com.tiago.finalyearproject.model.Wish;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,7 +46,8 @@ public class ServerMessage extends AbstractMessage {
         REPLY_ERROR,
         NOTIFY_FRIENDSHIP_REQUEST_RECEIVED,
         NOTIFY_INVITATION_RECEIVED,
-        NOTIFY_NEW_EVENTAVAILABLE;;
+        NOTIFY_NEW_EVENTAVAILABLE,
+        NOTIFY_NEW_WISH_AVAILABLE;
 
     }
 
@@ -57,7 +59,9 @@ public class ServerMessage extends AbstractMessage {
         FRIENDSHIP_REQUEST_FROM,
         FRIENDSHIP_REQUEST_ACCEPTED_FROM,
         EVENTS_LIST,
-        EVENT;
+        EVENT,
+        WISHES_LIST,
+        WISH;
 
     }
 
@@ -168,6 +172,19 @@ public class ServerMessage extends AbstractMessage {
         List<AppEvent> eventsList = null;
         try {
             eventsList = mapper.readValue(json, new TypeReference<List<AppEvent>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return eventsList;
+    }
+
+    public List<Wish> getWishesList() {
+        String json = (String) getContent().get(ServerContentTypeKey.WISHES_LIST.name());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+        List<Wish> eventsList = null;
+        try {
+            eventsList = mapper.readValue(json, new TypeReference<List<Wish>>(){});
         } catch (IOException e) {
             e.printStackTrace();
         }

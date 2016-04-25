@@ -26,20 +26,28 @@ public class AppEvent implements Serializable{
 	private User eventOwner;
 	private String location;
 	private List<UserEvent> userEventList;
-	private EventVisualizationPrivacy eventVisualizationPrivacy;
-	private EventMatchingPrivacy eventMatchingPrivacy;
+//	private EventVisualizationPrivacy eventVisualizationPrivacy;
+//	private EventMatchingPrivacy eventMatchingPrivacy;
 //	private Venue venue;
 	private EventType eventType;
 
 
 	public enum EventType {
-		DRINKS(R.drawable.drink, R.drawable.football),
-		FOOD(R.drawable.football,R.drawable.drink),
-		SPORTS(R.drawable.football,R.drawable.drink),
-		BUSINESS(R.drawable.football,R.drawable.drink),
-		FILM(R.drawable.football,R.drawable.drink),
-		CLUB(R.drawable.football,R.drawable.drink),
-		OTHER(R.drawable.football,R.drawable.drink);
+		FOOD(R.drawable.food_unselected,R.drawable.food),
+		COFFEE(R.drawable.coffee_unselected,R.drawable.coffee),
+		BAR(R.drawable.bar_unselected, R.drawable.bar),
+		CLUB(R.drawable.party_unselected,R.drawable.party),
+		FILM(R.drawable.movie_unselected,R.drawable.movie),
+		GAME(R.drawable.game_unselected,R.drawable.game),
+		SPORTS(R.drawable.sports_unselected,R.drawable.sports),
+		EXERCISE(R.drawable.exercise_unselected,R.drawable.exercise),
+		SWIM(R.drawable.swimming_unselected,R.drawable.swimming),
+		NATURE(R.drawable.nature_unselected,R.drawable.nature),
+		TRAVEL(R.drawable.travel_unselected,R.drawable.travel),
+		SHOPPING(R.drawable.shopping_unselected,R.drawable.shopping),
+		DATING(R.drawable.dating_unselected,R.drawable.dating),
+		BUSINESS(R.drawable.business_unselected,R.drawable.business),
+		OTHER(R.drawable.other_unselected,R.drawable.other);
 
 		private final int selectedImage;
 		private final int image;
@@ -184,14 +192,14 @@ public class AppEvent implements Serializable{
 	}
 
 
-	public EventVisualizationPrivacy getEventVisualizationPrivacy() {
-		return eventVisualizationPrivacy;
-	}
-
-
-	public void setEventVisualizationPrivacy(EventVisualizationPrivacy eventVisualizationPrivacy) {
-		this.eventVisualizationPrivacy = eventVisualizationPrivacy;
-	}
+//	public EventVisualizationPrivacy getEventVisualizationPrivacy() {
+//		return eventVisualizationPrivacy;
+//	}
+//
+//
+//	public void setEventVisualizationPrivacy(EventVisualizationPrivacy eventVisualizationPrivacy) {
+//		this.eventVisualizationPrivacy = eventVisualizationPrivacy;
+//	}
 
 
 //	public Venue getVenue() {
@@ -212,13 +220,13 @@ public class AppEvent implements Serializable{
 	}
 
 
-	public EventMatchingPrivacy getEventMatchingPrivacy() {
-		return eventMatchingPrivacy;
-	}
-
-	public void setEventMatchingPrivacy(EventMatchingPrivacy eventMatchingPrivacy) {
-		this.eventMatchingPrivacy = eventMatchingPrivacy;
-	}
+//	public EventMatchingPrivacy getEventMatchingPrivacy() {
+//		return eventMatchingPrivacy;
+//	}
+//
+//	public void setEventMatchingPrivacy(EventMatchingPrivacy eventMatchingPrivacy) {
+//		this.eventMatchingPrivacy = eventMatchingPrivacy;
+//	}
 
 
 	public String getLocation() {

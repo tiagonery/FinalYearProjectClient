@@ -7,7 +7,7 @@
             android:id="@+id/enter_wish_name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name: "
+            android:text="Activity: "
             android:layout_alignBaseline="@+id/enter_wish_name_edit_text"
             android:layout_alignBottom="@+id/enter_wish_name_edit_text"
             android:layout_alignParentLeft="true"

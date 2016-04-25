@@ -59,6 +59,9 @@ public class Core {
 	public void notifyNewEventAvailableReceived(ServerMessage serverMessage) {
 //		getCurrentActivity().recreate();
 	}
+	public void notifyNewWishAvailableReceived(ServerMessage serverMessage) {
+//		getCurrentActivity().recreate();
+	}
 
 
 

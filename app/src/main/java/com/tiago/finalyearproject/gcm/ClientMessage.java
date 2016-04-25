@@ -22,6 +22,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.Friendship;
 import com.tiago.finalyearproject.model.User;
+import com.tiago.finalyearproject.model.Wish;
 
 import java.util.List;
 import java.util.Map;
@@ -48,17 +49,19 @@ public class ClientMessage extends AbstractMessage{
 		ACCEPT_FRIENDSHIP, 
 		REFUSE_FRIENDSHIP, 
 		SEARCH_USER, 
-		REMOVE_FRIEND, 
-		CREATE_EVENT, 
+		REMOVE_FRIEND,
+		CREATE_EVENT,
+		CREATE_WISH,
 		EDIT_EVENT, 
 		INVITE_TO_EVENT, 
 		ACCEPT_INVITE, 
-		REFUSE_INVITE, 
-		JOIN_EVENT, 
+		REFUSE_INVITE,
+		JOIN_EVENT,
+		JOIN_WISH,
 		LEAVE_EVENT,
 		REQUEST_EVENTS,
-		WANT_TO_GO_OUT,
-		REQUEST_ACTIVITIES;
+		REQUEST_WISHES,
+		WANT_TO_GO_OUT;
 
 	}
 
@@ -70,6 +73,7 @@ public class ClientMessage extends AbstractMessage{
 		FB_ID,
 		INVITE_ID,
 		EVENT,
+		WISH,
 		FRIENDSHIP,
 		USER_CREATED,
 		FB_IDS_LIST;
@@ -117,6 +121,11 @@ public class ClientMessage extends AbstractMessage{
 	public void setEvent(AppEvent event) {
 		String string = getJsonValueOf(event);
 		getContent().put(ClientContentTypeKey.EVENT.name(), string);
+	}
+
+	public void setWish(Wish wish) {
+		String string = getJsonValueOf(wish);
+		getContent().put(ClientContentTypeKey.WISH.name(), string);
 	}
 
 

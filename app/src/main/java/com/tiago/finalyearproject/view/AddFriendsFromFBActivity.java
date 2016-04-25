@@ -109,7 +109,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setFacebookIdsList(listOfUsersIdsToAdd);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        setPendingClientMessage(clientRequestMessage);
+        getPendingClientMessages().add(clientRequestMessage);
 
     }
 
@@ -193,7 +193,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
             clientRequestMessage.setFacebookIdsList(getIdsFromSelectedFriends());
             String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
             clientRequestMessage.setMessageId(msgId);
-            setPendingClientMessage(clientRequestMessage);
+            getPendingClientMessages().add(clientRequestMessage);
 
 
 //        createRegId();
@@ -211,7 +211,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
     }
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage) {
+    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
 
         if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
             Intent intent = new Intent(AddFriendsFromFBActivity.this, HomeActivity.class);

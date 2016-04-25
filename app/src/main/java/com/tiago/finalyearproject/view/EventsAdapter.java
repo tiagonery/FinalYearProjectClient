@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -92,12 +91,8 @@ class EventsAdapter extends ArrayAdapter<AppEvent> {
         ImageView theImageView = (ImageView) theView.findViewById(R.id.eventCategoryImageView);
 
         // We can set a ImageView like this
-        AppEvent.EventType activity = event.getEventType();
-        if(activity == AppEvent.EventType.SPORTS) {
-            theImageView.setImageResource(AppEvent.EventType.SPORTS.getImage());
-        }else if (activity == AppEvent.EventType.DRINKS){
-            theImageView.setImageResource(AppEvent.EventType.DRINKS.getImage());
-        }
+        AppEvent.EventType eventType = event.getEventType();
+        theImageView.setImageResource(eventType.getSelectedImage());
 
         return theView;
     }

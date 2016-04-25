@@ -82,13 +82,13 @@ public class MainActivity extends AppAbstractFragmentActivity implements View.On
         clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.CREATE_USER);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        setPendingClientMessage(clientRequestMessage);
+        getPendingClientMessages().add(clientRequestMessage);
 //        createRegId();
     }
 
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage) {
+    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
 
     }
 
