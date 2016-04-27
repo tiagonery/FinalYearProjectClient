@@ -44,8 +44,9 @@ public class ClientMessage extends AbstractMessage{
 		CREATE_USER, 
 		DELETE_USER, 
 		EDIT_CONFIG, 
-		REQUEST_FRIENDSHIP_USERNAME, 
-		REQUEST_FRIENDSHIP_FB, 
+		REQUEST_FRIENDSHIP_USERNAME,
+		REQUEST_FRIENDSHIP_FB,
+		REQUEST_USERS_WISH_LIST,
 		ACCEPT_FRIENDSHIP, 
 		REFUSE_FRIENDSHIP, 
 		SEARCH_USER, 
@@ -74,6 +75,7 @@ public class ClientMessage extends AbstractMessage{
 		INVITE_ID,
 		EVENT,
 		WISH,
+		WISH_ID,
 		FRIENDSHIP,
 		USER_CREATED,
 		FB_IDS_LIST;
@@ -126,6 +128,9 @@ public class ClientMessage extends AbstractMessage{
 	public void setWish(Wish wish) {
 		String string = getJsonValueOf(wish);
 		getContent().put(ClientContentTypeKey.WISH.name(), string);
+	}
+	public void setWishId(int wishID) {
+		getContent().put(ClientContentTypeKey.WISH_ID.name(), wishID+"");
 	}
 
 

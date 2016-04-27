@@ -20,6 +20,8 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.User;
+import com.tiago.finalyearproject.model.UserEvent;
+import com.tiago.finalyearproject.model.UserWish;
 import com.tiago.finalyearproject.model.Wish;
 
 import java.io.IOException;
@@ -60,7 +62,10 @@ public class ServerMessage extends AbstractMessage {
         FRIENDSHIP_REQUEST_ACCEPTED_FROM,
         EVENTS_LIST,
         EVENT,
+        USERS_LIST,
+        USERS_EVENT_LIST,
         WISHES_LIST,
+        USERS_WISH_LIST,
         WISH;
 
     }
@@ -164,6 +169,18 @@ public class ServerMessage extends AbstractMessage {
         }
         return event;
     }
+    public Wish getWish() {
+        String json = (String) getContent().get(ServerContentTypeKey.WISH.name());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+        Wish wish = null;
+        try {
+            wish = mapper.readValue(json, Wish.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return wish;
+    }
 
     public List<AppEvent> getEventsList() {
         String json = (String) getContent().get(ServerContentTypeKey.EVENTS_LIST.name());
@@ -189,6 +206,45 @@ public class ServerMessage extends AbstractMessage {
             e.printStackTrace();
         }
         return eventsList;
+    }
+
+    public List<UserWish> getUsersWishList() {
+        String json = (String) getContent().get(ServerContentTypeKey.USERS_WISH_LIST.name());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+        List<UserWish> userWishList = null;
+        try {
+            userWishList = mapper.readValue(json, new TypeReference<List<UserWish>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return userWishList;
+    }
+
+    public List<User> getUsersList() {
+        String json = (String) getContent().get(ServerContentTypeKey.USERS_LIST.name());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+        List<User> usersList = null;
+        try {
+            usersList = mapper.readValue(json, new TypeReference<List<User>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return usersList;
+    }
+
+    public List<UserEvent> getUsersEventList() {
+        String json = (String) getContent().get(ServerContentTypeKey.USERS_EVENT_LIST.name());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+        List<UserEvent> userEventList = null;
+        try {
+            userEventList = mapper.readValue(json, new TypeReference<List<UserEvent>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return userEventList;
     }
 
 }

@@ -55,6 +55,7 @@
         android:layout_toRightOf="@+id/userPictureImageView"
         android:layout_toLeftOf="@+id/wishCategoryImageView"
         android:layout_marginLeft="10dp"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_alignBottom="@+id/userPictureImageView"
         android:gravity="end"
         android:textAlignment="textEnd"

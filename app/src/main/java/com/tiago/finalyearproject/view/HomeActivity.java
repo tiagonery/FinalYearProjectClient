@@ -67,7 +67,7 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
             }
         });
 
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
     }
 
     @Override

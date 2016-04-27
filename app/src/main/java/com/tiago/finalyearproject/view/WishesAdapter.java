@@ -1,6 +1,7 @@
 package com.tiago.finalyearproject.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,30 +50,55 @@ class WishesAdapter extends ArrayAdapter<Wish> {
         // loaded into and true or false if we are loading into a parent view.
         View theView = theInflater.inflate(R.layout.wishes_row_layout, parent, false);
 
-        theView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-
-
-
         // We retrieve the text from the array
-        Wish wish = getItem(position);
+        final Wish wish = getItem(position);
 
         Profile profile = Profile.getCurrentProfile();
+
+        if(wish.getWishOwner().getFacebookId().equals(profile.getId())) {
+            theView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+
+
+
 //        UserWish.UserWishState state = wish.getCurrentUserWishState(profile.getId());
 
         // Get the ImageView in the layout
         ImageView joinActivityImage = (ImageView) theView.findViewById(R.id.join_wish_ImageView);
 
-        if(wish.getWishOwner().getFacebookId()==profile.getId()||!wish.getUserWishList().isEmpty()){
-            joinActivityImage.setImageResource(R.drawable.joined);
+        if(wish.getWishOwner().getFacebookId().equals(profile.getId())){
+            joinActivityImage.setImageResource(R.drawable.view);
+            joinActivityImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), ManageWishActivity.class);
+                    intent.putExtra("wish", wish);
+                    getContext().startActivity(intent);
+                }
+            });
         }
-        else {
+        else if(!wish.getUserWishList().isEmpty()){
+                joinActivityImage.setImageResource(R.drawable.joined);
+                joinActivityImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
+            else {
             joinActivityImage.setImageResource(R.drawable.not_joined);
+            joinActivityImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
 
         // Get the TextView we want to edit
