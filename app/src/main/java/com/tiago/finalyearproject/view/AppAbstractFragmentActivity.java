@@ -26,18 +26,21 @@ public abstract class AppAbstractFragmentActivity extends AppCompatActivity {
         return pendingClientMessages;
     }
 
+
     public void setPendingClientMessages(List<ClientMessage> pendingClientMessages) {
         this.pendingClientMessages = pendingClientMessages;
     }
 
     public void handlePendingMessage(ServerMessage message){
-        for(Iterator<ClientMessage> iterator = getPendingClientMessages().iterator(); iterator.hasNext();) {
+        List<ClientMessage> pendingClientMessagesCopy = new ArrayList<>(getPendingClientMessages());
+        for(Iterator<ClientMessage> iterator = pendingClientMessagesCopy.iterator(); iterator.hasNext();) {
             ClientMessage clientMessage = iterator.next();
             if (message.getMessageRepliedId().equals(clientMessage.getMessageId())) {
                 treatValidMessage(message, clientMessage.getMessageType());
-                iterator.remove();
+                getPendingClientMessages().remove(clientMessage);
             }
         }
+
 
 
 //        for (ClientMessage clientMessage : getPendingClientMessages()) {

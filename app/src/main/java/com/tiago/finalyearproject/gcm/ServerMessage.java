@@ -66,6 +66,7 @@ public class ServerMessage extends AbstractMessage {
         USERS_EVENT_LIST,
         WISHES_LIST,
         USERS_WISH_LIST,
+        USERS_WISH,
         WISH;
 
     }
@@ -180,6 +181,18 @@ public class ServerMessage extends AbstractMessage {
             e.printStackTrace();
         }
         return wish;
+    }
+    public UserWish getUserWish() {
+        String json = (String) getContent().get(ServerContentTypeKey.USERS_WISH.name());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+        UserWish userWish = null;
+        try {
+            userWish = mapper.readValue(json, UserWish.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return userWish;
     }
 
     public List<AppEvent> getEventsList() {

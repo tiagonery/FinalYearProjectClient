@@ -69,7 +69,7 @@ class WishesAdapter extends ArrayAdapter<Wish> {
 //        UserWish.UserWishState state = wish.getCurrentUserWishState(profile.getId());
 
         // Get the ImageView in the layout
-        ImageView joinActivityImage = (ImageView) theView.findViewById(R.id.join_wish_ImageView);
+        final ImageView joinActivityImage = (ImageView) theView.findViewById(R.id.join_wish_ImageView);
 
         if(wish.getWishOwner().getFacebookId().equals(profile.getId())){
             joinActivityImage.setImageResource(R.drawable.view);
@@ -87,6 +87,7 @@ class WishesAdapter extends ArrayAdapter<Wish> {
                 joinActivityImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                        ((WishesFragment)((HomeActivity)getContext()).getAdapter().getItem(0)).leaveWish(wish.getWishId());
 
                     }
                 });
@@ -96,7 +97,8 @@ class WishesAdapter extends ArrayAdapter<Wish> {
             joinActivityImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    ((WishesFragment)((HomeActivity)getContext()).getAdapter().getItem(0)).joinWish(wish.getWishId());
+                    joinActivityImage.setImageResource(R.drawable.joined);
                 }
             });
         }

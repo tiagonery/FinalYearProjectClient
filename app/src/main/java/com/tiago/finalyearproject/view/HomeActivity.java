@@ -9,6 +9,7 @@ import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.AppEvent;
+import com.tiago.finalyearproject.model.UserWish;
 import com.tiago.finalyearproject.model.Wish;
 
 import java.util.List;
@@ -46,6 +47,8 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
                     .setTabListener(this));
         }
 
+
+
         /**
          * on swiping the viewpager make respective tab selected
          * */
@@ -70,6 +73,10 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
         viewPager.setCurrentItem(0);
     }
 
+    public TabsPagerAdapter getAdapter() {
+        return mAdapter;
+    }
+
     @Override
     protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         ServerMessage.ServerMessageType serverMessageType = serverMessage.getServerMessageType();
@@ -87,6 +94,15 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
                         List<Wish> wishesList = serverMessage.getWishesList();
                         ((WishesFragment) mAdapter.getItem(0)).setUsersPicturesFromActivities(wishesList);
                     }else{
+                    }
+                    break;
+                case JOIN_WISH:
+                    if(serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES){
+                        ((WishesFragment) mAdapter.getItem(0)).requestWishes();
+//                        UserWish userWish = serverMessage.getUserWish();
+//                        ((WishesFragment) mAdapter.getItem(0)).requestWishes();
+                    }else if(serverMessageType == ServerMessage.ServerMessageType.REPLY_ERROR){
+                        ((WishesFragment) mAdapter.getItem(0)).requestWishes();
                     }
                     break;
 

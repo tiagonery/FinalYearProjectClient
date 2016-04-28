@@ -39,6 +39,9 @@ public class UserWish implements Serializable{
         this.wishId = wishId;
     }
 
+    public UserWish() {
+    }
+
     public String getUserId() {
         return userId;
     }

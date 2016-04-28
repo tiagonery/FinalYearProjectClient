@@ -4,6 +4,7 @@
 package com.tiago.finalyearproject.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,9 +87,14 @@ public class Wish implements Serializable{
 	}
 
 
+
 	public List<UserWish> getUserWishList() {
+		if(userWishList==null){
+			userWishList = new ArrayList<UserWish>();
+		}
 		return userWishList;
 	}
+
 
 
 	public void setUserWishList(List<UserWish> userWishList) {

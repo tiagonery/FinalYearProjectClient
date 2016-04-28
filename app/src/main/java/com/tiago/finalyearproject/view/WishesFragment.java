@@ -94,9 +94,18 @@ public class WishesFragment extends Fragment {
     }
 
 
-    private void requestWishes() {
+    public void requestWishes() {
         ClientMessage clientRequestMessage = new ClientMessage();
         clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.REQUEST_WISHES);
+        String msgId = Core.getInstance().sendRequest((AppAbstractFragmentActivity) getActivity(), clientRequestMessage);
+        clientRequestMessage.setMessageId(msgId);
+        ((AppAbstractFragmentActivity) getActivity()).getPendingClientMessages().add(clientRequestMessage);
+    }
+
+    public void joinWish(int wishId) {
+        ClientMessage clientRequestMessage = new ClientMessage();
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.JOIN_WISH);
+        clientRequestMessage.setWishId(wishId);
         String msgId = Core.getInstance().sendRequest((AppAbstractFragmentActivity) getActivity(), clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
         ((AppAbstractFragmentActivity) getActivity()).getPendingClientMessages().add(clientRequestMessage);
