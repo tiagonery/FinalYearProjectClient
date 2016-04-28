@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -41,6 +42,7 @@ public class ManageWishActivity extends AppAbstractFragmentActivity {
 
     private TextView wishNameTextView;
     private ImageView wishManagementCategoryImageView;
+    private ImageView deleteWishImageView;
     private Button inviteToEventButton;
     private InviteFriendsFromWishAdapter usersToInviteAdapter;
     private ListView usersToInviteListView;
@@ -51,8 +53,66 @@ public class ManageWishActivity extends AppAbstractFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_wish_activity);
         wish = (Wish)getIntent().getSerializableExtra("wish");
+        wishManagementCategoryImageView = (ImageView) findViewById(R.id.wishManagementCategoryImageView);
+        wishNameTextView = (TextView) findViewById(R.id.wish_name_text_view);
+        deleteWishImageView = (ImageView) findViewById(R.id.delete_wish_imageview);
+        inviteToEventButton = (Button) findViewById(R.id.invite_to_event_from_wish_button);
+
+
+        wishNameTextView.setText(wish.getName());
+        wishManagementCategoryImageView.setImageResource(wish.getEventType().getSelectedImage());
+
+        deleteWishImageView.setImageResource(R.drawable.garbage);
+        deleteWishImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                deleteWish();
+            }
+        });
+
+        if(wish.getLinkedEvent()!=null){
+            inviteToEventButton.setText("Invite to Event");
+            inviteToEventButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+        }else{
+
+            inviteToEventButton.setText("Create an Event");
+            inviteToEventButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    CheckBox[] checkBoxArray = usersToInviteAdapter.getCheckBoxArray();
+                    List<String> listOfUsersIds = new ArrayList<String>();
+                    for (CheckBox checkBox : checkBoxArray) {
+                        if (checkBox.isChecked()) {
+                            listOfUsersIds.add((String) checkBox.getTag());
+                        }
+                    }
+
+                    Intent intent = new Intent(ManageWishActivity.this, CreateEventActivity.class);
+                    intent.putExtra("wish", wish);
+                    intent.putStringArrayListExtra("listOfUsers", (ArrayList<String>) listOfUsersIds);
+                    startActivity(intent);
+                }
+            });
+        }
+
 
         requestUsers();
+    }
+
+    private void deleteWish() {
+        ClientMessage clientRequestMessage = new ClientMessage();
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.DELETE_WISH);
+        clientRequestMessage.setWishId(wish.getWishId());
+        String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
+        clientRequestMessage.setMessageId(msgId);
+        getPendingClientMessages().add(clientRequestMessage);
     }
 
     private void requestUsers() {

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,6 +32,8 @@ import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.Core;
 import com.tiago.finalyearproject.model.User;
+import com.tiago.finalyearproject.model.UserEvent;
+import com.tiago.finalyearproject.model.Wish;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +55,7 @@ import java.util.List;
 public class CreateEventActivity extends AppAbstractFragmentActivity {
 
 
-    private AddFriendsAdapter inviteFriendsAdapter;
+    private InviteFriendsToEventAdapter inviteFriendsAdapter;
     private ListView theListView;
 
     private EditText editName;
@@ -85,14 +88,12 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
 //    private RadioButton anyoneRadioButton;
 
     private Button createEventButton;
+    private Wish wish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_event_activity);
-
-
-        getFriendsFromFacebook();
 
         editName = (EditText) findViewById(R.id.enter_event_name_edit_text);
         editLocation = (EditText) findViewById(R.id.enter_location_edit_text);
@@ -164,7 +165,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
                 SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
                 Date date = new Date();
                 try {
-                    date = originalFormat.parse(startYear + month + day );
+                    date = originalFormat.parse(startYear + month + day);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -187,18 +188,58 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
 
             }
         });
+        setWish((Wish) getIntent().getSerializableExtra("wish"));
+        if(getWish()!=null){
+
+            editName.setText(wish.getName());
+            editName.setEnabled(false);
+            activitiesSpinner.setSelection(getIndexFromSpinner(activitiesSpinner, wish.getEventType().name()));
+            activitiesSpinner.setEnabled(false);
+
+        }
+
+
+        requestUsers();
 
     }
 
-    private void createEvent(AppEvent event, List<String> invitedUsersIds) {
 
-        Profile profile = Profile.getCurrentProfile();
+
+    private void requestUsers() {
+        ClientMessage clientRequestMessage = new ClientMessage();
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.REQUEST_USERS_NEW_EVENT_LIST);
+        String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
+        clientRequestMessage.setMessageId(msgId);
+        getPendingClientMessages().add(clientRequestMessage);
+    }
+
+
+    //private method of your class
+    private int getIndexFromSpinner(Spinner spinner, String myString)
+    {
+        int index = 0;
+
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+    private void createEvent(AppEvent event, List<String> invitedUsersIds) {
 
         ClientMessage clientRequestMessage = new ClientMessage();
         clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.CREATE_EVENT);
 //            User user= new User(null,profile.getRegId(),profile.getFirstName(),profile.getLastName());
         clientRequestMessage.setEvent(event);
         clientRequestMessage.setFacebookIdsList(invitedUsersIds);
+        if(getWish()==null){
+            clientRequestMessage.setWishId(-1);
+        }else {
+            clientRequestMessage.setWishId(getWish().getWishId());
+        }
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
         getPendingClientMessages().add(clientRequestMessage);
@@ -229,46 +270,8 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
     }
 
     private void updateDateDisplay() {
-        editDate.setText(day+"/"+month+"/"+startYear);
+        editDate.setText(day + "/" + month + "/" + startYear);
     }
-
-    public void getFriendsFromFacebook() {
-        final List<User> usersList = new ArrayList<User>();
-        new GraphRequest(
-                AccessToken.getCurrentAccessToken(),
-                "/me/friends",
-                null,
-                HttpMethod.GET,
-                new GraphRequest.Callback() {
-                    public void onCompleted(GraphResponse response) {
-                        try {
-                            if(response.getJSONObject()!=null) {
-                                JSONArray data = (JSONArray) response.getJSONObject().get("data");
-                                for (int i = 0; i < data.length(); i++) {
-                                    JSONObject userJson = data.getJSONObject(i);
-                                    User user = new User();
-                                    String id = (String) userJson.get("id");
-                                    user.setFacebookId(id);
-                                    user.setName((String) userJson.get("name"));
-
-
-//                                user.setProfilePicture(getUserProfilePicture(id));
-                                    usersList.add(user);
-
-                                }
-                                setUsersPictures(usersList);
-                            }else{
-                                Toast.makeText(CreateEventActivity.this, "Could not connect to Facebook", Toast.LENGTH_LONG);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        ).executeAsync();
-    }
-
-
 
     private void setUsersPictures(final List<User> usersList) {
         new AsyncTask<Void, Void, String>() {
@@ -297,20 +300,62 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
 
 
     private void createListView(List<User> usersList) {
-        inviteFriendsAdapter = new AddFriendsAdapter(this, usersList);
+
+        List<String> listOfUsersIds = getIntent().getStringArrayListExtra("listOfUsers");
+        inviteFriendsAdapter = new InviteFriendsToEventAdapter(this, usersList, listOfUsersIds);
 
         theListView = (ListView) findViewById(R.id.invite_friends_list_view);
 
 
         // Tells the ListView what data to use
         theListView.setAdapter(inviteFriendsAdapter);
+
+
+//        List<String> listOfUsersIds = getIntent().getStringArrayListExtra("listOfUsers");
+//        List<Integer> positions = new ArrayList<Integer>();
+//        if(listOfUsersIds!=null) {
+//                for(int i=0; i<getInviteFriendsAdapter().getCount();i++){
+//                    for (String id: listOfUsersIds) {
+//                        if(getInviteFriendsAdapter().getItem(i).getFacebookId().equals(id)){
+//                            positions.add(i);
+//                        }
+//                    }
+//                }
+
+            // Execute some code after 2 seconds have passed
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    List<String> listOfUsersIds = getIntent().getStringArrayListExtra("listOfUsers");
+//                    CheckBox[] checkBoxArray = getInviteFriendsAdapter().getCheckBoxArray();
+//                    for (String id: listOfUsersIds) {
+//                        for (CheckBox checkBox : checkBoxArray) {
+//                            if (checkBox.getTag().equals(id)) {
+//                                checkBox.setChecked(true);
+//                            }
+//                        }
+//                    }
+//                }
+//            }, 5000);
+//            while (getInviteFriendsAdapter().getCheckBoxArray().)
+//            CheckBox[] checkBoxArray = getInviteFriendsAdapter().getCheckBoxArray();
+//            for (String id: listOfUsersIds) {
+//                for (CheckBox checkBox : checkBoxArray) {
+//                    if (checkBox.getTag().equals(id)) {
+//                        checkBox.setChecked(true);
+//                    }
+//                }
+//            }
+
+//        }
     }
 
-    public AddFriendsAdapter getInviteFriendsAdapter() {
+    public InviteFriendsToEventAdapter getInviteFriendsAdapter() {
         return inviteFriendsAdapter;
     }
 
-    public void setInviteFriendsAdapter(AddFriendsAdapter inviteFriendsAdapter) {
+    public void setInviteFriendsAdapter(InviteFriendsToEventAdapter inviteFriendsAdapter) {
         this.inviteFriendsAdapter = inviteFriendsAdapter;
     }
 
@@ -322,14 +367,40 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
         this.theListView = theListView;
     }
 
+    public Wish getWish() {
+        return wish;
+    }
+
+    public void setWish(Wish wish) {
+        this.wish = wish;
+    }
+
+
     @Override
     protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
-        if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
-            Intent intent = new Intent(CreateEventActivity.this, HomeActivity.class);
-            startActivity(intent);
-        }else if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_ERROR){
-            System.out.println("Could not create Event");
-        }
+        ServerMessage.ServerMessageType serverMessageType = serverMessage.getServerMessageType();
+        if (serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES || serverMessageType == ServerMessage.ServerMessageType.REPLY_ERROR) {
+            switch (clientMessageType) {
+                case CREATE_EVENT:
+                    if (serverMessage.getServerMessageType() == ServerMessage.ServerMessageType.REPLY_SUCCES) {
+                        Intent intent = new Intent(CreateEventActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    } else if (serverMessage.getServerMessageType() == ServerMessage.ServerMessageType.REPLY_ERROR) {
+                        System.out.println("Could not create Event");
+                    }
+                    break;
+                case REQUEST_USERS_NEW_EVENT_LIST:
+                    if (serverMessage.getServerMessageType() == ServerMessage.ServerMessageType.REPLY_SUCCES) {
+                        List<User> usersList = serverMessage.getUsersList();
+                        List<UserEvent> usersEventList = new ArrayList<UserEvent>();
+                        setUsersPictures(usersList);
 
+                    } else if (serverMessage.getServerMessageType() == ServerMessage.ServerMessageType.REPLY_ERROR) {
+                        System.out.println("Could not create Event");
+                    }
+                    break;
+
+            }
+        }
     }
 }
