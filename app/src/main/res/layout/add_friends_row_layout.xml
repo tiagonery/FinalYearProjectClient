@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="horizontal">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
 
-    <CheckBox android:id="@+id/checkbox_add_friends"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:onClick="onCheckboxClicked"/>
+<CheckBox android:id="@+id/checkbox_add_friends"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:onClick="onCheckboxClicked"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="25dp"/>
 
-    <!-- Image for each ListItem row
-    We can refer to images in our drawable folder with
-    @drawable/dot for the image named dot.png -->
-    <ImageView
-        android:id="@+id/friendPictureImageView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="25dp"/>
+<!-- Image for each ListItem row
+We can refer to images in our drawable folder with
+@drawable/dot for the image named dot.png -->
+<ImageView
+    android:id="@+id/friendPictureImageView"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:layout_marginLeft="10dp"
+    android:layout_alignBottom="@+id/checkbox_add_friends"
+    android:layout_toRightOf="@+id/checkbox_add_friends"/>
 
-    <!-- Used to define a custom ListView row -->
-    <TextView
-        android:id="@+id/friendNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:padding="15dp"
-        />
+<!-- Used to define a custom ListView row -->
+<TextView
+    android:id="@+id/friendNameTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="25sp"
+    android:text="Name"
+    android:textStyle="bold"
+    android:layout_marginLeft="5dp"
+    android:layout_alignBottom="@+id/checkbox_add_friends"
+    android:layout_toRightOf="@+id/friendPictureImageView"
+    />
 
-</LinearLayout>
+<View
+    android:layout_width="match_parent"
+    android:layout_below="@+id/checkbox_add_friends"
+    android:layout_height="1dp"
+    android:layout_marginTop="5dp"
+    android:background="@android:color/darker_gray"/>
+</RelativeLayout>
