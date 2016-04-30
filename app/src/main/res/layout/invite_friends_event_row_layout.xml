@@ -33,7 +33,7 @@
         android:layout_marginLeft="5dp"
         android:layout_alignBottom="@+id/checkbox_add_friends_event"
         android:layout_toRightOf="@+id/friendPictureEventImageView"
-        android:layout_toLefttOf="@+id/userEventStatusImageView"
+        android:layout_toLeftOf="@+id/userEventStatusImageView"
         />
 
     <ImageView

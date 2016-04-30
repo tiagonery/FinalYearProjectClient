@@ -20,13 +20,13 @@ import java.util.List;
  */
 
 // We can create custom adapters
-class InviteFriendsToEventAdapter extends ArrayAdapter<User> {
+class InviteFriendsToNewEventAdapter extends ArrayAdapter<User> {
 
 
     CheckBox[] checkBoxArray;
     List<String> selectedFriendsId;
 
-    public InviteFriendsToEventAdapter(Context context, List<User> users, List<String> selectedFriendsId){
+    public InviteFriendsToNewEventAdapter(Context context, List<User> users, List<String> selectedFriendsId){
 
         super(context, R.layout.add_friends_row_layout, users);
         checkBoxArray = new CheckBox[users.size()];

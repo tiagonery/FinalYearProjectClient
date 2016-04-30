@@ -83,7 +83,7 @@ class WishesAdapter extends ArrayAdapter<Wish> {
             });
         }
         else if(!wish.getUserWishList().isEmpty()){
-                joinActivityImage.setImageResource(R.drawable.joined);
+                joinActivityImage.setImageResource(R.drawable.like);
                 joinActivityImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -93,7 +93,7 @@ class WishesAdapter extends ArrayAdapter<Wish> {
                 });
             }
             else {
-            joinActivityImage.setImageResource(R.drawable.not_joined);
+            joinActivityImage.setImageResource(R.drawable.dislike);
             joinActivityImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

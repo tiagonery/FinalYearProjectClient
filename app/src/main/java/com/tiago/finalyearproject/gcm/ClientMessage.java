@@ -79,6 +79,7 @@ public class ClientMessage extends AbstractMessage{
 		EVENT,
 		WISH,
 		WISH_ID,
+		EVENT_ID,
 		FRIENDSHIP,
 		USER_CREATED,
 		FB_IDS_LIST;
@@ -134,6 +135,9 @@ public class ClientMessage extends AbstractMessage{
 	}
 	public void setWishId(int wishID) {
 		getContent().put(ClientContentTypeKey.WISH_ID.name(), wishID+"");
+	}
+	public void setEventId(int eventId) {
+		getContent().put(ClientContentTypeKey.EVENT_ID.name(), eventId+"");
 	}
 
 

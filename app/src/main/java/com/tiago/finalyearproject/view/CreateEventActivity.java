@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,13 +18,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
-import com.facebook.Profile;
 import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
@@ -34,10 +27,6 @@ import com.tiago.finalyearproject.model.Core;
 import com.tiago.finalyearproject.model.User;
 import com.tiago.finalyearproject.model.UserEvent;
 import com.tiago.finalyearproject.model.Wish;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -55,7 +44,7 @@ import java.util.List;
 public class CreateEventActivity extends AppAbstractFragmentActivity {
 
 
-    private InviteFriendsToEventAdapter inviteFriendsAdapter;
+    private InviteFriendsToNewEventAdapter inviteFriendsAdapter;
     private ListView theListView;
 
     private EditText editName;
@@ -118,7 +107,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
                 mTimePicker = new TimePickerDialog(CreateEventActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        editTime.setText( selectedHour + ":" + selectedMinute);
+                        editTime.setText(String.format("%02d", selectedHour)  + ":" +String.format("%02d", selectedMinute) );
                         hour = selectedHour;
                         minute = selectedMinute;
                     }
@@ -263,7 +252,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
             // TODO Auto-generated method stub
             // Do something with the date chosen by the user
             startYear = year;
-            month =  String.format("%02d", monthOfYear);;
+            month =  String.format("%02d", monthOfYear+1);
             day = String.format("%02d", dayOfMonth);
             updateDateDisplay();
         }
@@ -302,7 +291,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
     private void createListView(List<User> usersList) {
 
         List<String> listOfUsersIds = getIntent().getStringArrayListExtra("listOfUsers");
-        inviteFriendsAdapter = new InviteFriendsToEventAdapter(this, usersList, listOfUsersIds);
+        inviteFriendsAdapter = new InviteFriendsToNewEventAdapter(this, usersList, listOfUsersIds);
 
         theListView = (ListView) findViewById(R.id.invite_friends_list_view);
 
@@ -351,11 +340,11 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
 //        }
     }
 
-    public InviteFriendsToEventAdapter getInviteFriendsAdapter() {
+    public InviteFriendsToNewEventAdapter getInviteFriendsAdapter() {
         return inviteFriendsAdapter;
     }
 
-    public void setInviteFriendsAdapter(InviteFriendsToEventAdapter inviteFriendsAdapter) {
+    public void setInviteFriendsAdapter(InviteFriendsToNewEventAdapter inviteFriendsAdapter) {
         this.inviteFriendsAdapter = inviteFriendsAdapter;
     }
 

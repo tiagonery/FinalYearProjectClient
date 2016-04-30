@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/eventCategoryImageView"
-        android:layout_toLeftOf="@+id/see_event_ImageView"
+        android:layout_toLeftOf="@+id/user_event_status_ImageView"
         android:layout_alignBottom="@+id/eventCategoryImageView"
         android:textSize="30sp"
         android:text="20sp"
@@ -36,7 +36,7 @@
         android:layout_marginTop="25dp"
         />
     <ImageView
-        android:id="@+id/see_event_ImageView"
+        android:id="@+id/user_event_status_ImageView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_width="65dp"

@@ -1,11 +1,13 @@
 package com.tiago.finalyearproject.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.UserEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +30,7 @@ class EventsAdapter extends ArrayAdapter<AppEvent> {
 
     public EventsAdapter(Context context, List<AppEvent> events){
 
-        super(context, R.layout.add_friends_row_layout, events);
+        super(context, R.layout.events_row_layout, events);
 
 
     }
@@ -46,40 +49,47 @@ class EventsAdapter extends ArrayAdapter<AppEvent> {
         // The LayoutInflator puts a layout into the right View
         LayoutInflater theInflater = LayoutInflater.from(getContext());
 
+        // We retrieve the text from the array
+        final AppEvent event = getItem(position);
+
         // inflate takes the resource to load, the parent that the resource may be
         // loaded into and true or false if we are loading into a parent view.
         View theView = theInflater.inflate(R.layout.events_row_layout, parent, false);
 
-        theView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        ImageView statusImageView= (ImageView) theView.findViewById(R.id.user_event_status_ImageView);
 
 
 
 
-        // We retrieve the text from the array
-        AppEvent event = getItem(position);
+
+
 
         Profile profile = Profile.getCurrentProfile();
         UserEvent.UserEventState state = event.getCurrentUserEventState(profile.getId());
         if(state == UserEvent.UserEventState.INVITED){
-            theView.setBackgroundColor(Color.parseColor("#b3b3ff"));
+            statusImageView.setImageResource(R.drawable.envelope);
         }
         else if(state == UserEvent.UserEventState.GOING){
-            theView.setBackgroundColor(Color.parseColor("#b3ffcc"));
+            statusImageView.setImageResource(R.drawable.joined);
         }
         else if(state == UserEvent.UserEventState.IDLE){
-            theView.setBackgroundColor(Color.parseColor("#ffffff"));
+            statusImageView.setImageResource(R.drawable.view);
         }
         else if(state == UserEvent.UserEventState.NOT_GOING){
-            theView.setBackgroundColor(Color.parseColor("#ffb3b3"));
+            statusImageView.setImageResource(R.drawable.delete);
         }
         else if(state == UserEvent.UserEventState.OWNER){
-            theView.setBackgroundColor(Color.parseColor("#ffffb3"));
+            statusImageView.setImageResource(R.drawable.crown);
         }
+
+        statusImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ManageEventActivity.class);
+                intent.putExtra("event", event);
+                getContext().startActivity(intent);
+            }
+        });
 
         // Get the TextView we want to edit
         TextView theTextView = (TextView) theView.findViewById(R.id.eventNameTextView);
