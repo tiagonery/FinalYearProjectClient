@@ -3,11 +3,13 @@
  */
 package com.tiago.finalyearproject.model;
 
+import java.io.Serializable;
+
 /**
  * @author Tiago
  *
  */
-public class Friendship {
+public class Friendship implements Serializable {
 
 
 	private String user1Id;
@@ -42,6 +44,8 @@ public class Friendship {
 		this.user1Id = user1Id;
 		this.user2Id = user2Id;
 		this.state = state;
+	}
+	public Friendship() {
 	}
 
 	public String getUser1Id() {

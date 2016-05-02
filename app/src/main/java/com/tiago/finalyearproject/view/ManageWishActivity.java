@@ -66,7 +66,7 @@ public class ManageWishActivity extends AppAbstractFragmentActivity {
         deleteWishImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                deleteWish();
+                deleteWish(wish.getWishId());
             }
         });
 
@@ -75,7 +75,7 @@ public class ManageWishActivity extends AppAbstractFragmentActivity {
             inviteToEventButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    inviteToEvent();
                 }
             });
 
@@ -101,15 +101,31 @@ public class ManageWishActivity extends AppAbstractFragmentActivity {
                 }
             });
         }
-
-
         requestUsers();
     }
 
-    private void deleteWish() {
+
+    private void inviteToEvent() {
+        CheckBox[] checkBoxArray = usersToInviteAdapter.getCheckBoxArray();
+        List<String> listOfUsersIds = new ArrayList<String>();
+        for (CheckBox checkBox : checkBoxArray) {
+            if (checkBox.isChecked()) {
+                listOfUsersIds.add((String) checkBox.getTag());
+            }
+        }
+        ClientMessage clientRequestMessage = new ClientMessage();
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.INVITE_TO_EVENT);
+        clientRequestMessage.setEventId(wish.getLinkedEvent().getEventId());
+        clientRequestMessage.setFacebookIdsList(listOfUsersIds);
+        String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
+        clientRequestMessage.setMessageId(msgId);
+        getPendingClientMessages().add(clientRequestMessage);
+    }
+
+    private void deleteWish(int wishId) {
         ClientMessage clientRequestMessage = new ClientMessage();
         clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.DELETE_WISH);
-        clientRequestMessage.setWishId(wish.getWishId());
+        clientRequestMessage.setWishId(wishId);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
         getPendingClientMessages().add(clientRequestMessage);
@@ -175,11 +191,16 @@ public class ManageWishActivity extends AppAbstractFragmentActivity {
                     } else {
                     }
                     break;
+                case DELETE_WISH:
+                    if (serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES) {
+                        Intent intent = new Intent(ManageWishActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    } else {
+                    }
+                    break;
                 case INVITE_TO_EVENT:
                     if (serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES) {
-                        List<Wish> wishesList = serverMessage.getWishesList();
-//                        Intent intent = new Intent(ManageWishActivity.this, CreateEventActivity.class);
-//                        startActivity(intent);
+                        requestUsers();
                     } else {
                     }
                     break;

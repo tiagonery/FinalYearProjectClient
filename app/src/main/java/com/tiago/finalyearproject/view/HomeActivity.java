@@ -9,6 +9,8 @@ import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.AppEvent;
+import com.tiago.finalyearproject.model.Friendship;
+import com.tiago.finalyearproject.model.User;
 import com.tiago.finalyearproject.model.UserWish;
 import com.tiago.finalyearproject.model.Wish;
 
@@ -73,6 +75,8 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
         viewPager.setCurrentItem(0);
     }
 
+
+
     public TabsPagerAdapter getAdapter() {
         return mAdapter;
     }
@@ -103,6 +107,28 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
 //                        ((WishesFragment) mAdapter.getItem(0)).requestWishes();
                     }else if(serverMessageType == ServerMessage.ServerMessageType.REPLY_ERROR){
                         ((WishesFragment) mAdapter.getItem(0)).requestWishes();
+                    }
+                    break;
+                case REQUEST_FRIENDS_LIST:
+                    if(serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES){
+                        List<User> friendsList = serverMessage.getUsersList();
+                        List<Friendship> friendshipList = serverMessage.getFriendshipList();
+                        ((FriendsFragment) mAdapter.getItem(2)).setUsersPicturesFromFriendsList(friendsList, friendshipList);
+                    }else if(serverMessageType == ServerMessage.ServerMessageType.REPLY_ERROR){
+//                        ((WishesFragment) mAdapter.getItem(2)).requestWishes();
+                    }
+                    break;
+                case ACCEPT_FRIENDSHIP:
+                    if(serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES){
+                        ((FriendsFragment) mAdapter.getItem(2)).requestFriendsList();
+                    }else if(serverMessageType == ServerMessage.ServerMessageType.REPLY_ERROR){
+//                        ((WishesFragment) mAdapter.getItem(2)).requestWishes();
+                    }
+                case REFUSE_FRIENDSHIP:
+                    if(serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES){
+                        ((FriendsFragment) mAdapter.getItem(2)).requestFriendsList();
+                    }else if(serverMessageType == ServerMessage.ServerMessageType.REPLY_ERROR){
+//                        ((WishesFragment) mAdapter.getItem(2)).requestWishes();
                     }
                     break;
 

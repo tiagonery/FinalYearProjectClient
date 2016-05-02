@@ -45,7 +45,10 @@ public class ClientMessage extends AbstractMessage{
 		DELETE_USER, 
 		EDIT_CONFIG, 
 		REQUEST_FRIENDSHIP_USERNAME,
-		REQUEST_FRIENDSHIP_FB,
+		REQUEST_FRIENDSHIP_FB_IDS_LIST,
+		REQUEST_FRIENDSHIP_FB_ID,
+		REQUEST_FRIENDS_LIST,
+		REQUEST_FRIENDS_IDS_LIST,
 		REQUEST_USERS_WISH_LIST,
 		REQUEST_USERS_EVENT_LIST,
 		REQUEST_USERS_NEW_EVENT_LIST,
@@ -56,7 +59,8 @@ public class ClientMessage extends AbstractMessage{
 		CREATE_EVENT,
 		CREATE_WISH,
 		DELETE_WISH,
-		EDIT_EVENT, 
+		EDIT_EVENT,
+		DELETE_EVENT,
 		INVITE_TO_EVENT, 
 		ACCEPT_INVITE, 
 		REFUSE_INVITE,
@@ -82,6 +86,7 @@ public class ClientMessage extends AbstractMessage{
 		EVENT_ID,
 		FRIENDSHIP,
 		USER_CREATED,
+		USER_NAME,
 		FB_IDS_LIST;
 
 	}
@@ -145,6 +150,10 @@ public class ClientMessage extends AbstractMessage{
 		getContent().put(ClientContentTypeKey.REG_ID.name(), regid);
 	}
 
+	public void setUserName(String userName) {
+		getContent().put(ClientContentTypeKey.USER_NAME.name(), userName);
+	}
+
 	public void setFacebookId(String fbId) {
 		getContent().put(ClientContentTypeKey.FB_ID.name(), fbId);
 	}
@@ -152,6 +161,10 @@ public class ClientMessage extends AbstractMessage{
 	public void setUserCreated(User user) {
 		String string = getJsonValueOf(user);
 		getContent().put(ClientContentTypeKey.USER_CREATED.name(), string);
+	}
+	public void setFriendship(Friendship friendship) {
+		String string = getJsonValueOf(friendship);
+		getContent().put(ClientContentTypeKey.FRIENDSHIP.name(), string);
 	}
 
 	public void setFacebookIdsList(List<String> idsList) {

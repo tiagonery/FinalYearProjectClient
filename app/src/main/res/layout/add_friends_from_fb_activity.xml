@@ -5,15 +5,15 @@
               android:layout_height="fill_parent">
 
     <ScrollView
-                android:id="@+id/ScrollView01"
+                android:id="@+id/add_friends_from_fb_ScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fillViewport="true"
                 android:scrollbars="vertical"
-                android:layout_above="@+id/add_friends_button"
+                android:layout_above="@+id/add_friends_from_fb_Button"
                 android:layout_alignParentTop="true">
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/add_friends_from_fb_ListlView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop ="true"/>
@@ -22,7 +22,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/add_friends_button"
+        android:id="@+id/add_friends_from_fb_Button"
         android:text="Add Friends"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"/>

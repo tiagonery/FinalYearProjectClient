@@ -9,7 +9,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/search"
-        android:id="@+id/search_user_imageView"
+        android:id="@+id/search_friends_search_user_imageView"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="10dp"
@@ -17,15 +17,16 @@
         android:layout_marginRight="10dp"
         android:layout_alignParentEnd="true"/>
 
-    <ImageView
+    <EditText
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_alignParentLeft="true"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/add_facebook"
-        android:layout_alignBottom="@+id/search_user_imageView"
-        android:layout_toLeftOf="@+id/search_user_imageView"
-        android:id="@+id/add_from_fb_ImageView"
+        android:layout_alignBottom="@+id/search_friends_search_user_imageView"
+        android:layout_toLeftOf="@+id/search_friends_search_user_imageView"
+        android:id="@+id/search_friend_EditText"
         android:layout_alignParentTop="true"/>
 
     <ScrollView
@@ -34,9 +35,9 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:scrollbars="vertical"
-        android:layout_below="@+id/search_user_imageView">
+        android:layout_below="@+id/search_friends_search_user_imageView">
         <ListView
-            android:id="@+id/friends_list_ListView"
+            android:id="@+id/search_friends_list_ListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop ="true"/>

@@ -3,12 +3,14 @@ package com.tiago.finalyearproject.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import com.tiago.finalyearproject.model.Wish;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,14 +80,50 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
         requestUsers();
     }
 
-    private void deleteEvent() {
+    private void inviteToEvent() {
+        CheckBox[] checkBoxArray = usersToInviteAdapter.getCheckBoxArray();
+        List<String> listOfUsersIds = new ArrayList<String>();
+        for (CheckBox checkBox : checkBoxArray) {
+            if (checkBox.isChecked()) {
+                listOfUsersIds.add((String) checkBox.getTag());
+            }
+        }
         ClientMessage clientRequestMessage = new ClientMessage();
-        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.DELETE_WISH);
-        clientRequestMessage.setWishId(event.getEventId());
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.INVITE_TO_EVENT);
+        clientRequestMessage.setEventId(event.getEventId());
+        clientRequestMessage.setFacebookIdsList(listOfUsersIds);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
         getPendingClientMessages().add(clientRequestMessage);
     }
+
+    private void deleteEvent() {
+        ClientMessage clientRequestMessage = new ClientMessage();
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.DELETE_EVENT);
+        clientRequestMessage.setEventId(event.getEventId());
+        String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
+        clientRequestMessage.setMessageId(msgId);
+        getPendingClientMessages().add(clientRequestMessage);
+    }
+
+    private void leaveEvent() {
+        ClientMessage clientRequestMessage = new ClientMessage();
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.JOIN_EVENT);
+        clientRequestMessage.setEventId(event.getEventId());
+        String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
+        clientRequestMessage.setMessageId(msgId);
+        getPendingClientMessages().add(clientRequestMessage);
+    }
+
+    private void joinEvent() {
+        ClientMessage clientRequestMessage = new ClientMessage();
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.LEAVE_EVENT);
+        clientRequestMessage.setEventId(event.getEventId());
+        String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
+        clientRequestMessage.setMessageId(msgId);
+        getPendingClientMessages().add(clientRequestMessage);
+    }
+
 
     private void requestUsers() {
         ClientMessage clientRequestMessage = new ClientMessage();
@@ -144,6 +183,79 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
         return result;
     }
 
+
+
+    public void setUserEventStateFromCurrentUser(UserEvent.UserEventState userEventStateFromCurrentUser) {
+        this.userEventStateFromCurrentUser = userEventStateFromCurrentUser;
+        if(userEventStateFromCurrentUser == UserEvent.UserEventState.OWNER){
+            usersListTextView.setText("Friends to Invite");
+            inviteToEventButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    inviteToEvent();
+                }
+            });
+
+            stateInEventImageView.setImageResource(R.drawable.garbage);
+            stateInEventImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                deleteEvent();
+                }
+            });
+        }else if(userEventStateFromCurrentUser == UserEvent.UserEventState.GOING){
+            inviteToEventButton.setVisibility(View.INVISIBLE);
+            usersListTextView.setText("Friends Going");
+            stateInEventImageView.setImageResource(R.drawable.joined);
+            stateInEventImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                leaveEvent();
+                }
+            });
+        }else if(userEventStateFromCurrentUser == UserEvent.UserEventState.INVITED){
+
+
+            inviteToEventButton.setVisibility(View.INVISIBLE);
+            usersListTextView.setText("Friends Going");
+            stateInEventImageView.setImageResource(R.drawable.envelope);
+            stateInEventImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                            joinEvent();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                            leaveEvent();
+                                    break;
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ManageEventActivity.this);
+                    builder.setMessage("Do you want to Join this Event?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+                }
+            });
+
+        }else if(userEventStateFromCurrentUser == UserEvent.UserEventState.NOT_GOING){
+
+            inviteToEventButton.setVisibility(View.INVISIBLE);
+            usersListTextView.setText("Friends Going");
+            stateInEventImageView.setImageResource(R.drawable.delete);
+            stateInEventImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                joinEvent();
+                }
+            });
+
+        }
+
+    }
     @Override
     protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         ServerMessage.ServerMessageType serverMessageType = serverMessage.getServerMessageType();
@@ -159,9 +271,27 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
                     break;
                 case INVITE_TO_EVENT:
                     if (serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES) {
-                        List<Wish> wishesList = serverMessage.getWishesList();
-//                        Intent intent = new Intent(ManageWishActivity.this, CreateEventActivity.class);
-//                        startActivity(intent);
+                        requestUsers();
+                    } else {
+                    }
+                    break;
+                case DELETE_EVENT:
+                    if (serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES) {
+                        Intent intent = new Intent(ManageEventActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    } else {
+                    }
+                    break;
+                case JOIN_EVENT:
+                    if (serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES) {
+                        requestUsers();
+                    } else {
+                    }
+                    break;
+                case LEAVE_EVENT:
+                    if (serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES) {
+                        Intent intent = new Intent(ManageEventActivity.this, HomeActivity.class);
+                        startActivity(intent);
                     } else {
                     }
                     break;
@@ -171,72 +301,6 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
             }
         }
 
-
-    }
-
-    public void setUserEventStateFromCurrentUser(UserEvent.UserEventState userEventStateFromCurrentUser) {
-        this.userEventStateFromCurrentUser = userEventStateFromCurrentUser;
-        if(userEventStateFromCurrentUser == UserEvent.UserEventState.OWNER){
-            usersListTextView.setText("Friends to Invite");
-            stateInEventImageView.setImageResource(R.drawable.garbage);
-            stateInEventImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                deleteEvent();
-                }
-            });
-        }else if(userEventStateFromCurrentUser == UserEvent.UserEventState.GOING){
-            inviteToEventButton.setVisibility(View.INVISIBLE);
-            usersListTextView.setText("Friends Going");
-            stateInEventImageView.setImageResource(R.drawable.joined);
-            stateInEventImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                leaveEvent();
-                }
-            });
-        }else if(userEventStateFromCurrentUser == UserEvent.UserEventState.INVITED){
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which){
-                        case DialogInterface.BUTTON_POSITIVE:
-//                            acceptEvent();
-                            break;
-
-                        case DialogInterface.BUTTON_NEGATIVE:
-//                            refuseEvent();
-                            break;
-                    }
-                }
-            };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(ManageEventActivity.this);
-            builder.setMessage("Do you want to Join this Event?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
-
-            inviteToEventButton.setVisibility(View.INVISIBLE);
-            usersListTextView.setText("Friends Going");
-            stateInEventImageView.setImageResource(R.drawable.envelope);
-            stateInEventImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                deleteEvent();
-                }
-            });
-
-        }else if(userEventStateFromCurrentUser == UserEvent.UserEventState.NOT_GOING){
-
-            inviteToEventButton.setVisibility(View.INVISIBLE);
-            usersListTextView.setText("Friends Going");
-            stateInEventImageView.setImageResource(R.drawable.delete);
-            stateInEventImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                joinEvent();
-                }
-            });
-
-        }
 
     }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <!-- Image for each ListItem row
+    We can refer to images in our drawable folder with
+    @drawable/dot for the image named dot.png -->
+    <ImageView
+        android:id="@+id/friend_list_profile_picture_ImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"/>
+
+    <!-- Used to define a custom ListView row -->
+    <TextView
+        android:id="@+id/friend_list_name_ImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:text="Name"
+        android:textStyle="bold"
+        android:layout_marginLeft="5dp"
+        android:layout_alignBottom="@+id/friend_list_profile_picture_ImageView"
+        android:layout_toRightOf="@+id/friend_list_profile_picture_ImageView"
+        android:layout_toLeftOf="@+id/friend_list_status_ImageView"
+        />
+
+    <ImageView
+        android:id="@+id/friend_list_status_ImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignBottom="@+id/friend_list_profile_picture_ImageView"
+        android:layout_alignParentRight="true"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@+id/friend_list_profile_picture_ImageView"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/darker_gray"/>
+</RelativeLayout>

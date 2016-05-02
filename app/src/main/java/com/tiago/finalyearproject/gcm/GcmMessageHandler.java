@@ -90,6 +90,12 @@ public class GcmMessageHandler extends IntentService {
                     case NOTIFY_FRIENDSHIP_REQUEST_RECEIVED:
                         core.notifyFriendshipRequestReceived(serverMessage); //not implemented
                         break;
+                    case NOTIFY_FRIENDSHIP_REQUEST_ACCEPTED:
+                        core.notifyFriendshipRequestReceived(serverMessage); //not implemented
+                        break;
+                    case NOTIFY_FRIENDSHIP_REQUEST_REFUSED:
+                        core.notifyFriendshipRequestReceived(serverMessage); //not implemented
+                        break;
                     case NOTIFY_INVITATION_RECEIVED:
                         core.notifyInvitationReceived(serverMessage); //not implemented
                         break;
@@ -97,6 +103,12 @@ public class GcmMessageHandler extends IntentService {
                         core.notifyNewEventAvailableReceived(serverMessage); //not implemented
                         break;
                     case NOTIFY_NEW_WISH_AVAILABLE:
+                        core.notifyNewWishAvailableReceived(serverMessage); //not implemented
+                        break;
+                    case NOTIFY_WISH_DELETED:
+                        core.notifyNewWishAvailableReceived(serverMessage); //not implemented
+                        break;
+                    case NOTIFY_EVENT_DELETED:
                         core.notifyNewWishAvailableReceived(serverMessage); //not implemented
                         break;
 

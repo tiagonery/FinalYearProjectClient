@@ -1,10 +1,12 @@
 package com.tiago.finalyearproject.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,6 +17,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.facebook.Profile;
 import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
@@ -34,12 +37,11 @@ import java.util.List;
 /**
  * Created by Tiago on 14/03/2016.
  */
-public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
+public class AddFirstFriendsFromFBActivity extends AppAbstractFragmentActivity {
 
 
     private AddFriendsAdapter theAdapter;
     private ListView theListView;
-    private List<User> friendsFromFB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +66,46 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
 
         getFriendsFromFacebook();
 
+//        ListAdapter theAdapter = new ArrayAdapter<User>(this, R.layout.add_friends_row_layout, R.id.textView1, friendsFromFB);
+
+
+//        setContentView(R.layout.app_activity);
+//        Profile profile = Profile.getCurrentProfile();
+//        TextView mTextDetails = (TextView) findViewById(R.id.textView1);
+//        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+//        String regId = prefs.getString(Constants.KEY_REG_ID, null);
+//
+//        mTextDetails.append(profile.getFirstName() + " " + profile.getLastName() + " " + profile.getRegId() + " regid: " + regId);
+
+
+//        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+//                new GraphRequest.GraphJSONObjectCallback() {
+//                    @Override
+//                    public void onCompleted(JSONObject object, GraphResponse response) {
+//                        Log.v("LoginActivity", response.toString());
+//
+//                        // Application code
+//                        try {
+//                            String friends = object.getString("user_friends");
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//        Bundle parameters = new Bundle();
+//        parameters.putString("fields", "friends");
+//        request.setParameters(parameters);
+//        request.executeAsync();
+
     }
 
     private void addFriends(List<String> listOfUsersIdsToAdd) {
+
+        Profile profile = Profile.getCurrentProfile();
+
         ClientMessage clientRequestMessage = new ClientMessage();
         clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.REQUEST_FRIENDSHIP_FB_IDS_LIST);
+//            User user= new User(null,profile.getRegId(),profile.getFirstName(),profile.getLastName());
         clientRequestMessage.setFacebookIdsList(listOfUsersIdsToAdd);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
@@ -100,11 +137,9 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
                                     usersList.add(user);
 
                                 }
-
-                                setFriendsFromFB(usersList);
-                                requestFriendshipList();
+                                setUsersPictures(usersList);
                             }else{
-                                Toast.makeText(AddFriendsFromFBActivity.this,"Could not connect to Facebook", Toast.LENGTH_LONG);
+                                Toast.makeText(AddFirstFriendsFromFBActivity.this,"Could not connect to Facebook", Toast.LENGTH_LONG);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -115,11 +150,6 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
     }
 
     private void createListView(List<User> usersList) {
-        if(usersList.isEmpty()){
-
-//display in long period of time
-            Toast.makeText(getApplicationContext(), "All your Facebook friends using this app are already your friends here :)", Toast.LENGTH_LONG).show();
-        }
         theAdapter = new AddFriendsAdapter(this, usersList);
 
         theListView = (ListView) findViewById(R.id.add_friends_from_fb_ListlView);
@@ -148,18 +178,25 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
                 return "";
             }
             @Override
-            protected void onPostExecute(String msg) {createListView(usersList);
+            protected void onPostExecute(String msg) {
+                createListView(usersList);
             }
         }.execute(null, null, null);
 
     }
 
-    public void requestFriendshipList() {
+    public void sendFriendsRequests() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
             ClientMessage clientRequestMessage = new ClientMessage();
-            clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.REQUEST_FRIENDS_IDS_LIST);
+            clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.REQUEST_FRIENDSHIP_FB_IDS_LIST);
+            clientRequestMessage.setFacebookIdsList(getIdsFromSelectedFriends());
             String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
             clientRequestMessage.setMessageId(msgId);
             getPendingClientMessages().add(clientRequestMessage);
+
+
+//        createRegId();
     }
 
     private List<String> getIdsFromSelectedFriends() {
@@ -173,54 +210,16 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
         }return result;
     }
 
-
-    public List<User> getFriendsFromFBToAdd(List<String> friendsIds) {
-        List<User> result = new ArrayList<User>();
-        for (User user: getFriendsFromFB()) {
-            boolean isFriend = false;
-            for (String id: friendsIds) {
-                if(user.getFacebookId().equals(id)){
-                    isFriend=true;
-                }if(isFriend==false){
-                    result.add(user);
-                }
-            }
-        }
-        return result;
-    }
-    public List<User> getFriendsFromFB() {
-        return friendsFromFB;
-    }
-
-    public void setFriendsFromFB(List<User> friendsFromFB) {
-        this.friendsFromFB = friendsFromFB;
-    }
-
     @Override
     protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
-        ServerMessage.ServerMessageType serverMessageType = serverMessage.getServerMessageType();
-        if (serverMessageType== ServerMessage.ServerMessageType.REPLY_SUCCES || serverMessageType== ServerMessage.ServerMessageType.REPLY_ERROR){
-            switch (clientMessageType) {
-                case REQUEST_FRIENDS_IDS_LIST:
-                    if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
-                        List<String> usersList = serverMessage.getUsersIdsList();
-                        setUsersPictures(getFriendsFromFBToAdd(usersList));
-                    }else if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_ERROR){
-                        System.out.println("Reply ERROR from adding friends: "+serverMessage.getMessageError());
-                    }
-                    break;
-                case REQUEST_FRIENDSHIP_FB_IDS_LIST:
-                    if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
-                        Intent intent = new Intent(AddFriendsFromFBActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                    }else if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_ERROR){
-                        System.out.println("Reply ERROR from adding friends: "+serverMessage.getMessageError());
-                    }
-                    break;
-            }
+
+        if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
+            Intent intent = new Intent(AddFirstFriendsFromFBActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }else if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_ERROR){
+            System.out.println("Reply ERROR from adding friends: "+serverMessage.getMessageError());
         }
     }
-
 
     public AddFriendsAdapter getTheAdapter() {
         return theAdapter;

@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tiago.finalyearproject.model.AppEvent;
+import com.tiago.finalyearproject.model.Friendship;
 import com.tiago.finalyearproject.model.User;
 import com.tiago.finalyearproject.model.UserEvent;
 import com.tiago.finalyearproject.model.UserWish;
@@ -47,9 +48,13 @@ public class ServerMessage extends AbstractMessage {
         REPLY_SUCCES,
         REPLY_ERROR,
         NOTIFY_FRIENDSHIP_REQUEST_RECEIVED,
+        NOTIFY_FRIENDSHIP_REQUEST_ACCEPTED,
+        NOTIFY_FRIENDSHIP_REQUEST_REFUSED,
         NOTIFY_INVITATION_RECEIVED,
         NOTIFY_NEW_EVENTAVAILABLE,
-        NOTIFY_NEW_WISH_AVAILABLE;
+        NOTIFY_NEW_WISH_AVAILABLE,
+        NOTIFY_WISH_DELETED,
+        NOTIFY_EVENT_DELETED;
 
     }
 
@@ -60,9 +65,11 @@ public class ServerMessage extends AbstractMessage {
         ERROR_MESSAGE,
         FRIENDSHIP_REQUEST_FROM,
         FRIENDSHIP_REQUEST_ACCEPTED_FROM,
+        FRIENDSHIP_LIST,
         EVENTS_LIST,
         EVENT,
         USERS_LIST,
+        USERS_IDS_LIST,
         USERS_EVENT_LIST,
         WISHES_LIST,
         USERS_WISH_LIST,
@@ -221,6 +228,19 @@ public class ServerMessage extends AbstractMessage {
         return eventsList;
     }
 
+    public List<String> getUsersIdsList() {
+        String json = (String) getContent().get(ServerContentTypeKey.USERS_IDS_LIST.name());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+        List<String> usersIdsList = null;
+        try {
+            usersIdsList = mapper.readValue(json, new TypeReference<List<String>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return usersIdsList;
+    }
+
     public List<UserWish> getUsersWishList() {
         String json = (String) getContent().get(ServerContentTypeKey.USERS_WISH_LIST.name());
         ObjectMapper mapper = new ObjectMapper();
@@ -245,6 +265,19 @@ public class ServerMessage extends AbstractMessage {
             e.printStackTrace();
         }
         return usersList;
+    }
+
+    public List<Friendship> getFriendshipList() {
+        String json = (String) getContent().get(ServerContentTypeKey.FRIENDSHIP_LIST.name());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+        List<Friendship> friendshipList = null;
+        try {
+            friendshipList = mapper.readValue(json, new TypeReference<List<Friendship>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return friendshipList;
     }
 
     public List<UserEvent> getUsersEventList() {
