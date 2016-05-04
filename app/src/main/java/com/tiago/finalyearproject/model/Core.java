@@ -10,6 +10,9 @@ import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.view.AppAbstractFragmentActivity;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -21,6 +24,7 @@ public class Core {
 	private static Core core = new Core();
 	private static GCMManager gcmManager;
 	private AppAbstractFragmentActivity currentActivity;
+	private List<ClientMessage> pendingClientMessages;
 
 
 	public AppAbstractFragmentActivity getCurrentActivity() {
@@ -42,11 +46,11 @@ public class Core {
 	}
 
 	public void notifyReplySuccesfull(ServerMessage serverMessage) {
-		getCurrentActivity().handlePendingMessage(serverMessage);
+		Core.getInstance().handlePendingMessage(serverMessage);
 	}
 
 	public void notifyReplyError(ServerMessage serverMessage) {
-		getCurrentActivity().handlePendingMessage(serverMessage);
+		Core.getInstance().handlePendingMessage(serverMessage);
 	}
 
 	public void notifyFriendshipRequestReceived(ServerMessage serverMessage) {
@@ -65,6 +69,25 @@ public class Core {
 
 
 
+	public List<ClientMessage> getPendingClientMessages() {
+		if (pendingClientMessages == null){
+			pendingClientMessages = new ArrayList<ClientMessage>();
+		}
+		return pendingClientMessages;
+	}
+
+
+
+	public void handlePendingMessage(ServerMessage message){
+		List<ClientMessage> pendingClientMessagesCopy = new ArrayList<>(getPendingClientMessages());
+		for(Iterator<ClientMessage> iterator = pendingClientMessagesCopy.iterator(); iterator.hasNext();) {
+			ClientMessage clientMessage = iterator.next();
+			if (message.getMessageRepliedId().equals(clientMessage.getMessageId())) {
+				getPendingClientMessages().remove(clientMessage);
+				getCurrentActivity().handlePendingMessage(message, clientMessage.getMessageType());
+			}
+		}
+	}
 
 	/**
 	 * @param clientRequestMessage

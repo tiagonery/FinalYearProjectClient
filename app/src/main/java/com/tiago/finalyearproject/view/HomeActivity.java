@@ -82,7 +82,7 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
     }
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
+    public void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         ServerMessage.ServerMessageType serverMessageType = serverMessage.getServerMessageType();
         if (serverMessageType== ServerMessage.ServerMessageType.REPLY_SUCCES || serverMessageType== ServerMessage.ServerMessageType.REPLY_ERROR){
             switch (clientMessageType) {

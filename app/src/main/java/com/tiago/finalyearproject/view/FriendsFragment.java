@@ -98,7 +98,7 @@ public class FriendsFragment extends Fragment {
         clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.REQUEST_FRIENDS_LIST);
         String msgId = Core.getInstance().sendRequest((AppAbstractFragmentActivity) getActivity(), clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        ((AppAbstractFragmentActivity) getActivity()).getPendingClientMessages().add(clientRequestMessage);
+        ((AppAbstractFragmentActivity) getActivity()).addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     public void acceptFriendship(Friendship friendship) {
@@ -107,7 +107,7 @@ public class FriendsFragment extends Fragment {
         clientRequestMessage.setFriendship(friendship);
         String msgId = Core.getInstance().sendRequest((AppAbstractFragmentActivity) getActivity(), clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        ((AppAbstractFragmentActivity) getActivity()).getPendingClientMessages().add(clientRequestMessage);
+        ((AppAbstractFragmentActivity) getActivity()).addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     public void refuseFriendship(Friendship friendship) {
@@ -116,7 +116,7 @@ public class FriendsFragment extends Fragment {
         clientRequestMessage.setFriendship(friendship);
         String msgId = Core.getInstance().sendRequest((AppAbstractFragmentActivity) getActivity(), clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        ((AppAbstractFragmentActivity) getActivity()).getPendingClientMessages().add(clientRequestMessage);
+        ((AppAbstractFragmentActivity) getActivity()).addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     private void createActivitiesListView(final List<User> friendsList, final List<Friendship> friendshipList) {

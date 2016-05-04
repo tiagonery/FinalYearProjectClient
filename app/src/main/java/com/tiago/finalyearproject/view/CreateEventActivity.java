@@ -199,7 +199,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.REQUEST_USERS_NEW_EVENT_LIST);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
     }
 
 
@@ -231,7 +231,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
         }
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
 
     }
 
@@ -366,7 +366,7 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
 
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
+    public void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         ServerMessage.ServerMessageType serverMessageType = serverMessage.getServerMessageType();
         if (serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES || serverMessageType == ServerMessage.ServerMessageType.REPLY_ERROR) {
             switch (clientMessageType) {

@@ -68,7 +68,7 @@ public class EventsFragment extends Fragment {
 //            User user= new User(null,profile.getRegId(),profile.getFirstName(),profile.getLastName());
         String msgId = Core.getInstance().sendRequest((AppAbstractFragmentActivity) getActivity(), clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        ((AppAbstractFragmentActivity) getActivity()).getPendingClientMessages().add(clientRequestMessage);
+        ((AppAbstractFragmentActivity) getActivity()).addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     public void createEventsListView(final List<AppEvent> eventsList) {

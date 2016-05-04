@@ -109,7 +109,7 @@ public class AddFirstFriendsFromFBActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setFacebookIdsList(listOfUsersIdsToAdd);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
 
     }
 
@@ -139,7 +139,7 @@ public class AddFirstFriendsFromFBActivity extends AppAbstractFragmentActivity {
                                 }
                                 setUsersPictures(usersList);
                             }else{
-                                Toast.makeText(AddFirstFriendsFromFBActivity.this,"Could not connect to Facebook", Toast.LENGTH_LONG);
+                                Toast.makeText(AddFirstFriendsFromFBActivity.this,"Could not connect to Facebook", Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -193,7 +193,7 @@ public class AddFirstFriendsFromFBActivity extends AppAbstractFragmentActivity {
             clientRequestMessage.setFacebookIdsList(getIdsFromSelectedFriends());
             String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
             clientRequestMessage.setMessageId(msgId);
-            getPendingClientMessages().add(clientRequestMessage);
+            addMessageToPendingClientMessages(clientRequestMessage);
 
 
 //        createRegId();
@@ -211,7 +211,7 @@ public class AddFirstFriendsFromFBActivity extends AppAbstractFragmentActivity {
     }
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
+    public void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
 
         if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
             Intent intent = new Intent(AddFirstFriendsFromFBActivity.this, HomeActivity.class);

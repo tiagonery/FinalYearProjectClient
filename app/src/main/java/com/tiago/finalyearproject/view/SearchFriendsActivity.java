@@ -93,7 +93,7 @@ public class SearchFriendsActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setFriendship(friendship);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     public void refuseFriendship(Friendship friendship) {
@@ -102,7 +102,7 @@ public class SearchFriendsActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setFriendship(friendship);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
     }
     public void sendFriendRequest(List<String> listOfUsersIdsToAdd) {
         ClientMessage clientRequestMessage = new ClientMessage();
@@ -110,7 +110,7 @@ public class SearchFriendsActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setFacebookIdsList(listOfUsersIdsToAdd);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
     }
 
 
@@ -120,7 +120,7 @@ public class SearchFriendsActivity extends AppAbstractFragmentActivity {
                 clientRequestMessage.setUserName(userName);
                 String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
                 clientRequestMessage.setMessageId(msgId);
-                getPendingClientMessages().add(clientRequestMessage);
+                addMessageToPendingClientMessages(clientRequestMessage);
 
             }
 
@@ -142,7 +142,7 @@ public class SearchFriendsActivity extends AppAbstractFragmentActivity {
     }
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
+    public void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         ServerMessage.ServerMessageType serverMessageType = serverMessage.getServerMessageType();
         if (serverMessageType== ServerMessage.ServerMessageType.REPLY_SUCCES || serverMessageType== ServerMessage.ServerMessageType.REPLY_ERROR){
             switch (clientMessageType) {

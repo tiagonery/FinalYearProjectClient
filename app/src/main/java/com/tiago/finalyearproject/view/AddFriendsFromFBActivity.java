@@ -72,7 +72,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setFacebookIdsList(listOfUsersIdsToAdd);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
 
     }
 
@@ -104,7 +104,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
                                 setFriendsFromFB(usersList);
                                 requestFriendshipList();
                             }else{
-                                Toast.makeText(AddFriendsFromFBActivity.this,"Could not connect to Facebook", Toast.LENGTH_LONG);
+                                Toast.makeText(AddFriendsFromFBActivity.this,"Could not connect to Facebook", Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -159,7 +159,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
             clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.REQUEST_FRIENDS_IDS_LIST);
             String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
             clientRequestMessage.setMessageId(msgId);
-            getPendingClientMessages().add(clientRequestMessage);
+            addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     private List<String> getIdsFromSelectedFriends() {
@@ -197,7 +197,7 @@ public class AddFriendsFromFBActivity extends AppAbstractFragmentActivity {
     }
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
+    public void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         ServerMessage.ServerMessageType serverMessageType = serverMessage.getServerMessageType();
         if (serverMessageType== ServerMessage.ServerMessageType.REPLY_SUCCES || serverMessageType== ServerMessage.ServerMessageType.REPLY_ERROR){
             switch (clientMessageType) {

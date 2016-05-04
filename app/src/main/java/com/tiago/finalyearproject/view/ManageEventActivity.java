@@ -23,12 +23,12 @@ import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.Core;
 import com.tiago.finalyearproject.model.User;
 import com.tiago.finalyearproject.model.UserEvent;
-import com.tiago.finalyearproject.model.Wish;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -63,6 +63,7 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
         stateInEventImageView = (ImageView) findViewById(R.id.delete_event_imageview);
         inviteToEventButton = (Button) findViewById(R.id.invite_to_event_button);
 
+        inviteToEventButton.setVisibility(View.INVISIBLE);
         eventNameTextView.setText(event.getName());
         eventLocationTextView.setText(event.getLocation());
 
@@ -94,7 +95,7 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setFacebookIdsList(listOfUsersIds);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     private void deleteEvent() {
@@ -103,25 +104,25 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setEventId(event.getEventId());
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     private void leaveEvent() {
-        ClientMessage clientRequestMessage = new ClientMessage();
-        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.JOIN_EVENT);
-        clientRequestMessage.setEventId(event.getEventId());
-        String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
-        clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
-    }
-
-    private void joinEvent() {
         ClientMessage clientRequestMessage = new ClientMessage();
         clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.LEAVE_EVENT);
         clientRequestMessage.setEventId(event.getEventId());
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
+    }
+
+    private void joinEvent() {
+        ClientMessage clientRequestMessage = new ClientMessage();
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.JOIN_EVENT);
+        clientRequestMessage.setEventId(event.getEventId());
+        String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
+        clientRequestMessage.setMessageId(msgId);
+        addMessageToPendingClientMessages(clientRequestMessage);
     }
 
 
@@ -131,7 +132,7 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setEventId(event.getEventId());
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     private void setUsersPictures(final List<User> usersList, final List<UserEvent> userEventList) {
@@ -164,6 +165,9 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
         Profile profile = Profile.getCurrentProfile();
         UserEvent.UserEventState state = getUserEvent(userEventList, profile.getId()).getState();
         setUserEventStateFromCurrentUser(state);
+        if(state!= UserEvent.UserEventState.GOING){
+            removeUserFromList(usersList,profile.getId());
+        }
         usersToInviteAdapter = new InviteFriendsFromEventAdapter(this, usersList, userEventList, state);
 
         usersToInviteListView = (ListView) findViewById(R.id.invite_friends_from_wish_list_view);
@@ -173,16 +177,25 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
         usersToInviteListView.setAdapter(usersToInviteAdapter);
     }
 
+    private void removeUserFromList(List<User> usersList, String id) {
+        for (Iterator<User> iterator = usersList.iterator(); iterator.hasNext(); ) {
+            User user = iterator.next();
+            if (user.getFacebookId().equals(id)) {
+                iterator.remove();
+            }
+        }
+    }
+
     private UserEvent getUserEvent(List<UserEvent> userEventList, String id) {
         UserEvent result = new UserEvent();
-        for (UserEvent userEvent: userEventList) {
-            if(userEvent.getUserId().equals(id)){
+        for (Iterator<UserEvent> iterator = userEventList.iterator(); iterator.hasNext(); ) {
+            UserEvent userEvent = iterator.next();
+            if (userEvent.getUserId().equals(id)) {
                 result = userEvent;
             }
         }
         return result;
     }
-
 
 
     public void setUserEventStateFromCurrentUser(UserEvent.UserEventState userEventStateFromCurrentUser) {
@@ -205,7 +218,7 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
             });
         }else if(userEventStateFromCurrentUser == UserEvent.UserEventState.GOING){
             inviteToEventButton.setVisibility(View.INVISIBLE);
-            usersListTextView.setText("Friends Going");
+            usersListTextView.setText("People Going");
             stateInEventImageView.setImageResource(R.drawable.joined);
             stateInEventImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -217,7 +230,7 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
 
 
             inviteToEventButton.setVisibility(View.INVISIBLE);
-            usersListTextView.setText("Friends Going");
+            usersListTextView.setText("People Going");
             stateInEventImageView.setImageResource(R.drawable.envelope);
             stateInEventImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -244,7 +257,7 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
         }else if(userEventStateFromCurrentUser == UserEvent.UserEventState.NOT_GOING){
 
             inviteToEventButton.setVisibility(View.INVISIBLE);
-            usersListTextView.setText("Friends Going");
+            usersListTextView.setText("People Going");
             stateInEventImageView.setImageResource(R.drawable.delete);
             stateInEventImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -257,7 +270,7 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
 
     }
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
+    public void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         ServerMessage.ServerMessageType serverMessageType = serverMessage.getServerMessageType();
         if (serverMessageType== ServerMessage.ServerMessageType.REPLY_SUCCES || serverMessageType== ServerMessage.ServerMessageType.REPLY_ERROR) {
             switch (clientMessageType) {
@@ -290,8 +303,7 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
                     break;
                 case LEAVE_EVENT:
                     if (serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES) {
-                        Intent intent = new Intent(ManageEventActivity.this, HomeActivity.class);
-                        startActivity(intent);
+                        requestUsers();
                     } else {
                     }
                     break;

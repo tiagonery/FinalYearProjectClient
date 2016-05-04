@@ -119,7 +119,7 @@ public class ManageWishActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setFacebookIdsList(listOfUsersIds);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     private void deleteWish(int wishId) {
@@ -128,7 +128,7 @@ public class ManageWishActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setWishId(wishId);
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     private void requestUsers() {
@@ -137,7 +137,7 @@ public class ManageWishActivity extends AppAbstractFragmentActivity {
         clientRequestMessage.setWishId(wish.getWishId());
         String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
         clientRequestMessage.setMessageId(msgId);
-        getPendingClientMessages().add(clientRequestMessage);
+        addMessageToPendingClientMessages(clientRequestMessage);
     }
 
     private void setUsersPictures(final List<User> usersList, final List<UserEvent> userEventList) {
@@ -176,7 +176,7 @@ public class ManageWishActivity extends AppAbstractFragmentActivity {
     }
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
+    public void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         ServerMessage.ServerMessageType serverMessageType = serverMessage.getServerMessageType();
         if (serverMessageType== ServerMessage.ServerMessageType.REPLY_SUCCES || serverMessageType== ServerMessage.ServerMessageType.REPLY_ERROR) {
             switch (clientMessageType) {

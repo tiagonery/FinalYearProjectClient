@@ -36,7 +36,7 @@ public class LoginActivity extends AppAbstractFragmentActivity {
             clientRequestMessage.setUserCreated(user);
             String msgId = Core.getInstance().sendRequest(this, clientRequestMessage);
             clientRequestMessage.setMessageId(msgId);
-            getPendingClientMessages().add(clientRequestMessage);
+            addMessageToPendingClientMessages(clientRequestMessage);
 
 
 //            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -47,7 +47,7 @@ public class LoginActivity extends AppAbstractFragmentActivity {
 
 
     @Override
-    protected void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
+    public void treatValidMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType) {
         if(serverMessage.getServerMessageType()== ServerMessage.ServerMessageType.REPLY_SUCCES){
             Intent intent = new Intent(LoginActivity.this, AddFriendsFromFBActivity.class);
             startActivity(intent);
