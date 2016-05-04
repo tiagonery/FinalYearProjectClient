@@ -103,8 +103,13 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
                 case JOIN_WISH:
                     if(serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES){
                         ((WishesFragment) mAdapter.getItem(0)).requestWishes();
-//                        UserWish userWish = serverMessage.getUserWish();
-//                        ((WishesFragment) mAdapter.getItem(0)).requestWishes();
+                    }else if(serverMessageType == ServerMessage.ServerMessageType.REPLY_ERROR){
+                        ((WishesFragment) mAdapter.getItem(0)).requestWishes();
+                    }
+                    break;
+                case LEAVE_WISH:
+                    if(serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES){
+                        ((WishesFragment) mAdapter.getItem(0)).requestWishes();
                     }else if(serverMessageType == ServerMessage.ServerMessageType.REPLY_ERROR){
                         ((WishesFragment) mAdapter.getItem(0)).requestWishes();
                     }

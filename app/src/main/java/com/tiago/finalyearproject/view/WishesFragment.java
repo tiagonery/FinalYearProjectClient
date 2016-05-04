@@ -111,6 +111,15 @@ public class WishesFragment extends Fragment {
         ((AppAbstractFragmentActivity) getActivity()).getPendingClientMessages().add(clientRequestMessage);
     }
 
+    public void leaveWish(int wishId) {
+        ClientMessage clientRequestMessage = new ClientMessage();
+        clientRequestMessage.setMessageType(ClientMessage.ClientMessageType.LEAVE_WISH);
+        clientRequestMessage.setWishId(wishId);
+        String msgId = Core.getInstance().sendRequest((AppAbstractFragmentActivity) getActivity(), clientRequestMessage);
+        clientRequestMessage.setMessageId(msgId);
+        ((AppAbstractFragmentActivity) getActivity()).getPendingClientMessages().add(clientRequestMessage);
+    }
+
     private void createActivitiesListView(final List<Wish> wishesList) {
 
 

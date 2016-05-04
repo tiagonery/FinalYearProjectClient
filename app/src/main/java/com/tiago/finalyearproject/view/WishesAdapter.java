@@ -87,7 +87,8 @@ class WishesAdapter extends ArrayAdapter<Wish> {
                 joinActivityImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        ((WishesFragment)((HomeActivity)getContext()).getAdapter().getItem(0)).leaveWish(wish.getWishId());
+                        ((WishesFragment)((HomeActivity)getContext()).getAdapter().getItem(0)).leaveWish(wish.getWishId());
+                        joinActivityImage.setImageResource(R.drawable.dislike);
 
                     }
                 });
@@ -98,7 +99,7 @@ class WishesAdapter extends ArrayAdapter<Wish> {
                 @Override
                 public void onClick(View v) {
                     ((WishesFragment)((HomeActivity)getContext()).getAdapter().getItem(0)).joinWish(wish.getWishId());
-                    joinActivityImage.setImageResource(R.drawable.joined);
+                    joinActivityImage.setImageResource(R.drawable.like);
                 }
             });
         }
