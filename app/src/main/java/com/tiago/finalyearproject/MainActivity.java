@@ -32,26 +32,6 @@ public class MainActivity extends AppAbstractFragmentActivity implements View.On
 
 
 
-        //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-
-
-
-//        btnRegId = (Button) findViewById(R.id.btnGetRegId);
-//        etRegId = (EditText) findViewById(R.id.etRegId);
-//
-//        btnRegId.setOnClickListener(this);
-
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
     @Override

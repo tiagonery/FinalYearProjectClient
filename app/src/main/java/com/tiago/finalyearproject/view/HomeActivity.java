@@ -26,7 +26,7 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
     // Tab titles
-    private String[] tabs = { "Activities", "Events", "Friends" };
+    private String[] tabs = { "Wishes", "Events", "Friends" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

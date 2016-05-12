@@ -259,7 +259,6 @@ public class GcmMessageHandler extends IntentService {
                 try {
                     String regid = gcm.register(Constants.PROJECT_ID);
                     Log.v("gcmandroidtiago", "device registered: " + regid);
-//                    msg.setRegId(regid);
                     // Persist the regID - no need to register again.
                     storeRegistrationId(regid);
                     Bundle bundle = new Bundle();

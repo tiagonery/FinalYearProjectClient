@@ -219,7 +219,7 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
         }else if(userEventStateFromCurrentUser == UserEvent.UserEventState.GOING){
             inviteToEventButton.setVisibility(View.INVISIBLE);
             usersListTextView.setText("People Going");
-            stateInEventImageView.setImageResource(R.drawable.joined);
+            stateInEventImageView.setImageResource(R.drawable.leave_text);
             stateInEventImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -258,7 +258,7 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
 
             inviteToEventButton.setVisibility(View.INVISIBLE);
             usersListTextView.setText("People Going");
-            stateInEventImageView.setImageResource(R.drawable.delete);
+            stateInEventImageView.setImageResource(R.drawable.join_text);
             stateInEventImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

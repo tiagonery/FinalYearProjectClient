@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.facebook.Profile;
@@ -34,7 +35,8 @@ public class EventsFragment extends Fragment {
         thisView = rootView;
 
 
-        final Button button = (Button) thisView.findViewById(R.id.start_to_create_event_button);
+        final ImageView button = (ImageView) thisView.findViewById(R.id.start_to_create_event_button);
+        button.setImageResource(R.drawable.plus_sign);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CreateEventActivity.class);

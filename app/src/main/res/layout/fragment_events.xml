@@ -28,10 +28,11 @@
         <!--android:layout_alignParentBottom="true"-->
         <!--android:layout_centerHorizontal="true"/>-->
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:text="+"
         android:id="@+id/start_to_create_event_button"
         android:layout_alignParentTop="true"
