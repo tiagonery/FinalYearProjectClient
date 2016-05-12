@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
@@ -56,11 +57,16 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
 
 
     Calendar c = Calendar.getInstance();
-    int startYear = c.get(Calendar.YEAR);
-    int startMonth = c.get(Calendar.MONTH);
-    int startDay = c.get(Calendar.DAY_OF_MONTH);
-    int hour = c.get(Calendar.HOUR_OF_DAY);
-    int minute = c.get(Calendar.MINUTE);
+//    int startYear = c.get(Calendar.YEAR);
+//    int startMonth = c.get(Calendar.MONTH);
+//    int startDay = c.get(Calendar.DAY_OF_MONTH);
+//    int hour = c.get(Calendar.HOUR_OF_DAY);
+//    int minute = c.get(Calendar.MINUTE);
+    int startYear = 0;
+    int startMonth = 0;
+    int startDay = 0;
+    int hour = 0;
+    int minute = 0;
 
 
     String month;
@@ -152,15 +158,16 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
                 newEvent.setLocation(editLocation.getText().toString());
 
                 SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
-                Date date = new Date();
+                Date date = null;
                 try {
                     date = originalFormat.parse(startYear + month + day);
+                    date.setHours(hour);
+                    date.setMinutes(minute);
                 } catch (ParseException e) {
+                    date = null;
                     e.printStackTrace();
                 }
 
-                date.setHours(hour);
-                date.setMinutes(minute);
                 newEvent.setEventDateTimeStart(date);
 
                 newEvent.setEventType(AppEvent.EventType.valueOf(activitiesSpinner.getSelectedItem().toString()));
@@ -173,7 +180,18 @@ public class CreateEventActivity extends AppAbstractFragmentActivity {
 //                matchingRadioButton = (RadioButton) findViewById(selectedMatchId);
 //                newEvent.setEventMatchingPrivacy(AppEvent.EventMatchingPrivacy.valueOf(matchingRadioButton.getTag().toString()));
 
-                createEvent(newEvent, listOfUsersIds);
+
+                if((newEvent.getName()!=null||newEvent.getName().equals(""))
+                        && newEvent.getEventType()!=null
+                        && newEvent.getEventDateTimeStart()!=null
+                        && (newEvent.getLocation()!=null||newEvent.getLocation().equals(""))) {
+
+                    createEvent(newEvent, listOfUsersIds);
+                }else{
+
+                    Toast.makeText(getApplicationContext(), "You need to complete all fields", Toast.LENGTH_LONG).show();
+                }
+
 
             }
         });

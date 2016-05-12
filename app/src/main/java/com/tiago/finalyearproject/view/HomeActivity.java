@@ -11,7 +11,6 @@ import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.Friendship;
 import com.tiago.finalyearproject.model.User;
-import com.tiago.finalyearproject.model.UserWish;
 import com.tiago.finalyearproject.model.Wish;
 
 import java.util.List;
@@ -96,7 +95,7 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
                 case REQUEST_WISHES:
                     if(serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES){
                         List<Wish> wishesList = serverMessage.getWishesList();
-                        ((WishesFragment) mAdapter.getItem(0)).setUsersPicturesFromActivities(wishesList);
+                        ((WishesFragment) mAdapter.getItem(0)).treatWishesListReceived(wishesList);
                     }else{
                     }
                     break;
@@ -118,7 +117,7 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
                     if(serverMessageType == ServerMessage.ServerMessageType.REPLY_SUCCES){
                         List<User> friendsList = serverMessage.getUsersList();
                         List<Friendship> friendshipList = serverMessage.getFriendshipList();
-                        ((FriendsFragment) mAdapter.getItem(2)).setUsersPicturesFromFriendsList(friendsList, friendshipList);
+                        ((FriendsFragment) mAdapter.getItem(2)).treatFriendsListReceived(friendsList, friendshipList);
                     }else if(serverMessageType == ServerMessage.ServerMessageType.REPLY_ERROR){
 //                        ((WishesFragment) mAdapter.getItem(2)).requestWishes();
                     }
@@ -164,5 +163,16 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
     @Override
     public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
 
+    }
+
+    public EventsFragment getEvetsFragament() {
+        return (EventsFragment)mAdapter.getItem(1);
+    }
+
+    public FriendsFragment getFriendsFragament() {
+        return (FriendsFragment)mAdapter.getItem(2);
+    }
+    public WishesFragment getWishesFragament() {
+        return (WishesFragment)mAdapter.getItem(0);
     }
 }

@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +46,15 @@ public class FriendsFragment extends Fragment {
         friendsView = rootView;
 
 
+        final ImageView refresh = (ImageView) friendsView.findViewById(R.id.refresh_friends_image_view);
+        refresh.setVisibility(View.INVISIBLE);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestFriendsList();
+            }
+        });
+
         final ImageView addFacebookFriends = (ImageView) friendsView.findViewById(R.id.add_from_fb_ImageView);
         addFacebookFriends.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -64,9 +76,15 @@ public class FriendsFragment extends Fragment {
 
         return rootView;
     }
+    public void treatFriendsListReceived(final List<User> friendsList, final List<Friendship> friendshipList) {
+        final ImageView refresh = (ImageView) friendsView.findViewById(R.id.refresh_friends_image_view);
+        refresh.setVisibility(View.INVISIBLE);
 
+        setUsersPicturesFromFriendsList(friendsList, friendshipList);
 
+    }
     public void setUsersPicturesFromFriendsList(final List<User> friendsList, final List<Friendship> friendshipList) {
+
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
@@ -135,4 +153,26 @@ public class FriendsFragment extends Fragment {
             }
         });
     }
+
+
+    public void setRefresh(final boolean b) {
+
+
+        Handler mainHandler = new Handler(getActivity().getMainLooper());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (b) {
+                    ((ImageView) friendsView.findViewById(R.id.refresh_friends_image_view)).setVisibility(View.VISIBLE);
+                } else {
+                    ((ImageView) friendsView.findViewById(R.id.refresh_friends_image_view)).setVisibility(View.INVISIBLE);
+                }
+            }
+        };
+        mainHandler.post(myRunnable);
+
+    }
+
+
 }

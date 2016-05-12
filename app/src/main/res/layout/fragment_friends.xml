@@ -27,6 +27,13 @@
         android:layout_toLeftOf="@+id/search_user_imageView"
         android:id="@+id/add_from_fb_ImageView"
         android:layout_alignParentTop="true"/>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/refresh_friends_image_view"
+        android:layout_alignTop="@+id/search_user_imageView"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/refresh"/>
 
     <ScrollView
         android:id="@+id/friwnds_list_ScrollView"

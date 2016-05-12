@@ -32,7 +32,7 @@ public abstract class AppAbstractFragmentActivity extends AppCompatActivity {
         handler = new android.os.Handler(Looper.myLooper()){
             @Override
             public void handleMessage(Message message) {
-                Toast.makeText(AppAbstractFragmentActivity.this,"Could not connect to Server", Toast.LENGTH_LONG).show();
+                Toast.makeText(AppAbstractFragmentActivity.this,"Could not connect to Server. Try reloading", Toast.LENGTH_LONG).show();
                 getPendingClientMessages().clear();
             }
 
@@ -57,6 +57,9 @@ public abstract class AppAbstractFragmentActivity extends AppCompatActivity {
                             getProgressDialog().dismiss();
                             Message msg = handler.obtainMessage();
                             handler.sendMessage(msg);
+                            Core.getInstance().showEventsRefreshButton();
+                            Core.getInstance().showFriendsRefreshButton();
+                            Core.getInstance().showWishesRefreshButton();
 
                         }
 

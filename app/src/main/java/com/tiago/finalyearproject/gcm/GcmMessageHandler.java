@@ -15,41 +15,21 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.google.android.gms.analytics.j;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tiago.finalyearproject.Constants;
 import com.tiago.finalyearproject.Constants.EventbusMessageType;
 import com.tiago.finalyearproject.Constants.State;
 import com.tiago.finalyearproject.MainActivity;
 import com.tiago.finalyearproject.gcm.ServerMessage.ServerContentTypeKey;
 import com.tiago.finalyearproject.gcm.ServerMessage.ServerMessageType;
-import com.tiago.finalyearproject.model.Address;
-import com.tiago.finalyearproject.model.AppEvent;
 import com.tiago.finalyearproject.model.Core;
-import com.tiago.finalyearproject.model.Post;
-import com.tiago.finalyearproject.model.User;
 
-import org.json.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import bolts.Task;
 import de.greenrobot.event.EventBus;
 
 
@@ -88,28 +68,28 @@ public class GcmMessageHandler extends IntentService {
                         core.notifyReplyError(serverMessage);//not implemented
                         break;
                     case NOTIFY_FRIENDSHIP_REQUEST_RECEIVED:
-                        core.notifyFriendshipRequestReceived(serverMessage); //not implemented
+                        core.showFriendsRefreshButton();
                         break;
                     case NOTIFY_FRIENDSHIP_REQUEST_ACCEPTED:
-                        core.notifyFriendshipRequestReceived(serverMessage); //not implemented
+                        core.showFriendsRefreshButton();
                         break;
                     case NOTIFY_FRIENDSHIP_REQUEST_REFUSED:
-                        core.notifyFriendshipRequestReceived(serverMessage); //not implemented
+                        core.showFriendsRefreshButton();
                         break;
                     case NOTIFY_INVITATION_RECEIVED:
-                        core.notifyInvitationReceived(serverMessage); //not implemented
+                        core.showEventsRefreshButton();
                         break;
                     case NOTIFY_NEW_EVENTAVAILABLE:
-                        core.notifyNewEventAvailableReceived(serverMessage); //not implemented
+                        core.showEventsRefreshButton();
                         break;
                     case NOTIFY_NEW_WISH_AVAILABLE:
-                        core.notifyNewWishAvailableReceived(serverMessage); //not implemented
+                        core.showWishesRefreshButton();
                         break;
                     case NOTIFY_WISH_DELETED:
-                        core.notifyNewWishAvailableReceived(serverMessage); //not implemented
+                        core.showWishesRefreshButton();
                         break;
                     case NOTIFY_EVENT_DELETED:
-                        core.notifyNewWishAvailableReceived(serverMessage); //not implemented
+                        core.showEventsRefreshButton();
                         break;
 
                     default:

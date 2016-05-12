@@ -3,11 +3,18 @@
  */
 package com.tiago.finalyearproject.model;
 
+import android.os.Handler;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.GCMManager;
 import com.tiago.finalyearproject.gcm.GcmMessageHandler;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.view.AppAbstractFragmentActivity;
+import com.tiago.finalyearproject.view.EventsFragment;
+import com.tiago.finalyearproject.view.HomeActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,18 +60,26 @@ public class Core {
 		Core.getInstance().handlePendingMessage(serverMessage);
 	}
 
-	public void notifyFriendshipRequestReceived(ServerMessage serverMessage) {
-//		getCurrentActivity().recreate();
+	public void showFriendsRefreshButton() {
+		if(getCurrentActivity()!=null && getCurrentActivity() instanceof HomeActivity){
+			((HomeActivity)getCurrentActivity()).getFriendsFragament().setRefresh(true);
+		}
 	}
 
-	public void notifyInvitationReceived(ServerMessage serverMessage) {
-//		getCurrentActivity().recreate();
+	public void notifyInvitationReceived() {
+		if(getCurrentActivity()!=null && getCurrentActivity() instanceof HomeActivity){
+			((HomeActivity)getCurrentActivity()).getEvetsFragament().setRefresh(true);
+		}
 	}
-	public void notifyNewEventAvailableReceived(ServerMessage serverMessage) {
-//		getCurrentActivity().recreate();
+	public void showEventsRefreshButton() {
+		if(getCurrentActivity()!=null && getCurrentActivity() instanceof HomeActivity){
+			((HomeActivity)getCurrentActivity()).getEvetsFragament().setRefresh(true);
+		}
 	}
-	public void notifyNewWishAvailableReceived(ServerMessage serverMessage) {
-//		getCurrentActivity().recreate();
+	public void showWishesRefreshButton() {
+		if(getCurrentActivity()!=null && getCurrentActivity() instanceof HomeActivity){
+			((HomeActivity)getCurrentActivity()).getWishesFragament().setRefresh(true);
+		}
 	}
 
 
@@ -78,13 +93,23 @@ public class Core {
 
 
 
-	public void handlePendingMessage(ServerMessage message){
+	public void handlePendingMessage(final ServerMessage message){
 		List<ClientMessage> pendingClientMessagesCopy = new ArrayList<>(getPendingClientMessages());
 		for(Iterator<ClientMessage> iterator = pendingClientMessagesCopy.iterator(); iterator.hasNext();) {
-			ClientMessage clientMessage = iterator.next();
+			final ClientMessage clientMessage = iterator.next();
 			if (message.getMessageRepliedId().equals(clientMessage.getMessageId())) {
 				getPendingClientMessages().remove(clientMessage);
-				getCurrentActivity().handlePendingMessage(message, clientMessage.getMessageType());
+
+
+				final Handler mainHandler = new Handler(getCurrentActivity().getMainLooper());
+
+				final Runnable myRunnable = new Runnable() {
+					@Override
+					public void run() {
+						getCurrentActivity().handlePendingMessage(message, clientMessage.getMessageType());
+					}
+				};
+				mainHandler.post(myRunnable);
 			}
 		}
 	}

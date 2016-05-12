@@ -1,6 +1,8 @@
 package com.tiago.finalyearproject.view;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -66,7 +68,24 @@ public class ManageWishActivity extends AppAbstractFragmentActivity {
         deleteWishImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteWish(wish.getWishId());
+
+
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                deleteWish(wish.getWishId());
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(ManageWishActivity.this);
+                builder.setMessage("Do you really want to delete this Wish?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+
             }
         });
 

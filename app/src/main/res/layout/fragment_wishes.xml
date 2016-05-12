@@ -30,5 +30,12 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/refresh_wish_image_view"
+        android:layout_alignTop="@+id/start_to_create_wish_image_view"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/refresh"/>
 
 </RelativeLayout>

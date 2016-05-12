@@ -213,7 +213,23 @@ public class ManageEventActivity extends AppAbstractFragmentActivity {
             stateInEventImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                deleteEvent();
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    deleteEvent();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ManageEventActivity.this);
+                    builder.setMessage("Do you really want to delete this Event?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+
                 }
             });
         }else if(userEventStateFromCurrentUser == UserEvent.UserEventState.GOING){

@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.ListView;
 
 import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
+import com.tiago.finalyearproject.model.Friendship;
 import com.tiago.finalyearproject.model.Wish;
 import com.tiago.finalyearproject.model.Core;
 import com.tiago.finalyearproject.model.User;
@@ -33,6 +37,7 @@ public class WishesFragment extends Fragment {
     private WishesAdapter wishesAdapter;
     private ListView activitiesListView;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,6 +45,14 @@ public class WishesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_wishes, container, false);
         thisView = rootView;
 
+        final ImageView refresh = (ImageView) thisView.findViewById(R.id.refresh_wish_image_view);
+        refresh.setVisibility(View.INVISIBLE);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestWishes();
+            }
+        });
 
         final ImageView button = (ImageView) thisView.findViewById(R.id.start_to_create_wish_image_view);
         button.setImageResource(R.drawable.plus_sign);
@@ -50,25 +63,21 @@ public class WishesFragment extends Fragment {
             }
         });
 
-//
-//        List<Wish> activitiesList = new ArrayList<Wish>();
-//
-//        Profile profile = Profile.getCurrentProfile();
-//        User user = new User("regid123", profile.getId(), profile.getFirstName(), profile.getLastName());
-//        List<UserWish> userWishList = new ArrayList<UserWish>();
-//        userWishList.add(new UserWish(profile.getId(),1));
-//        Date date = new Date();
-//        activitiesList.add(new Wish(1,"Play Football",date, AppEvent.EventType.SPORTS, user, userWishList));
-//
-//        setUsersPicturesFromActivities(activitiesList);
 
         requestWishes();
 
         return rootView;
     }
 
+    public void treatWishesListReceived(final List<Wish> wishesList) {
+        final ImageView refresh = (ImageView) thisView.findViewById(R.id.refresh_wish_image_view);
+        refresh.setVisibility(View.INVISIBLE);
 
-    public void setUsersPicturesFromActivities(final List<Wish> wishesList) {
+        setUsersPicturesFromWishesList(wishesList);
+
+    }
+
+    public void setUsersPicturesFromWishesList(final List<Wish> wishesList) {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
@@ -138,4 +147,22 @@ public class WishesFragment extends Fragment {
             }
         });
     }
+
+    public void setRefresh(final boolean b) {
+
+        Handler mainHandler = new Handler(getActivity().getMainLooper());
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (b) {
+                    ((ImageView) thisView.findViewById(R.id.refresh_wish_image_view)).setVisibility(View.VISIBLE);
+                } else {
+                    ((ImageView) thisView.findViewById(R.id.refresh_wish_image_view)).setVisibility(View.INVISIBLE);
+                }
+            }
+        };
+        mainHandler.post(myRunnable);
+
+    }
+
 }

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.tiago.finalyearproject.R;
@@ -68,7 +69,15 @@ public class CreateWishActivity extends AppAbstractFragmentActivity {
                 SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
                 Date date = new Date();
                 newWish.setWishDateTime(date);
-                createWish(newWish);
+
+
+                if((newWish.getName()!=null||newWish.getName().equals("")) && newWish.getEventType()!=null) {
+
+                    createWish(newWish);
+                }else{
+
+                    Toast.makeText(getApplicationContext(), "You need to complete all fields", Toast.LENGTH_LONG).show();
+                }
 
             }
         });
