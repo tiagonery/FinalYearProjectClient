@@ -71,6 +71,16 @@ public abstract class AppAbstractFragmentActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(getProgressDialog().isShowing()) {
+            getProgressDialog().dismiss();
+        }
+        Core.getInstance().getPendingClientMessages().clear();
+
+    }
 
     public void handlePendingMessage(ServerMessage serverMessage, ClientMessage.ClientMessageType clientMessageType){
         if(getPendingClientMessages().isEmpty()){
