@@ -1,12 +1,18 @@
 package com.tiago.finalyearproject.view;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
 import com.tiago.finalyearproject.gcm.ServerMessage;
 import com.tiago.finalyearproject.model.Core;
@@ -37,6 +43,46 @@ public abstract class AppAbstractFragmentActivity extends AppCompatActivity {
             }
 
         };
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Instructions \n \n " +
+                        "Wishes - Show your friends what you feel like doing. You can either create a Wish or join Wishes created by your friends. The owner of each Wish will have acces to the name of every Friend who joined their Wish. From there users can create an Event which will be linked to that Wish, making it really easy to know who to Invite. \n \n " +
+                        "Event - You can create an Event from a Wish or if you already know who to invite you can create an Event straight away. Be aware of Invites. You can choose if you accept it or not. \n \n " +
+                        "Friends - See who are your friends and add new ones through Facebook or through their names. ")
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //do things
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
+                return true;
+
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     public List<ClientMessage> getPendingClientMessages() {

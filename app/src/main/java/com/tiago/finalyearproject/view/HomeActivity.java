@@ -4,6 +4,8 @@ package com.tiago.finalyearproject.view;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.tiago.finalyearproject.R;
 import com.tiago.finalyearproject.gcm.ClientMessage;
@@ -31,6 +33,8 @@ public class HomeActivity extends AppAbstractFragmentActivity implements ActionB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_activity);
+
+
 
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
